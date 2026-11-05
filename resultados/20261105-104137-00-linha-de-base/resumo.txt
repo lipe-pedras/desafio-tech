@@ -1,0 +1,17 @@
+Medição: 00-linha-de-base
+Carga: 20 usuários virtuais por 60s
+
+Requisições:        129
+Requisições/s:      1.80
+Tempo de resposta:  mediana 2194.7 ms | p95 35082.7 ms | p99 39904.5 ms
+Erros:              0.00%
+
+Por rota:
+rota                  req       mediana       p95           p99           erros   
+cliente               37        490.4 ms      604.0 ms      727.8 ms      0.0%    
+cliente-por-email     21        2203.2 ms     3236.6 ms     3367.4 ms     0.0%    
+pedidos-do-cliente    28        29809.2 ms    39680.6 ms    43797.6 ms    0.0%    
+pedidos-por-status    16        18034.7 ms    26465.9 ms    33816.3 ms    0.0%    
+busca-produtos        18        1068.8 ms     1619.9 ms     1714.1 ms     0.0%    
+vendas-por-dia        8         18263.2 ms    20416.3 ms    20910.5 ms    0.0%    
+top-produtos          1         24806.5 ms    24806.5 ms    24806.5 ms    0.0%    
