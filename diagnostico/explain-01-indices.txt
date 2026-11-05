@@ -1,0 +1,235 @@
+=== /clientes/:id
+                                                       QUERY PLAN                                                        
+-------------------------------------------------------------------------------------------------------------------------
+ Index Scan using clientes_pkey on clientes  (cost=0.29..8.31 rows=1 width=60) (actual time=0.077..0.078 rows=1 loops=1)
+   Index Cond: (id = 31337)
+   Buffers: shared hit=1 read=2
+ Planning:
+   Buffers: shared hit=94
+ Planning Time: 0.493 ms
+ Execution Time: 0.251 ms
+(7 rows)
+
+=== /clientes?email=
+                                                                QUERY PLAN                                                                
+------------------------------------------------------------------------------------------------------------------------------------------
+ Sort  (cost=8.45..8.45 rows=1 width=60) (actual time=0.105..0.106 rows=1 loops=1)
+   Sort Key: id
+   Sort Method: quicksort  Memory: 25kB
+   Buffers: shared hit=5 read=2
+   ->  Index Scan using clientes_lower_email_idx on clientes  (cost=0.42..8.44 rows=1 width=60) (actual time=0.072..0.073 rows=1 loops=1)
+         Index Cond: (lower(email) = 'cliente3@exemplo.com'::text)
+         Buffers: shared hit=2 read=2
+ Planning:
+   Buffers: shared hit=21
+ Planning Time: 0.330 ms
+ Execution Time: 0.117 ms
+(11 rows)
+
+=== /clientes/:id/pedidos (pedidos do cliente)
+                                                                  QUERY PLAN                                                                   
+-----------------------------------------------------------------------------------------------------------------------------------------------
+ Index Scan using pedidos_cliente_id_criado_em_idx on pedidos  (cost=0.42..24.51 rows=5 width=300) (actual time=15.110..15.166 rows=5 loops=1)
+   Index Cond: (cliente_id = 31337)
+   Buffers: shared hit=3 read=5
+ Planning:
+   Buffers: shared hit=88
+ Planning Time: 0.263 ms
+ Execution Time: 15.183 ms
+(7 rows)
+
+=== /clientes/:id/pedidos (itens de UM pedido; roda 1x por pedido)
+                                                                   QUERY PLAN                                                                   
+------------------------------------------------------------------------------------------------------------------------------------------------
+ Sort  (cost=8.54..8.55 rows=4 width=20) (actual time=0.063..0.064 rows=1 loops=1)
+   Sort Key: id
+   Sort Method: quicksort  Memory: 25kB
+   Buffers: shared hit=3 read=1
+   ->  Index Scan using itens_pedido_pedido_id_idx on itens_pedido  (cost=0.43..8.50 rows=4 width=20) (actual time=0.053..0.054 rows=1 loops=1)
+         Index Cond: (pedido_id = 12345)
+         Buffers: shared hit=3 read=1
+ Planning:
+   Buffers: shared hit=43
+ Planning Time: 0.374 ms
+ Execution Time: 0.079 ms
+(11 rows)
+
+=== /clientes/:id/pedidos (produto de UM item; roda 1x por item)
+                                                       QUERY PLAN                                                        
+-------------------------------------------------------------------------------------------------------------------------
+ Index Scan using produtos_pkey on produtos  (cost=0.29..8.30 rows=1 width=44) (actual time=0.034..0.035 rows=1 loops=1)
+   Index Cond: (id = 10061)
+   Buffers: shared hit=2 read=1
+ Planning:
+   Buffers: shared hit=28
+ Planning Time: 0.167 ms
+ Execution Time: 0.056 ms
+(7 rows)
+
+=== /pedidos (contagem)
+                                                                                     QUERY PLAN                                                                                      
+-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+ Finalize Aggregate  (cost=11394.12..11394.13 rows=1 width=8) (actual time=32.388..38.552 rows=1 loops=1)
+   Buffers: shared hit=1671 read=1
+   ->  Gather  (cost=11393.91..11394.12 rows=2 width=8) (actual time=32.114..38.531 rows=3 loops=1)
+         Workers Planned: 2
+         Workers Launched: 2
+         Buffers: shared hit=1671 read=1
+         ->  Partial Aggregate  (cost=10393.91..10393.92 rows=1 width=8) (actual time=27.951..27.955 rows=1 loops=3)
+               Buffers: shared hit=1671 read=1
+               ->  Parallel Index Only Scan using pedidos_status_criado_em_idx on pedidos  (cost=0.42..10081.25 rows=125062 width=0) (actual time=0.087..20.424 rows=100000 loops=3)
+                     Index Cond: (status = 'pago'::text)
+                     Heap Fetches: 360
+                     Buffers: shared hit=1671 read=1
+ Planning:
+   Buffers: shared hit=6
+ Planning Time: 0.150 ms
+ Execution Time: 38.601 ms
+(16 rows)
+
+=== /pedidos (pagina 500)
+                                                                         QUERY PLAN                                                                         
+------------------------------------------------------------------------------------------------------------------------------------------------------------
+ Limit  (cost=2914.47..2920.31 rows=20 width=300) (actual time=16.820..16.834 rows=20 loops=1)
+   Buffers: shared hit=9969 read=83
+   ->  Index Scan using pedidos_status_criado_em_idx on pedidos  (cost=0.42..87640.72 rows=300150 width=300) (actual time=0.050..16.251 rows=10000 loops=1)
+         Index Cond: (status = 'pago'::text)
+         Buffers: shared hit=9969 read=83
+ Planning Time: 0.170 ms
+ Execution Time: 16.854 ms
+(7 rows)
+
+=== /produtos/busca
+                                                       QUERY PLAN                                                       
+------------------------------------------------------------------------------------------------------------------------
+ Limit  (cost=466.88..466.93 rows=20 width=44) (actual time=64.060..64.066 rows=20 loops=1)
+   Buffers: shared hit=193
+   ->  Sort  (cost=466.88..469.40 rows=1010 width=44) (actual time=64.059..64.061 rows=20 loops=1)
+         Sort Key: nome, id
+         Sort Method: top-N heapsort  Memory: 27kB
+         Buffers: shared hit=193
+         ->  Seq Scan on produtos  (cost=0.00..440.00 rows=1010 width=44) (actual time=0.031..63.349 rows=1000 loops=1)
+               Filter: (nome ~~* '%cadeira%'::text)
+               Rows Removed by Filter: 19000
+               Buffers: shared hit=190
+ Planning:
+   Buffers: shared hit=5
+ Planning Time: 0.194 ms
+ Execution Time: 64.087 ms
+(14 rows)
+
+=== /relatorios/vendas-por-dia (7 dias)
+                                                                        QUERY PLAN                                                                         
+-----------------------------------------------------------------------------------------------------------------------------------------------------------
+ Gather  (cost=1000.43..33709.68 rows=6762 width=298) (actual time=0.824..221.498 rows=12945 loops=1)
+   Workers Planned: 2
+   Workers Launched: 2
+   Buffers: shared hit=25296 read=12846
+   ->  Nested Loop  (cost=0.43..32033.48 rows=2818 width=298) (actual time=0.308..204.593 rows=4315 loops=3)
+         Buffers: shared hit=25296 read=12846
+         ->  Parallel Seq Scan on pedidos p  (cost=0.00..25521.50 rows=939 width=290) (actual time=0.226..197.259 rows=1438 loops=3)
+               Filter: ((status <> 'cancelado'::text) AND ((criado_em)::date >= '2024-01-01'::date) AND ((criado_em)::date <= '2024-01-07'::date))
+               Rows Removed by Filter: 165229
+               Buffers: shared hit=7988 read=12846
+         ->  Index Scan using itens_pedido_pedido_id_idx on itens_pedido i  (cost=0.43..6.90 rows=4 width=12) (actual time=0.003..0.004 rows=3 loops=4313)
+               Index Cond: (pedido_id = p.id)
+               Buffers: shared hit=17308
+ Planning:
+   Buffers: shared hit=57
+ Planning Time: 0.599 ms
+ Execution Time: 222.325 ms
+(17 rows)
+
+=== /relatorios/top-produtos
+                                                                                                      QUERY PLAN                                                                                                      
+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+ Limit  (cost=49680.28..49680.30 rows=10 width=56) (actual time=2495.637..2501.442 rows=10 loops=1)
+   Buffers: shared hit=6764 read=6423
+   ->  Sort  (cost=49680.28..49730.28 rows=20000 width=56) (actual time=2495.633..2501.435 rows=10 loops=1)
+         Sort Key: (sum((i.quantidade * i.preco_unitario_centavos))) DESC, pr.id
+         Sort Method: top-N heapsort  Memory: 27kB
+         Buffers: shared hit=6764 read=6423
+         ->  Finalize HashAggregate  (cost=49048.09..49248.09 rows=20000 width=56) (actual time=2485.671..2496.687 rows=19206 loops=1)
+               Group Key: pr.id
+               Batches: 1  Memory Usage: 3089kB
+               Buffers: shared hit=6761 read=6423
+               ->  Gather  (cost=44548.09..48748.09 rows=40000 width=56) (actual time=2380.652..2463.947 rows=57618 loops=1)
+                     Workers Planned: 2
+                     Workers Launched: 2
+                     Buffers: shared hit=6761 read=6423
+                     ->  Partial HashAggregate  (cost=43548.09..43748.09 rows=20000 width=56) (actual time=2337.454..2365.749 rows=19206 loops=3)
+                           Group Key: pr.id
+                           Batches: 1  Memory Usage: 3089kB
+                           Buffers: shared hit=6761 read=6423
+                           Worker 0:  Batches: 1  Memory Usage: 3089kB
+                           Worker 1:  Batches: 1  Memory Usage: 3089kB
+                           ->  Hash Join  (cost=18988.47..37913.50 rows=563459 width=48) (actual time=239.634..1642.757 rows=450000 loops=3)
+                                 Hash Cond: (i.produto_id = pr.id)
+                                 Buffers: shared hit=6761 read=6423
+                                 ->  Parallel Hash Join  (cost=18348.47..35794.10 rows=563459 width=12) (actual time=211.690..1011.540 rows=450000 loops=3)
+                                       Hash Cond: (i.pedido_id = p.id)
+                                       Buffers: shared hit=6185 read=6423
+                                       ->  Parallel Seq Scan on itens_pedido i  (cost=0.00..15805.00 rows=625000 width=16) (actual time=0.102..151.837 rows=500000 loops=3)
+                                             Buffers: shared hit=3132 read=6423
+                                       ->  Parallel Hash  (cost=16000.72..16000.72 rows=187820 width=4) (actual time=209.769..209.771 rows=150000 loops=3)
+                                             Buckets: 524288  Batches: 1  Memory Usage: 21728kB
+                                             Buffers: shared hit=3053
+                                             ->  Parallel Index Only Scan using pedidos_status_criado_em_idx on pedidos p  (cost=0.42..16000.72 rows=187820 width=4) (actual time=2.677..119.465 rows=150000 loops=3)
+                                                   Filter: (status <> 'cancelado'::text)
+                                                   Rows Removed by Filter: 16667
+                                                   Heap Fetches: 600
+                                                   Buffers: shared hit=3053
+                                 ->  Hash  (cost=390.00..390.00 rows=20000 width=40) (actual time=27.680..27.682 rows=20000 loops=3)
+                                       Buckets: 32768  Batches: 1  Memory Usage: 1696kB
+                                       Buffers: shared hit=570
+                                       ->  Seq Scan on produtos pr  (cost=0.00..390.00 rows=20000 width=40) (actual time=0.016..3.630 rows=20000 loops=3)
+                                             Buffers: shared hit=570
+ Planning:
+   Buffers: shared hit=39
+ Planning Time: 0.617 ms
+ Execution Time: 2503.514 ms
+(45 rows)
+
+=== índices existentes
+  tablename   |            indexname             |                                                     indexdef                                                      
+--------------+----------------------------------+-------------------------------------------------------------------------------------------------------------------
+ clientes     | clientes_pkey                    | CREATE UNIQUE INDEX clientes_pkey ON public.clientes USING btree (id)
+ clientes     | clientes_lower_email_idx         | CREATE INDEX clientes_lower_email_idx ON public.clientes USING btree (lower(email))
+ itens_pedido | itens_pedido_pedido_id_idx       | CREATE INDEX itens_pedido_pedido_id_idx ON public.itens_pedido USING btree (pedido_id)
+ itens_pedido | itens_pedido_pkey                | CREATE UNIQUE INDEX itens_pedido_pkey ON public.itens_pedido USING btree (id)
+ pedidos      | pedidos_pkey                     | CREATE UNIQUE INDEX pedidos_pkey ON public.pedidos USING btree (id)
+ pedidos      | pedidos_cliente_id_criado_em_idx | CREATE INDEX pedidos_cliente_id_criado_em_idx ON public.pedidos USING btree (cliente_id, criado_em DESC, id DESC)
+ pedidos      | pedidos_status_criado_em_idx     | CREATE INDEX pedidos_status_criado_em_idx ON public.pedidos USING btree (status, criado_em DESC, id DESC)
+ produtos     | produtos_pkey                    | CREATE UNIQUE INDEX produtos_pkey ON public.produtos USING btree (id)
+(8 rows)
+
+=== tamanho das tabelas
+   relname    | pg_size_pretty 
+--------------+----------------
+ clientes     | 16 MB
+ pedidos      | 214 MB
+ itens_pedido | 128 MB
+ produtos     | 2016 kB
+(4 rows)
+
+=== configuração relevante
+ shared_buffers 
+----------------
+ 128MB
+(1 row)
+
+ work_mem 
+----------
+ 4MB
+(1 row)
+
+ max_connections 
+-----------------
+ 100
+(1 row)
+
+ pedidos_cliente_31337 
+-----------------------
+                     5
+(1 row)
+
