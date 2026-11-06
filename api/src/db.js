@@ -7,8 +7,9 @@ const config = {
   database: process.env.DB_NAME || 'loja',
   // Um pool único para a API: as conexões são abertas uma vez e reaproveitadas,
   // em vez de uma conexão nova (e um processo novo no PostgreSQL) por consulta.
-  // 10 é o padrão do node-postgres, deixado explícito.
-  max: 10,
+  // Tamanho do pool: DB_POOL_MAX no docker-compose.yml; sem a variável, 10
+  // (o padrão do node-postgres).
+  max: Number(process.env.DB_POOL_MAX || 10),
 };
 
 const pool = new Pool(config);

@@ -36,6 +36,7 @@ services:
       DB_PORT: 5432
       DB_USER: loja
       DB_NAME: loja
+      DB_POOL_MAX: 10
     ports:
       - "127.0.0.1:3000:3000"
     depends_on:
