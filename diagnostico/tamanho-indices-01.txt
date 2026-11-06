@@ -1,0 +1,17 @@
+              indice              | tamanho 
+----------------------------------+---------
+ itens_pedido_pkey                | 32 MB
+ pedidos_status_criado_em_idx     | 21 MB
+ itens_pedido_pedido_id_idx       | 21 MB
+ pedidos_cliente_id_criado_em_idx | 19 MB
+ pedidos_pkey                     | 11 MB
+ clientes_lower_email_idx         | 4792 kB
+ clientes_pkey                    | 2208 kB
+ produtos_pkey                    | 456 kB
+(8 rows)
+
+ total_indices_novos 
+---------------------
+ 66 MB
+(1 row)
+
