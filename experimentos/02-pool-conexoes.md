@@ -2,7 +2,7 @@
 
 - **Status:** aplicada e medida
 - **Branch / commit da mudança:** `02-pool-conexoes` / `63b4693`
-- **Comparada com:** a 01 remedida na mesma sessão (commit `466d0f5`, `main` depois do merge da 01)
+- **Comparada com:** a 01* (remedida)
 
 ## Hipótese
 
@@ -10,7 +10,7 @@ Hoje o `api/src/db.js` abre uma conexão nova com o banco a cada consulta e a fe
 
 Trocar isso por um pool, que abre as conexões uma vez e as reaproveita, deve aumentar as requisições/s e reduzir o tempo de resposta, principalmente:
 - nas rotas com consultas baratas (`/clientes/:id`, `/clientes?email=`), em que o custo da conexão pesa mais que o da consulta;
-- em `/clientes/:id/pedidos`, que faz cerca de 20 consultas por requisição (o N+1) e, portanto, cerca de 20 conexões.
+- em `/clientes/:id/pedidos`, que faz cerca de 20 consultas por requisição, logo, cerca de 20 conexões.
 
 ## Diagnóstico (antes)
 
