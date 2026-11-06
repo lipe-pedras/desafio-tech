@@ -36,3 +36,14 @@ Artigos científicos e técnicos de acesso aberto, baixados em 2026-11-05 dos li
 ## Pesquisada, sem PDF baixado
 
 - Dean, J.; Barroso, L. A. *The Tail at Scale*. Communications of the ACM 56(2), 2013, p. 74–80. DOI 10.1145/2408776.2408794. Texto em https://cacm.acm.org/magazines/2013/2/160173-the-tail-at-scale/fulltext. Ajuda a explicar por que olhar p95/p99, e não só a média. Não encontrei um PDF de acesso aberto que desse para conferir.
+
+## Documentação oficial (pasta `documentacao/`)
+
+Páginas abertas em 2026-11-06 e salvas como texto (HTML convertido, sem edição do conteúdo), para que as citações das fichas possam ser conferidas mesmo se a página mudar.
+
+| Arquivo | Referência | Link | Usada em |
+|---|---|---|---|
+| `documentacao/node-postgres-pooling.txt` | node-postgres. *Pooling*. | https://node-postgres.com/features/pooling | 02: custo de abrir conexão por consulta |
+| `documentacao/node-postgres-api-pool.txt` | node-postgres. *pg.Pool* (API). | https://node-postgres.com/apis/pool | 02: parâmetros `max` e `idleTimeoutMillis` |
+| `documentacao/node-postgres-pool-sizing.txt` | node-postgres. *Pool Sizing*. | https://node-postgres.com/guides/pool-sizing | 02: tamanho do pool |
+| `documentacao/postgresql-16-connect-estab.txt` | PostgreSQL 16 Documentation, *52.2. How Connections Are Established*. | https://www.postgresql.org/docs/16/connect-estab.html | 02: um processo do servidor por conexão |
