@@ -1,0 +1,5 @@
+data: 2026-11-06T06:44:45.288Z  consultas sequenciais por caminho: 500
+conexao nova por consulta    n=500  media=6.111 ms  mediana=5.981 ms  p95=7.815 ms
+pool (conexao reaproveitada) n=500  media=0.349 ms  mediana=0.228 ms  p95=0.409 ms
+conexao nova por consulta    n=500  media=5.732 ms  mediana=5.681 ms  p95=6.786 ms
+pool (conexao reaproveitada) n=500  media=0.218 ms  mediana=0.194 ms  p95=0.354 ms
