@@ -55,6 +55,8 @@ Fato e opinião, separados:
 
 ## Resultado
 
+Primeira rodada, 2026-11-05, com o notebook na bateria. A remedição na tomada está na seção [Repetibilidade](#repetibilidade-remedição-com-banco-recriado-e-na-tomada).
+
 Mediana de 3 execuções:
 
 | Métrica | Linha de base | 01-indices | Variação |
@@ -103,10 +105,51 @@ A variação da busca, com o mesmo plano, parece ruído de execução única com
   - 66 MB de disco, cerca de 22% do tamanho das tabelas (cerca de 295 MB);
   - custo de escrita em `INSERT` e `UPDATE` (Kossmann et al., 2020). **A carga do desafio só faz leituras**, então esse custo não aparece aqui. Numa loja real, com pedidos entrando o tempo todo, apareceria.
 
+## Repetibilidade: remedição com banco recriado e na tomada
+
+A primeira rodada levantou uma dúvida: parte do ganho podia vir do estado do banco (cache) e não dos índices. Para testar, medi os dois lados de novo em 2026-11-06, recriando o banco do zero (`docker compose down -v`) imediatamente antes de cada série:
+- a linha de base no commit `8da289c` (`main`, sem o `03-indices.sql`);
+- a 01 no commit `63b6a8c`.
+
+O ambiente de cada dia está em [`diagnostico/ambiente.txt`](../diagnostico/ambiente.txt):
+- **2026-11-05:** perfil `balanced`, notebook **na bateria**. Esse estado foi informado pela autora; não foi registrado por comando.
+- **2026-11-06:** perfil `balanced`, notebook **na tomada**. Conferido por comando ao fim das medições.
+
+Mediana de 3 execuções em cada série:
+
+| Métrica | Base 11-05 (bateria) | Base 11-06 (tomada) | 01 11-05 (bateria) | 01 11-06 (tomada) |
+|---|---|---|---|---|
+| Requisições/s | 1,81 | 2,52 | 5,81 | 8,82 |
+| Mediana | 2156,1 ms | 1502,3 ms | 1096,0 ms | 701,1 ms |
+| p95 | 35082,7 ms | 26538,7 ms | 12222,6 ms | 8087,2 ms |
+| p99 | 41481,8 ms | 32199,8 ms | 17537,1 ms | 10865,6 ms |
+| CPU média do banco | 99,0% | 98,0% | 98,7% | 100,2% |
+| Memória média do banco | 227,7 MiB | 231,8 MiB | 227,6 MiB | 230,5 MiB |
+| CPU média da API | 6,0% | 5,4% | 14,3% | 13,9% |
+| Memória média da API | 30,1 MiB | 96,2 MiB | 38,4 MiB | 45,1 MiB |
+
+**Pastas de 2026-11-06:**
+- linha de base: `resultados/20261106-025518-00-linha-de-base-banco-recriado`, `20261106-025653-…`, `20261106-025835-…`;
+- 01: `resultados/20261106-030111-01-indices-banco-recriado`, `20261106-030243-…`, `20261106-030410-…`.
+
+**Ganho relativo da 01 em cada dia:**
+
+| | 11-05 (bateria) | 11-06 (tomada) |
+|---|---|---|
+| Requisições/s | cerca de 3,2× | cerca de 3,5× |
+| p95 | −65% | −70% |
+
+**Leitura:**
+- **O ganho dos índices se repete**, com o mesmo sentido e tamanho parecido, nos dois dias.
+- **A hipótese de cache não explica a primeira rodada.** As medições de 11-05 também foram feitas logo depois de criar o banco: a linha de base na primeira subida e a 01 depois do `down -v`.
+- **Os valores absolutos subiram cerca de 40 a 50% nos dois lados de 11-05 para 11-06.** A explicação mais provável é a fonte de energia: na bateria, o notebook tende a limitar a potência da CPU, e o banco está limitado justamente por CPU. Não isolei essa variável. Horário, temperatura e carga de fundo também mudaram entre os dias.
+- **Uma anomalia sem explicação:** a memória da API na linha de base de 11-06 (cerca de 96 MiB) ficou cerca de 3× acima da de 11-05 (cerca de 30 MiB), com o mesmo código. Não foi investigada e não muda o tempo de resposta.
+- **Consequência para as próximas mudanças:** só comparar séries medidas nas mesmas condições, ou seja, na tomada, com o perfil `balanced` e de preferência na mesma sessão. Números absolutos de dias diferentes não devem ser comparados entre si (Laaber et al., 2019, sobre a variabilidade de medições de desempenho).
+
 ## O que refutaria esta conclusão
 
-- **Se repetir as medições** na mesma máquina não reproduzir a diferença. As 3 execuções de cada lado ficaram próximas: req/s de 1,80 a 1,85 antes e de 5,03 a 6,04 depois. Mesmo assim, o README avisa que pode haver variação acima de 30%.
-- **Se o ganho vier do banco recriado** (cache frio contra cache quente) e não dos índices. Para descartar isso, recriar o banco sem o `03-indices.sql` e medir a linha de base de novo.
+- **Se repetir as medições** na mesma máquina não reproduzir a diferença. Isso já foi feito uma vez, em outro dia e com outra fonte de energia, e o ganho relativo se manteve (seção acima).
+- **Se o ganho vier do banco recriado** e não dos índices. Isso foi descartado: nos dois dias, os dois lados foram medidos com o banco recém-criado.
 - **Um limite da medição:** o `recursos.txt` às vezes mostra `cpu_max` menor que `cpu_media` (por exemplo 100,0% contra 100,6%). Parece que o script compara os valores como texto. Por isso usei só a `cpu_media`.
 
 ## Próximo gargalo
@@ -118,3 +161,4 @@ Candidatas, na ordem: eliminar o N+1 de `/clientes/:id/pedidos` (mudança 03), p
 1. Yang, J.; Subramaniam, P.; Lu, S.; Yan, C.; Cheung, A. *How not to structure your database-backed web applications: a study of performance bugs in the wild*. ICSE 2018. https://par.nsf.gov/servlets/purl/10067547
 2. Yan, C.; Cheung, A.; Yang, J.; Lu, S. *Understanding Database Performance Inefficiencies in Real-world Web Applications*. CIKM 2017. https://www.cc.gatech.edu/~jarulraj/courses/8803-f18/papers/db_study.pdf
 3. Kossmann, J.; Halfpap, S.; Jankrift, M.; Schlosser, R. *Magic mirror in my hand, which is the best in the land? An Experimental Evaluation of Index Selection Algorithms*. PVLDB 13(11), 2020. https://www.vldb.org/pvldb/vol13/p2382-kossmann.pdf
+4. Laaber, C.; Scheuner, J.; Leitner, P. *Software Microbenchmarking in the Cloud. How Bad is it Really?* Empirical Software Engineering 24(4), 2019. https://research.chalmers.se/publication/511491/file/511491_Fulltext.pdf

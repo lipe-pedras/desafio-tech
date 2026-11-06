@@ -1,0 +1,19 @@
+# Ambiente das medições (registrado em 2026-11-06 03:17 -0300)
+
+CPU(s):                                  12
+Model name:                              AMD Ryzen 5 6600H with Radeon Graphics
+CPU(s) scaling MHz:                      45%
+CPU max MHz:                             4566.3838
+               total        used        free      shared  buff/cache   available
+Mem:            14Gi       3.9Gi       3.1Gi       163Mi       8.3Gi        10Gi
+perfil de energia: balanced
+governor: amd-pstate-epp / powersave
+fonte ACAD: type=Mains online=1 status=
+fonte BAT1: type=Battery online= status=Charging
+fonte ucsi-source-psy-USBC000:001: type=USB online=0 status=
+Docker version 29.9.2, build a82e528901
+6.18.55-2-cachyos-lts
+
+Observações:
+- 2026-11-05 (pastas 20261105-*): perfil balanced, notebook na BATERIA (informado pela autora; não registrado por comando).
+- 2026-11-06 (pastas 20261106-*): perfil balanced conferido antes e depois das medições; fonte na TOMADA conferida por comando após as medições.
