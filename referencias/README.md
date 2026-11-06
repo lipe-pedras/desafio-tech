@@ -47,3 +47,15 @@ Páginas abertas em 2026-11-06 e salvas como texto (HTML convertido, sem ediçã
 | `documentacao/node-postgres-api-pool.txt` | node-postgres. *pg.Pool* (API). | https://node-postgres.com/apis/pool | 02: parâmetros `max` e `idleTimeoutMillis` |
 | `documentacao/node-postgres-pool-sizing.txt` | node-postgres. *Pool Sizing*. | https://node-postgres.com/guides/pool-sizing | 02: tamanho do pool |
 | `documentacao/postgresql-16-connect-estab.txt` | PostgreSQL 16 Documentation, *52.2. How Connections Are Established*. | https://www.postgresql.org/docs/16/connect-estab.html | 02: um processo do servidor por conexão |
+
+## Tamanho do pool de conexões
+
+Encontradas em 2026-11-06, para fundamentar a variação do `max` do pool (mudança 02).
+
+| Arquivo | Referência | Link | Por que interessa |
+|---|---|---|---|
+| `sobri-2022-database-connection-pool-microservice-joiv.pdf` | Sobri, N. A. N.; Abas, M. A. H.; Yassin, I. M.; Megat Ali, M. S. A.; Tahir, N. M.; Zabidi, A.; Rizman, Z. I. *A Study of Database Connection Pool in Microservice Architecture*. JOIV: International Journal on Informatics Visualization 6(2-2), 2022, p. 566–571. DOI 10.30630/joiv.6.2-2.1094 | https://joiv.org/index.php/joiv/article/view/1094 | Artigo revisado por pares. Mede a latência com pools de 1, 5 e 10 conexões no PostgreSQL, com uma e com três instâncias do serviço. PDF baixado pela autora pelo navegador, porque o site bloqueia downloads automáticos. |
+| `agrawal-2026-dbtunesuite-arxiv.pdf` | Agrawal, A.; Wang, T.; Shasha, D. *DBTuneSuite: An Extendible Experimental Suite to Test the Time Performance of Multi-layer Tuning Options on Database Management Systems*. Preprint arXiv:2601.20015, 2026. | https://arxiv.org/abs/2601.20015 | Seção 20 e apêndice V: conexão simples contra pool de 25, 50 e 100 no PostgreSQL, MySQL, MariaDB e DuckDB. É um preprint, e a carga é só de `INSERT`. |
+| `documentacao/postgresql-wiki-number-of-database-connections.txt` | PostgreSQL Wiki. *Number Of Database Connections* (última edição em 2014-03-14). | https://wiki.postgresql.org/wiki/Number_Of_Database_Connections | O "joelho" da curva de desempenho por número de conexões e a fórmula `(núcleos × 2) + discos efetivos` como ponto de partida. |
+| `documentacao/hikaricp-wiki-about-pool-sizing.txt` | HikariCP Wiki. *About Pool Sizing* (editada em 2021-12-07). | https://github.com/brettwooldridge/HikariCP/wiki/About-Pool-Sizing | Explica por que um pool pequeno costuma ganhar ("You want a small pool, saturated with threads waiting for connections") e sugere pools separados para consultas longas e curtas. |
+| `documentacao/oracle-ucp-26-pool-sizes.txt` | Oracle. *Universal Connection Pool Developer's Guide 26*, seção 5.3, *Real-World Performance Considerations with Respect to Connection Pool Sizes*. | https://docs.oracle.com/en/database/oracle/oracle-database/26/jjucp/optimizing-real-world-performance.html | Abrir conexões em rajada esgota a CPU do banco; recomenda no máximo 5 conexões por núcleo. |
