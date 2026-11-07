@@ -47,7 +47,7 @@ Só [`api/src/db.js`](../api/src/db.js):
 - a carga usa 20 usuários virtuais, e o banco tem 1 CPU;
 - mais conexões simultâneas não dão mais CPU ao banco, só mais processos disputando a mesma CPU;
 - 10 é o padrão, e a própria documentação diz que costuma bastar (ver Fundamentação).
-- **Não testei outros tamanhos.** Fica como experimento futuro.
+- **Outros tamanhos foram testados depois, no experimento [02.1](02.1-tamanho-do-pool.md).** O menor pool se saiu melhor.
 
 **Aplicação:** `docker compose up -d --build`. Recriei o banco antes da série (`docker compose down -v`) para manter as mesmas condições da série "antes".
 
@@ -87,17 +87,19 @@ Mesma sessão, 2026-11-06, notebook na tomada, perfil `balanced`, banco recriado
 - antes: `resultados/20261106-033945-01-indices-antes-02`, `20261106-034114-…`, `20261106-034245-…`;
 - depois: `resultados/20261106-034611-02-pool-conexoes`, `20261106-034737-…`, `20261106-034906-…`.
 
-**Por rota, na execução mediana de cada série** (`034114` antes, `034906` depois). São poucas amostras por rota, só para ver onde o ganho aparece:
+**Por rota: mediana da rota em cada execução, e a mediana dessas 3.** São poucas amostras por rota (6 a 14 em `top-produtos`), só para ver onde o ganho aparece:
 
-| Rota | Mediana antes | Mediana depois |
-|---|---|---|
-| `cliente` | 345,3 ms | 194,3 ms |
-| `cliente-por-email` | 378,4 ms | 192,6 ms |
-| `pedidos-do-cliente` | 6000,5 ms | 2694,0 ms |
-| `pedidos-por-status` | 1406,4 ms | 800,0 ms |
-| `busca-produtos` | 698,7 ms | 397,9 ms |
-| `vendas-por-dia` | 2770,6 ms | 2175,2 ms |
-| `top-produtos` | 12048,8 ms | 12849,7 ms |
+| Rota | Antes (3 execuções) | Antes | Depois (3 execuções) | Depois |
+|---|---|---|---|---|
+| `cliente` | 301,2 / 345,3 / 308,3 | 308,3 ms | 200,8 / 179,6 / 194,3 | 194,3 ms |
+| `cliente-por-email` | 382,1 / 378,4 / 394,8 | 382,1 ms | 199,6 / 183,6 / 192,6 | 192,6 ms |
+| `pedidos-do-cliente` | 6398,0 / 6000,5 / 5880,6 | 6000,5 ms | 3787,7 / 2706,4 / 2694,0 | 2706,4 ms |
+| `pedidos-por-status` | 2878,8 / 1406,4 / 1500,5 | 1500,5 ms | 1603,6 / 747,7 / 800,0 | 800,0 ms |
+| `busca-produtos` | 771,2 / 698,7 / 771,3 | 771,2 ms | 416,6 / 404,4 / 397,9 | 404,4 ms |
+| `vendas-por-dia` | 3822,4 / 2770,6 / 3071,0 | 3071,0 ms | 2912,7 / 2318,9 / 2175,2 | 2318,9 ms |
+| `top-produtos` | 14242,8 / 12048,8 / 11849,1 | 12048,8 ms | 12148,3 / 11858,2 / 12849,7 | 12148,3 ms |
+
+Correção: uma versão anterior desta tabela usava só a execução mediana de cada série. Nela, `top-produtos` parecia piorar cerca de 0,8 s (12048,8 → 12849,7 ms). Pela mediana das 3 execuções, a diferença é de cerca de 0,1 s, menor que a variação entre execuções da própria série "antes" (2,4 s).
 
 **Custo:**
 - **Memória do banco:** +55 MiB na média (de 226,7 para 281,8 MiB, dentro do limite de 512 MB). Minha hipótese, ainda não verificada, é que são as até 10 conexões que agora ficam abertas, cada uma um processo do PostgreSQL com memória e cache de catálogo próprios. Antes, cada processo durava uma consulta só.
@@ -118,7 +120,7 @@ Mesma sessão, 2026-11-06, notebook na tomada, perfil `balanced`, banco recriado
 
 - **Se repetir as séries** não reproduzir a diferença. Ainda não repeti em outro dia.
 - **Se o ganho vier de outra coisa que mudou entre as séries.** Entre elas mudou só o `db.js` (commits `466d0f5` → `63b4693`, ver `contexto.txt`), na mesma sessão, com o banco recriado nos dois lados.
-- **Se um pool maior ou menor der resultado bem diferente.** Isso não invalida o pool, mas mostraria que 10 não é o tamanho certo para este caso. Não testei.
+- **Se um pool maior ou menor der resultado bem diferente.** Isso aconteceu: ver [02.1](02.1-tamanho-do-pool.md). Não invalida o pool, mas mostra que 10 não é o melhor tamanho para este caso.
 
 ## Próximo gargalo
 
