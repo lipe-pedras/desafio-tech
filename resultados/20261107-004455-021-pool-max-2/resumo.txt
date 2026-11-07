@@ -1,0 +1,17 @@
+Medição: 021-pool-max-2
+Carga: 20 usuários virtuais por 60s
+
+Requisições:        1226
+Requisições/s:      20.40
+Tempo de resposta:  mediana 254.3 ms | p95 5010.6 ms | p99 7198.0 ms
+Erros:              0.00%
+
+Por rota:
+rota                  req       mediana       p95           p99           erros   
+cliente               328       94.4 ms       580.4 ms      886.1 ms      0.0%    
+cliente-por-email     189       65.1 ms       472.9 ms      781.6 ms      0.0%    
+pedidos-do-cliente    245       3507.5 ms     7198.9 ms     7762.7 ms     0.0%    
+pedidos-por-status    172       407.2 ms      1088.2 ms     1995.6 ms     0.0%    
+busca-produtos        188       107.7 ms      660.8 ms      893.4 ms      0.0%    
+vendas-por-dia        85        445.7 ms      913.2 ms      1063.3 ms     0.0%    
+top-produtos          19        2508.2 ms     2923.7 ms     2980.1 ms     0.0%    
