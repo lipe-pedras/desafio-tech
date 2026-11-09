@@ -1,0 +1,17 @@
+Medição: 02b-pool-max-5
+Carga: 20 usuários virtuais por 60s
+
+Requisições:        989
+Requisições/s:      16.20
+Tempo de resposta:  mediana 383.1 ms | p95 5681.3 ms | p99 8004.9 ms
+Erros:              0.00%
+
+Por rota:
+rota                  req       mediana       p95           p99           erros   
+cliente               259       125.9 ms      596.8 ms      859.1 ms      0.0%    
+cliente-por-email     151       111.7 ms      500.9 ms      650.3 ms      0.0%    
+pedidos-do-cliente    206       3704.9 ms     7681.1 ms     8544.4 ms     0.0%    
+pedidos-por-status    140       587.0 ms      1595.9 ms     2577.7 ms     0.0%    
+busca-produtos        151       299.3 ms      704.0 ms      1096.1 ms     0.0%    
+vendas-por-dia        66        1025.0 ms     2173.7 ms     2893.4 ms     0.0%    
+top-produtos          16        6707.0 ms     11095.5 ms    14216.7 ms    0.0%    

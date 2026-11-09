@@ -1,0 +1,17 @@
+Medição: 02c-pool-max-10
+Carga: 20 usuários virtuais por 60s
+
+Requisições:        700
+Requisições/s:      10.93
+Tempo de resposta:  mediana 503.3 ms | p95 6514.7 ms | p99 10595.6 ms
+Erros:              0.00%
+
+Por rota:
+rota                  req       mediana       p95           p99           erros   
+cliente               183       197.8 ms      497.0 ms      873.8 ms      0.0%    
+cliente-por-email     106       198.9 ms      571.3 ms      1188.5 ms     0.0%    
+pedidos-do-cliente    143       3491.6 ms     8778.4 ms     10744.0 ms    0.0%    
+pedidos-por-status    98        1510.0 ms     3580.5 ms     5466.4 ms     0.0%    
+busca-produtos        111       406.2 ms      944.6 ms      1283.7 ms     0.0%    
+vendas-por-dia        46        2759.5 ms     5270.1 ms     6635.5 ms     0.0%    
+top-produtos          13        10280.6 ms    26914.2 ms    27061.1 ms    0.0%    

@@ -1,0 +1,37 @@
+Fonte: https://docs.oracle.com/en/database/oracle/oracle-database/26/jjucp/optimizing-real-world-performance.html
+Acessado em: 2026-11-06
+Trecho do texto da página (HTML convertido em texto, sem edição do conteúdo).
+
+5.3 Real-World Performance Considerations with Respect to Connection Pool Sizes Most on-line
+transaction processing (OLTP) performance problems that the Real-World Performance group
+investigates relate to the connection strategy used by the application. For this reason, designing a
+sound connection strategy is crucial for system performance, especially in enterprise environments
+that must scale to meet increasing demand. Most applications use a dynamic pool of connections to
+the database, configured with a minimum number of connections to keep open on the database and a
+maximum number of connections that can be made to the database. When an application needs a
+connection to the database, then it requests one from the pool. If there are no connections
+available, then the application creates a new connection, if it has not reached the maximum number
+of connections already. If a connection has not been used for a specified duration of time, then the
+application closes the connection, if there are more than the minimum number of connections
+available. This configuration conserves system resources by only maintaining the number of
+connections actively needed by the application. In the real world, this configuration enables
+connection storms and database system CPU over-subscription, quickly destabilizing a system. A
+connection storm can occur when there are lots of activities on the application server requiring
+database connections. If there are not enough connections to the database to serve all of the
+requests, then the application server opens new connections. Creating a new connection to the
+database is a resource intensive activity, and when lots of connections are made in a short period
+of time, it can overwhelm the CPU resources on the database system. So, for creating connection
+pools, the total number of connections to the database from all pools must be based on the CPU cores
+available on the system. Oracle recommends maximum five connections per CPU core. The ideal number
+varies depending on the application and the system hardware. However, the value is somewhere within
+that range. The Real-World Performance group recommends creating pools that: Have a minimum size
+that is close to the actual minimum number of connections in use Have maximum size that is not too
+high and follows the guideline of having five connections per CPU core Do not have too much
+difference between the maximum value and the minimum value, so that connection storms can be avoided
+For example, if a database server has 2 CPUs and 12 cores per CPU, then there are 24 cores available
+and the number of connections to the database, at any given point of time, should be less than 120.
+This number is cumulative for all applications and all databases connecting to the system, if there
+are more than one databases on the system. If there are two application servers, then the maximum
+number of connections (for example, 120 in this case) should be divided between them. If there are
+two databases running on the system, then the maximum number of connections should be divided
+between them.
