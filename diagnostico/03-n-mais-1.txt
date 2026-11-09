@@ -1,0 +1,33 @@
+== Consultas por requisição no código antigo: 2 + pedidos + itens, por cliente com pedidos
+ clientes_com_pedidos | pedidos_media | itens_media | consultas_media | consultas_mediana | consultas_p95 | consultas_max 
+----------------------+---------------+-------------+-----------------+-------------------+---------------+---------------
+               100000 |           5.0 |        15.0 |            22.0 |                22 |            32 |            32
+(1 row)
+
+== Plano da consulta única (cliente 31337)
+                                                                           QUERY PLAN                                                                           
+----------------------------------------------------------------------------------------------------------------------------------------------------------------
+ Incremental Sort  (cost=15.29..72.19 rows=15 width=61) (actual time=3.487..3.488 rows=10 loops=1)
+   Sort Key: p.criado_em DESC, p.id DESC, i.id
+   Presorted Key: p.criado_em, p.id
+   Full-sort Groups: 1  Sort Method: quicksort  Average Memory: 25kB  Peak Memory: 25kB
+   Buffers: shared hit=52 read=12
+   ->  Nested Loop Left Join  (cost=1.14..71.78 rows=15 width=61) (actual time=0.863..2.885 rows=10 loops=1)
+         Buffers: shared hit=48 read=10
+         ->  Nested Loop Left Join  (cost=0.85..67.20 rows=15 width=34) (actual time=0.847..2.842 rows=10 loops=1)
+               Buffers: shared hit=18 read=10
+               ->  Index Scan using pedidos_cliente_id_criado_em_idx on pedidos p  (cost=0.42..24.51 rows=5 width=18) (actual time=0.435..0.813 rows=5 loops=1)
+                     Index Cond: (cliente_id = 31337)
+                     Buffers: shared hit=5 read=3
+               ->  Index Scan using itens_pedido_pedido_id_idx on itens_pedido i  (cost=0.43..8.50 rows=4 width=20) (actual time=0.403..0.404 rows=2 loops=5)
+                     Index Cond: (pedido_id = p.id)
+                     Buffers: shared hit=13 read=7
+         ->  Index Scan using produtos_pkey on produtos pr  (cost=0.29..0.31 rows=1 width=31) (actual time=0.004..0.004 rows=1 loops=10)
+               Index Cond: (id = i.produto_id)
+               Buffers: shared hit=30
+ Planning:
+   Buffers: shared hit=100 read=3
+ Planning Time: 1.682 ms
+ Execution Time: 3.556 ms
+(22 rows)
+
