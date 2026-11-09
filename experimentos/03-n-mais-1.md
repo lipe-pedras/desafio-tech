@@ -85,7 +85,7 @@ A média vem do campo `http_req_duration.avg` do `resumo-k6.json` de cada pasta.
 
 - **A hipótese se confirmou para req/s, média e cauda.** A rota-alvo caiu cerca de 79% (de 4,3 s para 0,89 s), e o p95 e o p99 caíram mais da metade, porque ela era a principal responsável pela cauda.
 - **A mediana geral piorou cerca de 3×, e as rotas rápidas ficaram mais lentas.** Esse efeito não estava na hipótese e não pode ficar de fora. `cliente`, por exemplo, foi de 80,9 para 410,4 ms.
-- **Minha hipótese para isso, ainda não verificada:** a carga é de ciclo fechado (20 usuários, sem pausa entre requisições). Antes, muitos usuários ficavam presos em `pedidos-do-cliente`, enviando consultas minúsculas, uma por vez, e a fila do pool andava rápido. Agora eles saem dessa rota e voltam a chamar as outras, inclusive as pesadas. Cada consulta rápida tem mais chance de disputar o banco com `top-produtos`, `vendas-por-dia` ou a paginação de `/pedidos`. O banco segue a 100% de CPU: o trabalho ficou mais bem distribuído entre as requisições, não acabou. A variação do pool (abaixo) descartou a parte desta hipótese que culpava as 2 conexões.
+- **A explicação foi testada em [um diagnóstico à parte](../diagnostico/03-mediana/README.md), que não é resultado oficial.** Ele confirmou o mecanismo: a fila do pool tem o mesmo tamanho, mas passou a ter consultas mais pesadas (execução média de 14,4 para 61,6 ms). A hipótese original era: a carga é de ciclo fechado (20 usuários, sem pausa entre requisições). Antes, muitos usuários ficavam presos em `pedidos-do-cliente`, enviando consultas minúsculas, uma por vez, e a fila do pool andava rápido. Agora eles saem dessa rota e voltam a chamar as outras, inclusive as pesadas. Cada consulta rápida tem mais chance de disputar o banco com `top-produtos`, `vendas-por-dia` ou a paginação de `/pedidos`. O banco segue a 100% de CPU: o trabalho ficou mais bem distribuído entre as requisições, não acabou. A variação do pool (abaixo) descartou a parte desta hipótese que culpava as 2 conexões.
 - **O saldo é positivo para quem mede a cauda e o total atendido,** e negativo para a requisição típica. Dependendo do que importa no produto, isso muda a leitura. Os próximos passos atacam as consultas pesadas, que devem aliviar justamente essa fila.
 - **O `DB_POOL_MAX=2` foi escolhido com o N+1 ainda presente.** A ficha da [02.1](02.1-tamanho-do-pool.md) previa medir de novo depois desta mudança; isso foi feito na seção seguinte, e o 2 continua o melhor.
 - **Memória da API:** 123,8 MiB antes e 31,5 MiB depois. O mesmo padrão de cerca de 124 MiB já tinha aparecido em séries da 02.1, sem relação clara com o pool. Não investiguei, então não atribuo a queda a esta mudança.
@@ -114,14 +114,13 @@ Mesmo código da 03, com `DB_POOL_MAX` de 2, 5 e 10, em 2026-11-08 (22h58 a 23h1
 
 - **O 2 continua o melhor.** Contra 10: cerca de 1,83× em req/s, média −44%, mediana −16%, p95 −46%, p99 −72% e 90 MiB a menos no banco. Mantive `DB_POOL_MAX=2`.
 - **A hipótese de que as 2 conexões travavam as rotas rápidas foi refutada.** Pools maiores não aceleraram nenhuma delas: `cliente` ficou em 405,3 ms com 2, 585,0 ms com 5 e 458,4 ms com 10. O limite é a CPU do banco, não o número de conexões.
-- **A explicação pela mistura de rotas continua sem verificação.**
+- **A explicação pela mistura de rotas foi confirmada depois**, em [diagnóstico à parte](../diagnostico/03-mediana/README.md).
 - **A série com `max=2` repete a da 03** (23,50 contra 22,74 req/s; p95 de 2528,2 contra 2502,8 ms), na mesma sessão.
 - **Limite:** não testei 1 nem 3 nesta versão, e a série com 5 variou bastante entre execuções (12,74 a 17,37 req/s).
 
 ## O que refutaria esta conclusão
 
-- **Se repetir as séries em outro dia** não reproduzir a diferença. Ainda não repeti.
-- **Se a explicação da mistura de rotas estiver errada.** Um teste seria medir as rotas rápidas depois de resolver as consultas pesadas. A parte que culpava o pool pequeno já foi refutada na seção 03.1.
+- **Se repetir as séries em outro dia** não reproduzir a diferença. No [diagnóstico](../diagnostico/03-mediana/README.md), com API instrumentada e versões alternadas, a alta da mediana e a queda do p95 e do p99 se repetiram, mas o ganho de req/s não: 24,85 antes e 23,63 depois. O ganho de 1,33× em req/s ainda precisa ser confirmado no formato oficial, com as versões alternadas.
 
 ## Próximo gargalo
 
