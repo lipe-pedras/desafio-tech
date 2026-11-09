@@ -1,0 +1,17 @@
+Medição: ab-02-pool-2
+Carga: 20 usuários virtuais por 60s
+
+Requisições:        1511
+Requisições/s:      24.73
+Tempo de resposta:  mediana 190.5 ms | p95 3829.6 ms | p99 6416.8 ms
+Erros:              0.00%
+
+Por rota:
+rota                  req       mediana       p95           p99           erros   
+cliente               396       87.1 ms       576.5 ms      907.8 ms      0.0%    
+cliente-por-email     233       86.1 ms       503.6 ms      1574.2 ms     0.0%    
+pedidos-do-cliente    319       2593.4 ms     6335.7 ms     7279.7 ms     0.0%    
+pedidos-por-status    212       220.8 ms      840.0 ms      1104.8 ms     0.0%    
+busca-produtos        221       100.5 ms      507.2 ms      856.7 ms      0.0%    
+vendas-por-dia        107       363.3 ms      889.3 ms      1024.4 ms     0.0%    
+top-produtos          23        2240.7 ms     2899.7 ms     3070.3 ms     0.0%    

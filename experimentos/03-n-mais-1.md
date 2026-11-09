@@ -4,6 +4,8 @@
 - **Branch / commit da mudança:** `03-n-mais-1` / `958aad1`
 - **Comparada com:** o estado da `main` com `DB_POOL_MAX=2` (commit `1fd2ae4`), medido na mesma sessão
 
+> **Correção (2026-11-09).** A medição em rodízio, com as versões num banco só, não confirmou o ganho de req/s desta ficha. Na comparação controlada, a 03 teve **23,23 req/s contra 24,86** (cerca de −7%), p95 −33%, p99 −41% e mediana cerca de 3,2× pior. Ver [`diagnostico/variacao-banco/`](../diagnostico/variacao-banco/README.md). Os números abaixo são da primeira medição, mantidos como registro.
+
 ## Hipótese
 
 A rota faz uma consulta para o cliente, uma para os pedidos, uma para os itens de cada pedido e uma para o produto de cada item. Juntar pedidos, itens e produtos numa consulta só deve reduzir o trabalho do banco e as idas e voltas à fila do pool, aumentando as req/s e reduzindo a cauda (p95 e p99).
