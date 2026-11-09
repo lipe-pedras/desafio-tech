@@ -85,15 +85,43 @@ A média vem do campo `http_req_duration.avg` do `resumo-k6.json` de cada pasta.
 
 - **A hipótese se confirmou para req/s, média e cauda.** A rota-alvo caiu cerca de 79% (de 4,3 s para 0,89 s), e o p95 e o p99 caíram mais da metade, porque ela era a principal responsável pela cauda.
 - **A mediana geral piorou cerca de 3×, e as rotas rápidas ficaram mais lentas.** Esse efeito não estava na hipótese e não pode ficar de fora. `cliente`, por exemplo, foi de 80,9 para 410,4 ms.
-- **Minha hipótese para isso, ainda não verificada:** a carga é de ciclo fechado (20 usuários, sem pausa entre requisições). Antes, muitos usuários ficavam presos em `pedidos-do-cliente`, enviando consultas minúsculas, uma por vez, e a fila do pool andava rápido. Agora eles saem dessa rota e voltam a chamar as outras, inclusive as pesadas. Cada consulta rápida tem mais chance de ficar atrás de `top-produtos`, `vendas-por-dia` ou da paginação de `/pedidos`, ocupando uma das 2 conexões. O banco segue a 100% de CPU: o trabalho ficou mais bem distribuído entre as requisições, não acabou.
+- **Minha hipótese para isso, ainda não verificada:** a carga é de ciclo fechado (20 usuários, sem pausa entre requisições). Antes, muitos usuários ficavam presos em `pedidos-do-cliente`, enviando consultas minúsculas, uma por vez, e a fila do pool andava rápido. Agora eles saem dessa rota e voltam a chamar as outras, inclusive as pesadas. Cada consulta rápida tem mais chance de disputar o banco com `top-produtos`, `vendas-por-dia` ou a paginação de `/pedidos`. O banco segue a 100% de CPU: o trabalho ficou mais bem distribuído entre as requisições, não acabou. A variação do pool (abaixo) descartou a parte desta hipótese que culpava as 2 conexões.
 - **O saldo é positivo para quem mede a cauda e o total atendido,** e negativo para a requisição típica. Dependendo do que importa no produto, isso muda a leitura. Os próximos passos atacam as consultas pesadas, que devem aliviar justamente essa fila.
-- **O `DB_POOL_MAX=2` foi escolhido com o N+1 ainda presente.** A ficha da [02.1](02.1-tamanho-do-pool.md) já previa medir de novo depois desta mudança, e isso ainda não foi feito.
+- **O `DB_POOL_MAX=2` foi escolhido com o N+1 ainda presente.** A ficha da [02.1](02.1-tamanho-do-pool.md) previa medir de novo depois desta mudança; isso foi feito na seção seguinte, e o 2 continua o melhor.
 - **Memória da API:** 123,8 MiB antes e 31,5 MiB depois. O mesmo padrão de cerca de 124 MiB já tinha aparecido em séries da 02.1, sem relação clara com o pool. Não investiguei, então não atribuo a queda a esta mudança.
+
+## 03.1 · Tamanho do pool depois da 03
+
+Mesmo código da 03, com `DB_POOL_MAX` de 2, 5 e 10, em 2026-11-08 (22h58 a 23h14), na tomada, perfil `balanced`, banco recriado antes de cada tamanho. Ordem: 5, 10 e 2. Contrato mantido e 0,00% de erros nas 9 execuções. Mediana de 3 execuções:
+
+| `max` | req/s | Média | Mediana | p95 | p99 | Memória do banco |
+|---|---|---|---|---|---|---|
+| 2 | 23,50 | 848,8 ms | 672,9 ms | 2528,2 ms | 3679,7 ms | 189,2 MiB |
+| 5 | 15,95 | 1244,3 ms | 984,9 ms | 3102,5 ms | 7816,3 ms | 237,7 MiB |
+| 10 | 12,82 | 1509,7 ms | 800,7 ms | 4710,5 ms | 13112,8 ms | 279,1 MiB |
+
+| Rota (mediana das 3) | `max=2` | `max=5` | `max=10` |
+|---|---|---|---|
+| `cliente` | 405,3 ms | 585,0 ms | 458,4 ms |
+| `cliente-por-email` | 440,4 ms | 593,9 ms | 503,6 ms |
+| `pedidos-do-cliente` | 991,6 ms | 1296,2 ms | 997,2 ms |
+| `pedidos-por-status` | 1083,6 ms | 1599,4 ms | 1611,0 ms |
+| `busca-produtos` | 502,4 ms | 794,0 ms | 804,7 ms |
+| `vendas-por-dia` | 709,9 ms | 1519,6 ms | 3515,6 ms |
+| `top-produtos` | 2691,6 ms | 8306,8 ms | 14452,4 ms |
+
+**Pastas:** `resultados/20261108-225931-…` a `20261108-231319-031-pool-max-N` (3 por tamanho).
+
+- **O 2 continua o melhor.** Contra 10: cerca de 1,83× em req/s, média −44%, mediana −16%, p95 −46%, p99 −72% e 90 MiB a menos no banco. Mantive `DB_POOL_MAX=2`.
+- **A hipótese de que as 2 conexões travavam as rotas rápidas foi refutada.** Pools maiores não aceleraram nenhuma delas: `cliente` ficou em 405,3 ms com 2, 585,0 ms com 5 e 458,4 ms com 10. O limite é a CPU do banco, não o número de conexões.
+- **A explicação pela mistura de rotas continua sem verificação.**
+- **A série com `max=2` repete a da 03** (23,50 contra 22,74 req/s; p95 de 2528,2 contra 2502,8 ms), na mesma sessão.
+- **Limite:** não testei 1 nem 3 nesta versão, e a série com 5 variou bastante entre execuções (12,74 a 17,37 req/s).
 
 ## O que refutaria esta conclusão
 
 - **Se repetir as séries em outro dia** não reproduzir a diferença. Ainda não repeti.
-- **Se a explicação da fila estiver errada.** Um teste seria medir as rotas rápidas depois de resolver as consultas pesadas, ou variar o tamanho do pool com esta versão.
+- **Se a explicação da mistura de rotas estiver errada.** Um teste seria medir as rotas rápidas depois de resolver as consultas pesadas. A parte que culpava o pool pequeno já foi refutada na seção 03.1.
 
 ## Próximo gargalo
 
