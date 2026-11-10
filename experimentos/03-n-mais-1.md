@@ -1,6 +1,6 @@
 # 03 · Eliminar o N+1 de `/clientes/:id/pedidos`
 
-- **Status:** aplicada e medida
+- **Status:** aplicada, medida e mantida (ver [Decisão](#decisão))
 - **Branch / commit da mudança:** `03-n-mais-1` / `958aad1`
 - **Comparada com:** o estado da `main` com `DB_POOL_MAX=2` (commit `1fd2ae4`), medido na mesma sessão
 
@@ -119,6 +119,29 @@ Mesmo código da 03, com `DB_POOL_MAX` de 2, 5 e 10, em 2026-11-08 (22h58 a 23h1
 - **A explicação pela mistura de rotas foi confirmada depois**, em [diagnóstico à parte](../diagnostico/03-mediana/README.md).
 - **A série com `max=2` repete a da 03** (23,50 contra 22,74 req/s; p95 de 2528,2 contra 2502,8 ms), na mesma sessão.
 - **Limite:** não testei 1 nem 3 nesta versão, e a série com 5 variou bastante entre execuções (12,74 a 17,37 req/s).
+
+## Decisão
+
+**A mudança foi mantida, apesar da queda no desempenho médio atual** (na medição em rodízio: req/s −7% e média +8%).
+
+O motivo é escalabilidade. As consultas do tipo N+1 crescem com N: no código antigo, cada requisição fazia 2 + pedidos + itens consultas (22 em média e 32 no máximo, com os dados atuais), e cada uma entrava separadamente na fila do pool. Com a consulta única, são sempre 2, seja qual for o histórico do cliente. A consulta usa só varreduras por índice (`pedidos_cliente_id_criado_em_idx`, `itens_pedido_pedido_id_idx` e `produtos_pkey`; ver [`diagnostico/03-n-mais-1.txt`](../diagnostico/03-n-mais-1.txt)), e os índices já existiam desde a 01. Assim, o custo da rota passa a crescer só com as linhas do próprio cliente, encontradas por índice, sem novas idas ao banco.
+
+**Limite:** o número de consultas por requisição foi medido, mas o ganho com mais dados não: todas as medições usam o volume atual. A escalabilidade é a razão da decisão, sustentada pelo plano e por Chen et al. (2014), não um resultado medido.
+
+### De onde vem a alta da média (conta sobre o diagnóstico, não é resultado oficial)
+
+Calculado a partir de [`diagnostico/03-mediana/resumo.txt`](../diagnostico/03-mediana/resumo.txt), com a mediana de cada valor nas 3 rodadas e 60 s de carga:
+
+| Por requisição | Antes | Depois | Diferença |
+|---|---|---|---|
+| Espera na fila do pool (fila ÷ req/s) | 712 ms | 758 ms | +46 ms |
+| Execução no banco (execução somada ÷ requisições) | 79,5 ms | 83,7 ms | +4 ms |
+| Soma | 791 ms | 842 ms | +50 ms |
+| Média medida pelo k6 | 796,4 ms | 844,1 ms | +48 ms |
+
+- **Quase toda a alta aparece como espera na fila**, mas a fila não é a origem: seu tamanho é o mesmo (17,69 e 17,92), definido pelos 20 usuários em ciclo fechado.
+- **A origem é a execução por requisição, cerca de 5% maior.** As 2 conexões ficam ocupadas quase o tempo todo (cerca de 118 s de 120 s), então req/s ≈ tempo disponível ÷ execução por requisição. Com menos req/s e a mesma fila, cada requisição espera mais.
+- A 03 economiza execução em `pedidos-do-cliente` (de cerca de 43,7 para 14,5 ms por requisição), mas as outras rotas passaram a executar mais devagar, e a soma ficou maior. **Por que elas ficaram mais lentas não foi testado.**
 
 ## O que refutaria esta conclusão
 
