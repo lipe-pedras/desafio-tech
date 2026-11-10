@@ -45,7 +45,7 @@ medir() { # projeto commit rotulo
   dc "$1" "$2" scripts/verificar-contrato.sh comparar 2>&1 | tail -1 | grep -q "Contrato mantido" || { log "contrato quebrado em $2"; exit 1; }
   dc "$1" "$2" scripts/medir.sh "$3" 2>&1 | tail -1
   guardar "$2" "$3"
-  log "medido $3 ($2): $(grep -m1 -i 'requisi' "$(ls -d "$(wt "$2")"/resultados/*-"$3" | tail -1)/resumo.txt" | tr -s ' ')"
+  log "medido $3 ($2): $(grep -m1 'Requisições/s' "$(ls -d "$(wt "$2")"/resultados/*-"$3" | tail -1)/resumo.txt" | tr -s ' ')"
 }
 
 for c in d29146f 466d0f5 63b4693 d9ee2e5 1fd2ae4 4253e8a a8c5c79 acb84a7 92fb437 958aad1 9e2a2dd e9c1dc7; do
