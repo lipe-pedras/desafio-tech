@@ -1,0 +1,192 @@
+################ 051-so-analyze (855b116)
+--- banco/05 deste commit:
+DROP INDEX pedidos_status_criado_em_idx;
+CREATE INDEX pedidos_status_criado_em_inc_idx ON pedidos (status, criado_em DESC, id DESC) INCLUDE (cliente_id);
+ANALYZE pedidos;
+--- criação do banco: 21 s
+=== 1. logo depois da criação
+  agora   | banco_no_ar_desde | segundos_no_ar 
+----------+-------------------+----------------
+ 19:44:56 | 19:44:53          |              2
+(1 row)
+
+ relallvisible | relpages | last_vacuum | last_autovacuum |         last_analyze          | n_ins_since_vacuum 
+---------------+----------+-------------+-----------------+-------------------------------+--------------------
+             0 |    20834 |             |                 | 2026-11-11 19:44:53.258402+00 |             500000
+(1 row)
+
+                                                       QUERY PLAN                                                       
+------------------------------------------------------------------------------------------------------------------------
+ Limit (actual time=10.685..10.693 rows=20 loops=1)
+   Buffers: shared hit=17845 read=2256
+   ->  Index Only Scan using pedidos_status_criado_em_inc_idx on pedidos (actual time=0.024..10.404 rows=20000 loops=1)
+         Index Cond: (status = 'pago'::text)
+         Heap Fetches: 20000
+         Buffers: shared hit=17845 read=2256
+ Planning:
+   Buffers: shared hit=113 read=11 dirtied=3
+ Planning Time: 0.637 ms
+ Execution Time: 10.700 ms
+(10 rows)
+
+                                           QUERY PLAN                                           
+------------------------------------------------------------------------------------------------
+ Finalize Aggregate (actual time=21.986..23.353 rows=1 loops=1)
+   Buffers: shared hit=2155 read=18679
+   ->  Gather (actual time=21.941..23.350 rows=3 loops=1)
+         Workers Planned: 2
+         Workers Launched: 2
+         Buffers: shared hit=2155 read=18679
+         ->  Partial Aggregate (actual time=20.466..20.466 rows=1 loops=3)
+               Buffers: shared hit=2155 read=18679
+               ->  Parallel Seq Scan on pedidos (actual time=0.013..18.023 rows=100000 loops=3)
+                     Filter: (status = 'pago'::text)
+                     Rows Removed by Filter: 66667
+                     Buffers: shared hit=2155 read=18679
+ Planning:
+   Buffers: shared hit=3
+ Planning Time: 0.032 ms
+ Execution Time: 23.363 ms
+(16 rows)
+
+=== 2. depois do autovacuum em pedidos
+  agora   | banco_no_ar_desde | segundos_no_ar 
+----------+-------------------+----------------
+ 19:45:42 | 19:44:53          |             48
+(1 row)
+
+ relallvisible | relpages | last_vacuum |        last_autovacuum        |         last_analyze          | n_ins_since_vacuum 
+---------------+----------+-------------+-------------------------------+-------------------------------+--------------------
+         20834 |    20834 |             | 2026-11-11 19:45:40.909903+00 | 2026-11-11 19:44:53.258402+00 |                  0
+(1 row)
+
+                                                      QUERY PLAN                                                       
+-----------------------------------------------------------------------------------------------------------------------
+ Limit (actual time=1.629..1.631 rows=20 loops=1)
+   Buffers: shared hit=102
+   ->  Index Only Scan using pedidos_status_criado_em_inc_idx on pedidos (actual time=0.014..1.349 rows=20000 loops=1)
+         Index Cond: (status = 'pago'::text)
+         Heap Fetches: 0
+         Buffers: shared hit=102
+ Planning:
+   Buffers: shared hit=124
+ Planning Time: 0.090 ms
+ Execution Time: 1.636 ms
+(10 rows)
+
+                                                                 QUERY PLAN                                                                  
+---------------------------------------------------------------------------------------------------------------------------------------------
+ Finalize Aggregate (actual time=10.701..11.534 rows=1 loops=1)
+   Buffers: shared hit=104 read=1380
+   ->  Gather (actual time=10.675..11.532 rows=3 loops=1)
+         Workers Planned: 2
+         Workers Launched: 2
+         Buffers: shared hit=104 read=1380
+         ->  Partial Aggregate (actual time=9.356..9.357 rows=1 loops=3)
+               Buffers: shared hit=104 read=1380
+               ->  Parallel Index Only Scan using pedidos_status_criado_em_inc_idx on pedidos (actual time=0.029..7.195 rows=100000 loops=3)
+                     Index Cond: (status = 'pago'::text)
+                     Heap Fetches: 0
+                     Buffers: shared hit=104 read=1380
+ Planning:
+   Buffers: shared hit=3
+ Planning Time: 0.030 ms
+ Execution Time: 11.543 ms
+(16 rows)
+
+################ 051-vacuum-analyze (6596279)
+--- banco/05 deste commit:
+DROP INDEX pedidos_status_criado_em_idx;
+CREATE INDEX pedidos_status_criado_em_inc_idx ON pedidos (status, criado_em DESC, id DESC) INCLUDE (cliente_id);
+VACUUM (ANALYZE) pedidos;
+--- criação do banco: 26 s
+=== 1. logo depois da criação
+  agora   | banco_no_ar_desde | segundos_no_ar 
+----------+-------------------+----------------
+ 19:46:19 | 19:46:13          |              6
+(1 row)
+
+ relallvisible | relpages |          last_vacuum          | last_autovacuum |         last_analyze          | n_ins_since_vacuum 
+---------------+----------+-------------------------------+-----------------+-------------------------------+--------------------
+         20834 |    20834 | 2026-11-11 19:46:12.846815+00 |                 | 2026-11-11 19:46:12.965987+00 |                  0
+(1 row)
+
+                                                      QUERY PLAN                                                       
+-----------------------------------------------------------------------------------------------------------------------
+ Limit (actual time=1.732..1.733 rows=20 loops=1)
+   Buffers: shared read=102
+   ->  Index Only Scan using pedidos_status_criado_em_inc_idx on pedidos (actual time=0.023..1.450 rows=20000 loops=1)
+         Index Cond: (status = 'pago'::text)
+         Heap Fetches: 0
+         Buffers: shared read=102
+ Planning:
+   Buffers: shared hit=113 read=11 dirtied=3
+ Planning Time: 0.405 ms
+ Execution Time: 1.738 ms
+(10 rows)
+
+                                                                 QUERY PLAN                                                                  
+---------------------------------------------------------------------------------------------------------------------------------------------
+ Finalize Aggregate (actual time=12.144..13.019 rows=1 loops=1)
+   Buffers: shared hit=104 read=1381
+   ->  Gather (actual time=12.123..13.017 rows=3 loops=1)
+         Workers Planned: 2
+         Workers Launched: 2
+         Buffers: shared hit=104 read=1381
+         ->  Partial Aggregate (actual time=10.674..10.674 rows=1 loops=3)
+               Buffers: shared hit=104 read=1381
+               ->  Parallel Index Only Scan using pedidos_status_criado_em_inc_idx on pedidos (actual time=0.031..8.369 rows=100000 loops=3)
+                     Index Cond: (status = 'pago'::text)
+                     Heap Fetches: 0
+                     Buffers: shared hit=104 read=1381
+ Planning:
+   Buffers: shared hit=3
+ Planning Time: 0.023 ms
+ Execution Time: 13.027 ms
+(16 rows)
+
+=== 2. depois do autovacuum em pedidos
+  agora   | banco_no_ar_desde | segundos_no_ar 
+----------+-------------------+----------------
+ 19:49:22 | 19:46:13          |            189
+(1 row)
+
+ relallvisible | relpages |          last_vacuum          | last_autovacuum |         last_analyze          | n_ins_since_vacuum 
+---------------+----------+-------------------------------+-----------------+-------------------------------+--------------------
+         20834 |    20834 | 2026-11-11 19:46:12.846815+00 |                 | 2026-11-11 19:46:12.965987+00 |                  0
+(1 row)
+
+                                                      QUERY PLAN                                                       
+-----------------------------------------------------------------------------------------------------------------------
+ Limit (actual time=2.310..2.312 rows=20 loops=1)
+   Buffers: shared hit=102
+   ->  Index Only Scan using pedidos_status_criado_em_inc_idx on pedidos (actual time=0.023..1.894 rows=20000 loops=1)
+         Index Cond: (status = 'pago'::text)
+         Heap Fetches: 0
+         Buffers: shared hit=102
+ Planning:
+   Buffers: shared hit=124
+ Planning Time: 0.172 ms
+ Execution Time: 2.320 ms
+(10 rows)
+
+                                                                 QUERY PLAN                                                                  
+---------------------------------------------------------------------------------------------------------------------------------------------
+ Finalize Aggregate (actual time=13.428..14.669 rows=1 loops=1)
+   Buffers: shared hit=1484
+   ->  Gather (actual time=13.400..14.664 rows=3 loops=1)
+         Workers Planned: 2
+         Workers Launched: 2
+         Buffers: shared hit=1484
+         ->  Partial Aggregate (actual time=11.581..11.581 rows=1 loops=3)
+               Buffers: shared hit=1484
+               ->  Parallel Index Only Scan using pedidos_status_criado_em_inc_idx on pedidos (actual time=0.025..8.532 rows=100000 loops=3)
+                     Index Cond: (status = 'pago'::text)
+                     Heap Fetches: 0
+                     Buffers: shared hit=1484
+ Planning:
+   Buffers: shared hit=3
+ Planning Time: 0.035 ms
+ Execution Time: 14.685 ms
+(16 rows)
+
