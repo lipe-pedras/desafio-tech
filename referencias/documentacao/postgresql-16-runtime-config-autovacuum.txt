@@ -1,0 +1,16 @@
+Fonte: https://www.postgresql.org/docs/16/runtime-config-autovacuum.html
+Acessado em: 2026-11-11
+Trecho do texto da página (HTML convertido em texto, sem edição do conteúdo): autovacuum_naptime, autovacuum_vacuum_insert_threshold e autovacuum_vacuum_insert_scale_factor.
+
+autovacuum_naptime (integer)  #
+
+Specifies the minimum delay between autovacuum runs on any given database. In each round the daemon examines the database and issues VACUUM and ANALYZE commands as needed for tables in that database. If this value is specified without units, it is taken as seconds. The default is one minute (1min). This parameter can only be set in the postgresql.conf file or on the server command line.
+
+autovacuum_vacuum_insert_threshold (integer)  #
+
+Specifies the number of inserted tuples needed to trigger a VACUUM in any one table. The default is 1000 tuples. If -1 is specified, autovacuum will not trigger a VACUUM operation on any tables based on the number of inserts. This parameter can only be set in the postgresql.conf file or on the server command line; but the setting can be overridden for individual tables by changing table storage parameters.
+
+autovacuum_vacuum_insert_scale_factor (floating point)  #
+
+Specifies a fraction of the table size to add to autovacuum_vacuum_insert_threshold when deciding whether to trigger a VACUUM. The default is 0.2 (20% of table size). This parameter can only be set in the postgresql.conf file or on the server command line; but the setting can be overridden for individual tables by changing table storage parameters.
+
