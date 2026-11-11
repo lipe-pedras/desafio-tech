@@ -1,0 +1,17 @@
+Medição: 04-vendas-por-dia-desktop
+Carga: 20 usuários virtuais por 60s
+
+Requisições:        4745
+Requisições/s:      78.68
+Tempo de resposta:  mediana 131.1 ms | p95 661.1 ms | p99 1043.5 ms
+Erros:              0.00%
+
+Por rota:
+rota                  req       mediana       p95           p99           erros   
+cliente               1242      96.3 ms       506.0 ms      858.9 ms      0.0%    
+cliente-por-email     691       96.1 ms       504.2 ms      859.3 ms      0.0%    
+pedidos-do-cliente    976       210.9 ms      909.2 ms      1277.5 ms     0.0%    
+pedidos-por-status    686       223.4 ms      892.3 ms      1165.3 ms     0.0%    
+busca-produtos        699       107.6 ms      519.3 ms      882.5 ms      0.0%    
+vendas-por-dia        368       104.8 ms      525.3 ms      858.3 ms      0.0%    
+top-produtos          83        483.2 ms      886.2 ms      1238.5 ms     0.0%    
