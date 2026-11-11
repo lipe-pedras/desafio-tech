@@ -82,3 +82,18 @@
 2026-11-10 22:08:58 perfil=performance carga=2.29 1.27 1.26 fixado: /remed-01-api-1 cpuset=0-15 nanocpus=500000000 /remed-01-banco-1 cpuset=0-15 nanocpus=1000000000 
 2026-11-10 22:10:26 perfil=performance carga=1.48 1.41 1.32 medido 021-pool-max-20-desktop (92fb437): Requisições/s: 38.03
 2026-11-10 22:10:26 perfil=performance carga=1.48 1.41 1.32 fim
+2026-11-11 02:10:18 perfil=performance carga=0.03 0.03 0.00 031 pool 1: criando banco com os índices da 01
+2026-11-11 02:10:40 perfil=performance carga=0.29 0.09 0.03 fixado: /remed-01-api-1 cpuset=0-15 nanocpus=500000000 /remed-01-banco-1 cpuset=0-15 nanocpus=1000000000 
+2026-11-11 02:11:52 perfil=performance carga=0.09 0.07 0.02 fixado: /remed-01-api-1 cpuset=0-15 nanocpus=500000000 /remed-01-banco-1 cpuset=0-15 nanocpus=1000000000 
+2026-11-11 02:13:16 perfil=performance carga=1.53 0.54 0.19 medido 031-pool-max-1-desktop (c7dc4f3): Requisições/s: 65.64
+2026-11-11 02:13:27 perfil=performance carga=1.19 0.51 0.19 fixado: /remed-01-api-1 cpuset=0-15 nanocpus=500000000 /remed-01-banco-1 cpuset=0-15 nanocpus=1000000000 
+2026-11-11 02:14:52 perfil=performance carga=1.50 0.83 0.33 medido 031-pool-max-2-desktop (958aad1): Requisições/s: 58.05
+2026-11-11 02:15:03 perfil=performance carga=1.17 0.79 0.32 fixado: /remed-01-api-1 cpuset=0-15 nanocpus=500000000 /remed-01-banco-1 cpuset=0-15 nanocpus=1000000000 
+2026-11-11 02:16:27 perfil=performance carga=0.59 0.73 0.34 medido 031-pool-max-2-desktop (958aad1): Requisições/s: 58.52
+2026-11-11 02:16:38 perfil=performance carga=0.62 0.72 0.35 fixado: /remed-01-api-1 cpuset=0-15 nanocpus=500000000 /remed-01-banco-1 cpuset=0-15 nanocpus=1000000000 
+2026-11-11 02:18:02 perfil=performance carga=0.66 0.71 0.37 medido 031-pool-max-1-desktop (c7dc4f3): Requisições/s: 65.37
+2026-11-11 02:18:13 perfil=performance carga=0.56 0.68 0.37 fixado: /remed-01-api-1 cpuset=0-15 nanocpus=500000000 /remed-01-banco-1 cpuset=0-15 nanocpus=1000000000 
+2026-11-11 02:19:37 perfil=performance carga=0.22 0.54 0.34 medido 031-pool-max-1-desktop (c7dc4f3): Requisições/s: 63.22
+2026-11-11 02:19:48 perfil=performance carga=0.31 0.54 0.35 fixado: /remed-01-api-1 cpuset=0-15 nanocpus=500000000 /remed-01-banco-1 cpuset=0-15 nanocpus=1000000000 
+2026-11-11 02:21:12 perfil=performance carga=3.08 1.29 0.62 medido 031-pool-max-2-desktop (958aad1): Requisições/s: 58.32
+2026-11-11 02:21:22 perfil=performance carga=2.71 1.29 0.64 fim 031 pool 1

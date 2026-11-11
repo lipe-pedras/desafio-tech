@@ -13,7 +13,8 @@ def ler(d):
                 contrato='mantido' if 'Contrato mantido' in open(d + '/contrato.txt').read() else 'QUEBRADO', **{k: m[f'http_req_duration{{rota:{k}}}']['values']['med'] for k in R})
 BLOCOS = {'Bloco A (bancos separados, linha de base x 01)': ['00-linha-de-base-desktop', '01-indices-desktop'],
           'Bloco B (banco único com índices, só a API muda)': ['01-indices-rodizio-desktop', '02-pool-conexoes-desktop', '021-pool-max-1-desktop', '021-pool-max-2-desktop',
-              '021-pool-max-3-desktop', '021-pool-max-5-desktop', '021-pool-max-10-desktop', '021-pool-max-20-desktop', '03-n-mais-1-desktop', '031-pool-max-5-desktop', '031-pool-max-10-desktop']}
+              '021-pool-max-3-desktop', '021-pool-max-5-desktop', '021-pool-max-10-desktop', '021-pool-max-20-desktop', '03-n-mais-1-desktop', '031-pool-max-5-desktop', '031-pool-max-10-desktop'],
+          'Rodízio 03: pool 1 x pool 2 (2026-11-11)': ['031-pool-max-1-desktop', '031-pool-max-2-desktop']}
 for bloco, rotulos in BLOCOS.items():
     print(f'##### {bloco}\n')
     for l in rotulos:

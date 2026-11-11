@@ -80,3 +80,17 @@
    medianas: rps=39.17 avg=494.39 med=298.49 p95=1275.28 p99=4797.00 cpu_b=99.10 mem_b=335.30 cpu_a=19.40 mem_a=39.30
    rotas (mediana da rota, ms): cliente=184.8 cliente-por-email=189.3 pedidos-do-cliente=307.6 pedidos-por-status=577.1 busca-produtos=303.3 vendas-por-dia=815.1 top-produtos=5189.1
 
+##### Rodízio 03: pool 1 x pool 2 (2026-11-11)
+
+== 031-pool-max-1-desktop (3 execuções) commit c7dc4f3 sujo ['0', '0', '0'] erros [0, 0, 0] contrato ['mantido']
+   pastas 20261111-021157-031-pool-max-1-desktop 20261111-021643-031-pool-max-1-desktop 20261111-021819-031-pool-max-1-desktop
+   req/s por execução [65.64, 65.37, 63.22]  p95 por execução [797.9, 783.4, 797.1]
+   medianas: rps=65.37 avg=305.31 med=209.78 p95=797.14 p99=1100.36 cpu_b=96.40 mem_b=179.50 cpu_a=25.10 mem_a=34.80
+   rotas (mediana da rota, ms): cliente=139.2 cliente-por-email=139.7 pedidos-do-cliente=347.6 pedidos-por-status=340.0 busca-produtos=164.4 vendas-por-dia=200.4 top-produtos=513.9
+
+== 031-pool-max-2-desktop (3 execuções) commit 958aad1 sujo ['0', '0', '0'] erros [0, 0, 0] contrato ['mantido']
+   pastas 20261111-021332-031-pool-max-2-desktop 20261111-021508-031-pool-max-2-desktop 20261111-021953-031-pool-max-2-desktop
+   req/s por execução [58.05, 58.52, 58.32]  p95 por execução [1002.7, 907.9, 916.5]
+   medianas: rps=58.32 avg=341.62 med=280.69 p95=916.53 p99=1212.94 cpu_b=98.50 mem_b=349.90 cpu_a=23.30 mem_a=34.60
+   rotas (mediana da rota, ms): cliente=188.2 cliente-por-email=195.3 pedidos-do-cliente=394.6 pedidos-por-status=405.7 busca-produtos=201.1 vendas-por-dia=295.0 top-produtos=981.6
+
