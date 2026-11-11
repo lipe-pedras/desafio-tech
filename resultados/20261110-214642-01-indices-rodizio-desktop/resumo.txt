@@ -1,0 +1,17 @@
+Medição: 01-indices-rodizio-desktop
+Carga: 20 usuários virtuais por 60s
+
+Requisições:        1560
+Requisições/s:      25.51
+Tempo de resposta:  mediana 224.6 ms | p95 3302.8 ms | p99 4291.4 ms
+Erros:              0.00%
+
+Por rota:
+rota                  req       mediana       p95           p99           erros   
+cliente               409       100.5 ms      204.6 ms      295.8 ms      0.0%    
+cliente-por-email     234       101.6 ms      209.5 ms      297.3 ms      0.0%    
+pedidos-do-cliente    335       2378.8 ms     4098.9 ms     4407.2 ms     0.0%    
+pedidos-por-status    215       422.0 ms      908.3 ms      1285.5 ms     0.0%    
+busca-produtos        227       203.3 ms      401.5 ms      492.0 ms      0.0%    
+vendas-por-dia        116       524.3 ms      1313.5 ms     1515.9 ms     0.0%    
+top-produtos          24        3905.0 ms     4517.7 ms     5277.2 ms     0.0%    

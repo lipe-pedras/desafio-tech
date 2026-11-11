@@ -1,0 +1,17 @@
+Medição: 031-pool-max-5-desktop
+Carga: 20 usuários virtuais por 60s
+
+Requisições:        2873
+Requisições/s:      47.28
+Tempo de resposta:  mediana 321.0 ms | p95 997.3 ms | p99 2249.9 ms
+Erros:              0.00%
+
+Por rota:
+rota                  req       mediana       p95           p99           erros   
+cliente               733       205.8 ms      583.6 ms      700.2 ms      0.0%    
+cliente-por-email     422       205.3 ms      605.1 ms      897.2 ms      0.0%    
+pedidos-do-cliente    600       426.5 ms      993.7 ms      1507.7 ms     0.0%    
+pedidos-por-status    403       583.6 ms      1228.0 ms     1592.1 ms     0.0%    
+busca-produtos        440       297.8 ms      671.9 ms      796.2 ms      0.0%    
+vendas-por-dia        226       546.4 ms      1014.8 ms     1275.7 ms     0.0%    
+top-produtos          49        2405.6 ms     3198.3 ms     3355.7 ms     0.0%    
