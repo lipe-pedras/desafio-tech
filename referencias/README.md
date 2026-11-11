@@ -47,6 +47,8 @@ Páginas abertas em 2026-11-06 e salvas como texto (HTML convertido, sem ediçã
 | `documentacao/node-postgres-api-pool.txt` | node-postgres. *pg.Pool* (API). | https://node-postgres.com/apis/pool | 02: parâmetros `max` e `idleTimeoutMillis` |
 | `documentacao/node-postgres-pool-sizing.txt` | node-postgres. *Pool Sizing*. | https://node-postgres.com/guides/pool-sizing | 02: tamanho do pool |
 | `documentacao/postgresql-16-connect-estab.txt` | PostgreSQL 16 Documentation, *52.2. How Connections Are Established*. | https://www.postgresql.org/docs/16/connect-estab.html | 02: um processo do servidor por conexão |
+| `documentacao/postgresql-16-indexes-types.txt` | PostgreSQL 16 Documentation, *11.2. Index Types* (aberta em 2026-11-11; trecho: B-Tree e BRIN). | https://www.postgresql.org/docs/16/indexes-types.html | 04: o B-tree só é considerado quando a própria coluna indexada está na comparação; BRIN como alternativa |
+| `documentacao/postgresql-16-indexes-expressional.txt` | PostgreSQL 16 Documentation, *11.7. Indexes on Expressions* (aberta em 2026-11-11). | https://www.postgresql.org/docs/16/indexes-expressional.html | 04: índice de expressão (`criado_em::date`) como alternativa ao filtro por intervalo |
 
 ## Tamanho do pool de conexões
 

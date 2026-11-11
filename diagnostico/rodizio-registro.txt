@@ -1,0 +1,23 @@
+2026-11-11 13:08:36 perfil=performance carga=0.94 0.74 0.34 rodízio: 1e1ba20:04-antes-desktop 96365fe:04-vendas-por-dia-desktop 95755c1:041-indice-criado-em-desktop
+2026-11-11 13:09:03 perfil=performance carga=0.88 0.75 0.35 banco de 1e1ba20 criado em 26 s
+2026-11-11 13:09:34 perfil=performance carga=0.82 0.74 0.36 banco de 96365fe criado em 21 s
+2026-11-11 13:10:05 perfil=performance carga=0.70 0.72 0.37 banco de 95755c1 criado em 21 s
+2026-11-11 13:10:22 perfil=performance carga=0.55 0.69 0.36 fixado: /rod-1e1ba20-api-1 cpuset=0-15 nanocpus=500000000 /rod-1e1ba20-banco-1 cpuset=0-15 nanocpus=1000000000 
+2026-11-11 13:12:44 perfil=performance carga=1.07 0.96 0.52 medido 04-antes-desktop (1e1ba20): Requisições/s: 66.24
+2026-11-11 13:13:00 perfil=performance carga=1.13 0.98 0.54 fixado: /rod-96365fe-api-1 cpuset=0-15 nanocpus=500000000 /rod-96365fe-banco-1 cpuset=0-15 nanocpus=1000000000 
+2026-11-11 13:15:21 perfil=performance carga=1.51 1.28 0.72 medido 04-vendas-por-dia-desktop (96365fe): Requisições/s: 79.78
+2026-11-11 13:15:38 perfil=performance carga=1.17 1.22 0.71 fixado: /rod-95755c1-api-1 cpuset=0-15 nanocpus=500000000 /rod-95755c1-banco-1 cpuset=0-15 nanocpus=1000000000 
+2026-11-11 13:17:59 perfil=performance carga=2.13 1.65 0.95 medido 041-indice-criado-em-desktop (95755c1): Requisições/s: 83.34
+2026-11-11 13:18:16 perfil=performance carga=1.66 1.57 0.93 fixado: /rod-96365fe-api-1 cpuset=0-15 nanocpus=500000000 /rod-96365fe-banco-1 cpuset=0-15 nanocpus=1000000000 
+2026-11-11 13:20:36 perfil=performance carga=1.76 1.42 0.95 medido 04-vendas-por-dia-desktop (96365fe): Requisições/s: 78.68
+2026-11-11 13:20:53 perfil=performance carga=1.37 1.35 0.94 fixado: /rod-95755c1-api-1 cpuset=0-15 nanocpus=500000000 /rod-95755c1-banco-1 cpuset=0-15 nanocpus=1000000000 
+2026-11-11 13:23:14 perfil=performance carga=0.32 0.94 0.84 medido 041-indice-criado-em-desktop (95755c1): Requisições/s: 83.35
+2026-11-11 13:23:31 perfil=performance carga=0.37 0.91 0.83 fixado: /rod-1e1ba20-api-1 cpuset=0-15 nanocpus=500000000 /rod-1e1ba20-banco-1 cpuset=0-15 nanocpus=1000000000 
+2026-11-11 13:25:52 perfil=performance carga=0.68 0.96 0.87 medido 04-antes-desktop (1e1ba20): Requisições/s: 63.66
+2026-11-11 13:26:09 perfil=performance carga=0.53 0.91 0.86 fixado: /rod-95755c1-api-1 cpuset=0-15 nanocpus=500000000 /rod-95755c1-banco-1 cpuset=0-15 nanocpus=1000000000 
+2026-11-11 13:28:29 perfil=performance carga=0.40 0.70 0.79 medido 041-indice-criado-em-desktop (95755c1): Requisições/s: 84.53
+2026-11-11 13:28:46 perfil=performance carga=0.31 0.67 0.77 fixado: /rod-1e1ba20-api-1 cpuset=0-15 nanocpus=500000000 /rod-1e1ba20-banco-1 cpuset=0-15 nanocpus=1000000000 
+2026-11-11 13:31:07 perfil=performance carga=1.70 1.00 0.87 medido 04-antes-desktop (1e1ba20): Requisições/s: 65.50
+2026-11-11 13:31:23 perfil=performance carga=1.32 0.95 0.86 fixado: /rod-96365fe-api-1 cpuset=0-15 nanocpus=500000000 /rod-96365fe-banco-1 cpuset=0-15 nanocpus=1000000000 
+2026-11-11 13:33:44 perfil=performance carga=0.38 0.72 0.79 medido 04-vendas-por-dia-desktop (96365fe): Requisições/s: 79.43
+2026-11-11 13:33:55 perfil=performance carga=0.38 0.70 0.78 fim do rodízio
