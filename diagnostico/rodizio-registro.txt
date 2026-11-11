@@ -21,3 +21,35 @@
 2026-11-11 13:31:23 perfil=performance carga=1.32 0.95 0.86 fixado: /rod-96365fe-api-1 cpuset=0-15 nanocpus=500000000 /rod-96365fe-banco-1 cpuset=0-15 nanocpus=1000000000 
 2026-11-11 13:33:44 perfil=performance carga=0.38 0.72 0.79 medido 04-vendas-por-dia-desktop (96365fe): Requisições/s: 79.43
 2026-11-11 13:33:55 perfil=performance carga=0.38 0.70 0.78 fim do rodízio
+2026-11-11 16:18:56 perfil=performance carga=0.57 0.68 0.39 rodízio: f7d250c:05-antes-desktop 9a4968d:05-pedidos-por-status-desktop 855b116:051-indice-include-desktop
+2026-11-11 16:19:17 perfil=performance carga=0.84 0.74 0.42 banco de f7d250c criado em 21 s
+2026-11-11 16:19:48 perfil=performance carga=0.92 0.77 0.44 banco de 9a4968d criado em 21 s
+2026-11-11 16:20:20 perfil=performance carga=1.05 0.81 0.46 banco de 855b116 criado em 21 s
+2026-11-11 16:20:36 perfil=performance carga=0.75 0.76 0.45 fixado: /rod-f7d250c-api-1 cpuset=0-15 nanocpus=500000000 /rod-f7d250c-banco-1 cpuset=0-15 nanocpus=1000000000 
+2026-11-11 16:21:39 perfil=performance carga=1.78 1.06 0.58 antes de medir 05-antes-desktop: clientes=1156/1156 vac=19:21:11 itens_pedido=9555/9555 vac=19:21:21 pedidos=20832/20834 vac=19:21:17 produtos=190/190 vac=19:21:21
+2026-11-11 16:22:58 perfil=performance carga=2.33 1.43 0.75 medido 05-antes-desktop (f7d250c): Requisições/s: 84.68
+2026-11-11 16:23:15 perfil=performance carga=1.89 1.38 0.75 fixado: /rod-9a4968d-api-1 cpuset=0-15 nanocpus=500000000 /rod-9a4968d-banco-1 cpuset=0-15 nanocpus=1000000000 
+2026-11-11 16:24:17 perfil=performance carga=1.01 1.21 0.73 antes de medir 05-pedidos-por-status-desktop: clientes=1156/1156 vac=19:23:49 itens_pedido=9554/9555 vac=19:23:59 pedidos=20834/20834 vac=19:23:55 produtos=190/190 vac=19:23:59
+2026-11-11 16:25:36 perfil=performance carga=0.40 0.97 0.69 medido 05-pedidos-por-status-desktop (9a4968d): Requisições/s: 85.12
+2026-11-11 16:25:53 perfil=performance carga=0.31 0.92 0.67 fixado: /rod-855b116-api-1 cpuset=0-15 nanocpus=500000000 /rod-855b116-banco-1 cpuset=0-15 nanocpus=1000000000 
+2026-11-11 16:26:55 perfil=performance carga=1.47 1.15 0.77 antes de medir 051-indice-include-desktop: clientes=1156/1156 vac=19:26:27 itens_pedido=9555/9555 vac=19:26:37 pedidos=20834/20834 vac=19:26:33 produtos=189/190 vac=19:26:37
+2026-11-11 16:28:13 perfil=performance carga=1.57 1.26 0.84 medido 051-indice-include-desktop (855b116): Requisições/s: 93.92
+2026-11-11 16:28:30 perfil=performance carga=1.22 1.20 0.83 fixado: /rod-9a4968d-api-1 cpuset=0-15 nanocpus=500000000 /rod-9a4968d-banco-1 cpuset=0-15 nanocpus=1000000000 
+2026-11-11 16:29:32 perfil=performance carga=1.54 1.31 0.90 antes de medir 05-pedidos-por-status-desktop: clientes=1156/1156 vac=19:23:49 itens_pedido=9554/9555 vac=19:23:59 pedidos=20834/20834 vac=19:23:55 produtos=190/190 vac=19:23:59
+2026-11-11 16:30:51 perfil=performance carga=0.79 1.16 0.88 medido 05-pedidos-por-status-desktop (9a4968d): Requisições/s: 85.13
+2026-11-11 16:31:07 perfil=performance carga=0.63 1.10 0.87 fixado: /rod-855b116-api-1 cpuset=0-15 nanocpus=500000000 /rod-855b116-banco-1 cpuset=0-15 nanocpus=1000000000 
+2026-11-11 16:32:10 perfil=performance carga=0.63 1.02 0.85 antes de medir 051-indice-include-desktop: clientes=1156/1156 vac=19:26:27 itens_pedido=9555/9555 vac=19:26:37 pedidos=20834/20834 vac=19:26:33 produtos=189/190 vac=19:26:37
+2026-11-11 16:33:28 perfil=performance carga=0.27 0.81 0.79 medido 051-indice-include-desktop (855b116): Requisições/s: 94.12
+2026-11-11 16:33:45 perfil=performance carga=0.21 0.77 0.78 fixado: /rod-f7d250c-api-1 cpuset=0-15 nanocpus=500000000 /rod-f7d250c-banco-1 cpuset=0-15 nanocpus=1000000000 
+2026-11-11 16:34:48 perfil=performance carga=0.15 0.63 0.73 antes de medir 05-antes-desktop: clientes=1156/1156 vac=19:21:11 itens_pedido=9555/9555 vac=19:21:21 pedidos=20832/20834 vac=19:21:17 produtos=190/190 vac=19:21:21
+2026-11-11 16:36:06 perfil=performance carga=0.04 0.48 0.66 medido 05-antes-desktop (f7d250c): Requisições/s: 84.69
+2026-11-11 16:36:23 perfil=performance carga=0.03 0.46 0.65 fixado: /rod-855b116-api-1 cpuset=0-15 nanocpus=500000000 /rod-855b116-banco-1 cpuset=0-15 nanocpus=1000000000 
+2026-11-11 16:37:26 perfil=performance carga=0.01 0.37 0.61 antes de medir 051-indice-include-desktop: clientes=1156/1156 vac=19:26:27 itens_pedido=9555/9555 vac=19:26:37 pedidos=20834/20834 vac=19:26:33 produtos=189/190 vac=19:26:37
+2026-11-11 16:38:44 perfil=performance carga=0.40 0.39 0.59 medido 051-indice-include-desktop (855b116): Requisições/s: 94.11
+2026-11-11 16:39:00 perfil=performance carga=0.39 0.39 0.59 fixado: /rod-f7d250c-api-1 cpuset=0-15 nanocpus=500000000 /rod-f7d250c-banco-1 cpuset=0-15 nanocpus=1000000000 
+2026-11-11 16:40:03 perfil=performance carga=0.13 0.31 0.54 antes de medir 05-antes-desktop: clientes=1156/1156 vac=19:21:11 itens_pedido=9555/9555 vac=19:21:21 pedidos=20832/20834 vac=19:21:17 produtos=190/190 vac=19:21:21
+2026-11-11 16:41:21 perfil=performance carga=1.29 0.55 0.61 medido 05-antes-desktop (f7d250c): Requisições/s: 84.33
+2026-11-11 16:41:38 perfil=performance carga=1.07 0.54 0.60 fixado: /rod-9a4968d-api-1 cpuset=0-15 nanocpus=500000000 /rod-9a4968d-banco-1 cpuset=0-15 nanocpus=1000000000 
+2026-11-11 16:42:41 perfil=performance carga=1.64 0.81 0.69 antes de medir 05-pedidos-por-status-desktop: clientes=1156/1156 vac=19:23:49 itens_pedido=9554/9555 vac=19:23:59 pedidos=20834/20834 vac=19:23:55 produtos=190/190 vac=19:23:59
+2026-11-11 16:43:59 perfil=performance carga=1.66 1.04 0.79 medido 05-pedidos-por-status-desktop (9a4968d): Requisições/s: 85.11
+2026-11-11 16:44:10 perfil=performance carga=1.40 1.00 0.78 fim do rodízio

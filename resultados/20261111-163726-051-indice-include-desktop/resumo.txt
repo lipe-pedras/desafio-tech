@@ -1,0 +1,17 @@
+Medição: 051-indice-include-desktop
+Carga: 20 usuários virtuais por 60s
+
+Requisições:        5650
+Requisições/s:      94.11
+Tempo de resposta:  mediana 91.0 ms | p95 570.1 ms | p99 924.9 ms
+Erros:              0.00%
+
+Por rota:
+rota                  req       mediana       p95           p99           erros   
+cliente               1448      64.6 ms       484.9 ms      857.9 ms      0.0%    
+cliente-por-email     845       66.3 ms       485.0 ms      858.1 ms      0.0%    
+pedidos-do-cliente    1178      124.7 ms      893.5 ms      970.3 ms      0.0%    
+pedidos-por-status    807       136.9 ms      889.9 ms      960.0 ms      0.0%    
+busca-produtos        840       73.3 ms       494.4 ms      859.4 ms      0.0%    
+vendas-por-dia        433       76.9 ms       492.2 ms      883.6 ms      0.0%    
+top-produtos          99        462.3 ms      863.1 ms      1288.6 ms     0.0%    

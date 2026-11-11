@@ -1,0 +1,17 @@
+Medição: 05-antes-desktop
+Carga: 20 usuários virtuais por 60s
+
+Requisições:        5097
+Requisições/s:      84.68
+Tempo de resposta:  mediana 108.7 ms | p95 666.6 ms | p99 969.0 ms
+Erros:              0.00%
+
+Por rota:
+rota                  req       mediana       p95           p99           erros   
+cliente               1326      80.8 ms       498.9 ms      878.8 ms      0.0%    
+cliente-por-email     746       83.4 ms       500.8 ms      842.8 ms      0.0%    
+pedidos-do-cliente    1064      187.4 ms      904.9 ms      1120.4 ms     0.0%    
+pedidos-por-status    718       191.4 ms      906.5 ms      1012.6 ms     0.0%    
+busca-produtos        757       90.0 ms       501.7 ms      857.2 ms      0.0%    
+vendas-por-dia        395       93.7 ms       506.5 ms      870.9 ms      0.0%    
+top-produtos          91        477.5 ms      889.5 ms      1271.5 ms     0.0%    
