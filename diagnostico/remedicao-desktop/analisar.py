@@ -14,7 +14,8 @@ def ler(d):
 BLOCOS = {'Bloco A (bancos separados, linha de base x 01)': ['00-linha-de-base-desktop', '01-indices-desktop'],
           'Bloco B (banco único com índices, só a API muda)': ['01-indices-rodizio-desktop', '02-pool-conexoes-desktop', '021-pool-max-1-desktop', '021-pool-max-2-desktop',
               '021-pool-max-3-desktop', '021-pool-max-5-desktop', '021-pool-max-10-desktop', '021-pool-max-20-desktop', '03-n-mais-1-desktop', '031-pool-max-5-desktop', '031-pool-max-10-desktop'],
-          'Rodízio 03: pool 1 x pool 2 (2026-11-11)': ['031-pool-max-1-desktop', '031-pool-max-2-desktop']}
+          'Rodízio 03: pool 1 x pool 2 (2026-11-11)': ['031-pool-max-1-desktop', '031-pool-max-2-desktop'],
+          'Fechamento da 03 (2026-11-11)': ['03f-02-pool-2-desktop', '03f-02-pool-1-desktop', '03f-03-pool-1-desktop']}
 for bloco, rotulos in BLOCOS.items():
     print(f'##### {bloco}\n')
     for l in rotulos:
@@ -24,3 +25,21 @@ for bloco, rotulos in BLOCOS.items():
         print('   req/s por execução', [round(i['rps'], 2) for i in x], ' p95 por execução', [round(i['p95'], 1) for i in x])
         print('   medianas: ' + ' '.join(f'{c}={st.median(i[c] for i in x):.2f}' for c in ('rps', 'avg', 'med', 'p95', 'p99', 'cpu_b', 'mem_b', 'cpu_a', 'mem_a')))
         print('   rotas (mediana da rota, ms): ' + ' '.join(f'{k}={st.median(i[k] for i in x):.1f}' for k in R) + '\n')
+
+# Repetibilidade: amplitude das req/s entre as execuções de cada rótulo, (máx − mín) / mediana.
+def amplitude(filtro):
+    rotulos = sorted(set(re.sub(r'^\d{8}-\d{6}-', '', d.split('/')[1]) for d in glob.glob('resultados/*-*') if filtro(d)))
+    linhas = []
+    for l in rotulos:
+        ds = sorted(glob.glob(f'resultados/[0-9]*-{l}'))
+        r = [json.load(open(d + '/resumo-k6.json'))['metrics']['http_reqs']['values']['rate'] for d in ds]
+        if len(r) >= 3:
+            linhas.append((l, len(r), min(r), max(r), (max(r) - min(r)) / st.median(r) * 100))
+    for l, n, a, b, p in linhas:
+        print(f'   {l:36s} n={n} req/s {a:6.2f} a {b:6.2f}  amplitude {p:5.1f}%')
+    print(f'   mediana das amplitudes: {st.median(x[4] for x in linhas):.1f}%  máxima: {max(x[4] for x in linhas):.1f}%\n')
+print('##### Repetibilidade: amplitude das req/s entre execuções do mesmo rótulo\n')
+print('Desktop (rótulos *-desktop):')
+amplitude(lambda d: d.endswith('-desktop'))
+print('Notebook (todos os outros rótulos com 3 ou mais execuções):')
+amplitude(lambda d: not d.endswith('-desktop') and not d.endswith('.gitkeep'))

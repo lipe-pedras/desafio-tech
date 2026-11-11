@@ -1,8 +1,10 @@
 # 03 · Eliminar o N+1 de `/clientes/:id/pedidos`
 
-- **Status:** aplicada, medida e mantida (ver [Decisão](#decisão))
-- **Branch / commit da mudança:** `03-n-mais-1` / `958aad1`
-- **Comparada com:** o estado da `main` com `DB_POOL_MAX=2` (commit `1fd2ae4`), medido na mesma sessão
+- **Status:** aplicada, medida e mantida, **fechada com `DB_POOL_MAX=1`** (ver [Decisão](#decisão))
+- **Branch / commit da mudança:** `03-n-mais-1` / `958aad1` (JOIN), e `remedicao-desktop` / `c7dc4f3` (`DB_POOL_MAX=1`)
+- **Comparada com:** o estado da `main` (02 com `DB_POOL_MAX=2`, commit `1fd2ae4`) e a 02 com `DB_POOL_MAX=1` (commit `d9ee2e5`), medidos na mesma sessão e no mesmo banco
+
+> **Números oficiais: os do desktop (2026-11-10 e 2026-11-11).** As medições do notebook variaram demais entre sessões e entre execuções (a mesma versão deu 17,09 e 24,86 req/s em dias diferentes), então toda a sequência foi remedida num desktop, em rodízio (ver [`diagnostico/remedicao-desktop/`](../diagnostico/remedicao-desktop/README.md)). O resultado oficial está em [Resultado no desktop](#resultado-no-desktop-oficial). As seções do notebook ficam como histórico.
 
 > **Correção (2026-11-09).** A medição em rodízio, com as versões num banco só, não confirmou o ganho de req/s desta ficha. Na comparação controlada, a 03 teve **23,23 req/s contra 24,86** (cerca de −7%), p95 −33%, p99 −41% e mediana cerca de 3,2× pior. Ver [`diagnostico/variacao-banco/`](../diagnostico/variacao-banco/README.md). Os números abaixo são da primeira medição, mantidos como registro.
 
@@ -33,7 +35,9 @@ Só o manipulador da rota em [`api/src/rotas.js`](../api/src/rotas.js):
 
 A rota passa de 22 consultas em média para **2**. Com o cliente 31337 (5 pedidos, 10 itens), a consulta nova usa só índices existentes e levou 3,6 ms numa execução única com cache frio. Não foi preciso criar índice.
 
-**Contrato:** mantido antes de medir e nas 3 execuções.
+**No fechamento**, um segundo commit (`c7dc4f3`) muda só o `DB_POOL_MAX` de 2 para 1 no `docker-compose.yml`, com base na [03.1 no desktop](#031-no-desktop-tamanho-do-pool-com-o-código-da-03).
+
+**Contrato:** mantido antes de medir e em todas as execuções, no notebook e no desktop.
 
 ## Fundamentação
 
@@ -46,7 +50,90 @@ Trechos localizados nos PDFs de [`referencias/`](../referencias/):
 
 Yang, Chen e Yan estudam aplicações com ORM; aqui a API escreve SQL direto. Tomo esses três como evidência da categoria do problema, não do caso exato.
 
-## Resultado
+## Resultado no desktop (oficial)
+
+Desktop (i7-14700K), perfil `performance`, banco e API fixados nos núcleos P, sem mudar os limites. Em todas as séries, um banco único com os índices da 01 e as versões em rodízio, trocando só o container da API ([como foi medido](../diagnostico/remedicao-desktop/README.md#como-foi-remedido)). Contrato mantido, 0,00% de erros e `arquivos alterados sem commit: 0` em todas as execuções desta seção. Os números são medianas de 3 execuções, calculadas por [`analisar.py`](../diagnostico/remedicao-desktop/analisar.py) ([`resumo.txt`](../diagnostico/remedicao-desktop/resumo.txt)).
+
+### Fechamento: a 03 com pool 1 contra a 02 (2026-11-11)
+
+Três versões em 3 rodadas, com a ordem deslocada: a 02 como está na `main` (pool 2), a 02 com pool 1 e a 03 com pool 1.
+
+| Métrica | 02, pool 2 (`main`) | 02, pool 1 | 03, pool 1 |
+|---|---|---|---|
+| Requisições/s | 57,97 (56,60 / 59,10 / 57,97) | 61,86 (64,05 / 61,86 / 61,64) | **65,11** (65,11 / 63,37 / 65,17) |
+| Média | 344,8 ms | 323,2 ms | 305,7 ms |
+| Mediana | 97,3 ms | 77,4 ms | 218,0 ms |
+| p95 | 1627,0 ms | 1602,5 ms | **792,9 ms** |
+| p99 | 2779,1 ms | 2382,3 ms | **1093,3 ms** |
+| CPU média do banco | 97,5% | 95,5% | 96,8% |
+| Memória média do banco | 355,0 MiB | 168,3 MiB | 164,8 MiB |
+| CPU média da API | 24,8% | 26,2% | 25,8% |
+| Memória média da API | 34,5 MiB | 34,5 MiB | 34,1 MiB |
+
+| Rota (mediana da rota nas 3) | 02, pool 2 | 02, pool 1 | 03, pool 1 |
+|---|---|---|---|
+| `cliente` | 10,9 ms | 14,3 ms | 141,8 ms |
+| `cliente-por-email` | 10,3 ms | 14,0 ms | 149,9 ms |
+| `pedidos-do-cliente` | 1083,9 ms | 1072,0 ms | 339,2 ms |
+| `pedidos-por-status` | 104,4 ms | 87,9 ms | 332,1 ms |
+| `busca-produtos` | 58,5 ms | 21,2 ms | 165,6 ms |
+| `vendas-por-dia` | 157,4 ms | 95,2 ms | 222,1 ms |
+| `top-produtos` | 803,8 ms | 401,4 ms | 509,4 ms |
+
+**Pastas:** `resultados/20261111-0230…-03f-*-desktop` a `20261111-0242…-03f-*-desktop`, 3 por versão (lista completa no [`resumo.txt`](../diagnostico/remedicao-desktop/resumo.txt)).
+
+**Ganho da 03 fechada (03 com pool 1) sobre a 02 da `main`:**
+
+| | req/s | Média | Mediana | p95 | p99 |
+|---|---|---|---|---|---|
+| Total: 02 pool 2 → 03 pool 1 | +12% | −11% | 2,2× pior | −51% | −61% |
+| Só o pool: 02 pool 2 → 02 pool 1 | +7% | −6% | −20% | −2% | −14% |
+| Só o N+1, com pool 1: 02 pool 1 → 03 pool 1 | +5% | −5% | 2,8× pior | −51% | −54% |
+
+- **O ganho em req/s vem mais do pool do que do N+1.** De pool 2 para 1, as execuções não se sobrepõem (56,60 a 59,10 contra 61,64 a 64,05). Do N+1 com pool 1, sim (61,64 a 64,05 contra 63,37 a 65,17): +5% é pequeno perto da variação entre execuções.
+- **A cauda é ganho da 03.** O p95 cai cerca de 51% e o p99 cerca de 54 a 61%, porque `pedidos-do-cliente` cai de cerca de 1,08 s para 0,34 s.
+- **A mediana piora**, como em todas as medições anteriores da 03. As rotas rápidas (`cliente`, `cliente-por-email`, `busca-produtos`) passam de 10 a 60 ms para 140 a 170 ms. Ver [Discussão](#discussão).
+- **Memória do banco:** 02 com pool 2 marcou 355,0 MiB nesta sessão e 194,7 MiB em 2026-11-10, com o mesmo código. A queda para cerca de 165 MiB com pool 1 está nos dois lados (02 e 03), mas o valor do pool 2 nesta sessão não é confiável para medir o tamanho do ganho.
+
+### A 03 com pool 2 contra a 02 com pool 2 (2026-11-10)
+
+Do bloco B da remedição, mesma sessão e mesmo banco:
+
+| Métrica | 02, pool 2 (`1fd2ae4`) | 03, pool 2 (`958aad1`) | Variação |
+|---|---|---|---|
+| Requisições/s | 59,89 | 59,41 | −1% |
+| Média | 333,9 ms | 335,0 ms | – |
+| Mediana | 96,4 ms | 254,1 ms | cerca de 2,6× pior |
+| p95 | 1602,3 ms | 967,8 ms | −40% |
+| p99 | 2603,4 ms | 1307,0 ms | −50% |
+| Memória média do banco | 194,7 MiB | 181,1 MiB | – |
+
+Com pool 2, a 03 empata em req/s e só ganha na cauda, o mesmo resultado do rodízio no notebook (−7% em req/s, p95 −33%). **O ganho de 1,33× em req/s da primeira medição no notebook não se repete.**
+
+### 03.1 no desktop: tamanho do pool com o código da 03
+
+**2026-11-10** (bloco B, mesma sessão):
+
+| `max` | req/s | Mediana | p95 | p99 | Memória do banco |
+|---|---|---|---|---|---|
+| 2 | 59,41 | 254,1 ms | 967,8 ms | 1307,0 ms | 181,1 MiB |
+| 5 | 47,28 | 312,4 ms | 997,3 ms | 2249,9 ms | 240,7 MiB |
+| 10 | 39,17 | 298,5 ms | 1275,3 ms | 4797,0 ms | 335,3 MiB |
+
+**2026-11-11** (rodízio só entre 1 e 2, banco novo; [`rodar-031-pool-1.sh`](../diagnostico/remedicao-desktop/rodar-031-pool-1.sh)):
+
+| `max` | req/s (3 execuções) | Mediana | p95 | p99 | Memória do banco |
+|---|---|---|---|---|---|
+| 1 | **65,37** (65,64 / 65,37 / 63,22) | 209,8 ms | 797,1 ms | 1100,4 ms | 179,5 MiB |
+| 2 | 58,32 (58,05 / 58,52 / 58,32) | 280,7 ms | 916,5 ms | 1212,9 ms | 349,9 MiB |
+
+- **Com o código da 03, o pool 1 também é o melhor:** +12% em req/s, sem sobreposição, −25% na mediana, −13% no p95 e −9% no p99. Todas as rotas ficaram mais rápidas, e `top-produtos` caiu de 981,6 para 513,9 ms.
+- **A ordem 1 > 2 > 5 > 10 se mantém**, igual à da 02.1.
+- O 03 com pool 2 se repetiu entre as duas sessões: 59,41 e 58,32 req/s.
+
+**Pastas:** `resultados/20261110-*-03-n-mais-1-desktop`, `20261110-*-031-pool-max-{5,10}-desktop`, `20261111-*-031-pool-max-{1,2}-desktop`.
+
+## Resultado no notebook (histórico)
 
 Mesma sessão, 2026-11-08, notebook na tomada, perfil `balanced`, banco recriado antes de cada série, `DB_POOL_MAX=2`. Mediana de 3 execuções:
 
@@ -92,7 +179,7 @@ A média vem do campo `http_req_duration.avg` do `resumo-k6.json` de cada pasta.
 - **O `DB_POOL_MAX=2` foi escolhido com o N+1 ainda presente.** A ficha da [02.1](02.1-tamanho-do-pool.md) previa medir de novo depois desta mudança; isso foi feito na seção seguinte, e o 2 continua o melhor.
 - **Memória da API:** 123,8 MiB antes e 31,5 MiB depois. O mesmo padrão de cerca de 124 MiB já tinha aparecido em séries da 02.1, sem relação clara com o pool. Não investiguei, então não atribuo a queda a esta mudança.
 
-## 03.1 · Tamanho do pool depois da 03
+## 03.1 · Tamanho do pool depois da 03 (notebook, histórico)
 
 Mesmo código da 03, com `DB_POOL_MAX` de 2, 5 e 10, em 2026-11-08 (22h58 a 23h14), na tomada, perfil `balanced`, banco recriado antes de cada tamanho. Ordem: 5, 10 e 2. Contrato mantido e 0,00% de erros nas 9 execuções. Mediana de 3 execuções:
 
@@ -122,13 +209,22 @@ Mesmo código da 03, com `DB_POOL_MAX` de 2, 5 e 10, em 2026-11-08 (22h58 a 23h1
 
 ## Decisão
 
-**A mudança foi mantida, apesar da queda no desempenho médio atual** (na medição em rodízio: req/s −7% e média +8%).
+**A 03 está fechada: o JOIN fica, e o pool passa para `DB_POOL_MAX=1`** (commit `c7dc4f3`).
 
-O motivo é escalabilidade. As consultas do tipo N+1 crescem com N: no código antigo, cada requisição fazia 2 + pedidos + itens consultas (22 em média e 32 no máximo, com os dados atuais), e cada uma entrava separadamente na fila do pool. Com a consulta única, são sempre 2, seja qual for o histórico do cliente. A consulta usa só varreduras por índice (`pedidos_cliente_id_criado_em_idx`, `itens_pedido_pedido_id_idx` e `produtos_pkey`; ver [`diagnostico/03-n-mais-1.txt`](../diagnostico/03-n-mais-1.txt)), e os índices já existiam desde a 01. Assim, o custo da rota passa a crescer só com as linhas do próprio cliente, encontradas por índice, sem novas idas ao banco.
+Contra a 02 da `main`, medida na mesma sessão e no mesmo banco no desktop ([Fechamento](#fechamento-a-03-com-pool-1-contra-a-02-2026-11-11)):
+- **+12% em req/s** (57,97 → 65,11), **p95 −51%** (1627,0 → 792,9 ms), **p99 −61%** (2779,1 → 1093,3 ms) e média −11%;
+- **mediana cerca de 2,2× pior** (97,3 → 218,0 ms): a requisição típica de uma rota rápida fica mais lenta;
+- **memória do banco menor**, sem nenhum recurso novo. Os limites dos containers não mudaram.
+
+**Por que o pool 1:** com o código da 03, ele foi o melhor tamanho em req/s, mediana, p95 e p99, sem sobreposição com o 2 ([03.1 no desktop](#031-no-desktop-tamanho-do-pool-com-o-código-da-03)). O mesmo vale para a 02 ([02.1](02.1-tamanho-do-pool.md#resultado-no-desktop-oficial)). Os riscos de um pool de 1 estão na [02.1](02.1-tamanho-do-pool.md#riscos-de-um-pool-muito-pequeno): uma consulta lenta bloqueia todas as outras, e uma transação longa prende a única conexão.
+
+**Por que o JOIN, se sozinho ele quase não muda as req/s** (+5% com pool 1, dentro da variação; −1% com pool 2): ele troca mediana por cauda, e reduz o p95 e o p99 pela metade. Além disso, há o argumento de escalabilidade, abaixo.
+
+**Escalabilidade.** As consultas do tipo N+1 crescem com N: no código antigo, cada requisição fazia 2 + pedidos + itens consultas (22 em média e 32 no máximo, com os dados atuais), e cada uma entrava separadamente na fila do pool. Com a consulta única, são sempre 2, seja qual for o histórico do cliente. A consulta usa só varreduras por índice (`pedidos_cliente_id_criado_em_idx`, `itens_pedido_pedido_id_idx` e `produtos_pkey`; ver [`diagnostico/03-n-mais-1.txt`](../diagnostico/03-n-mais-1.txt)), e os índices já existiam desde a 01. Assim, o custo da rota passa a crescer só com as linhas do próprio cliente, encontradas por índice, sem novas idas ao banco.
 
 **Limite:** o número de consultas por requisição foi medido, mas o ganho com mais dados não: todas as medições usam o volume atual. A escalabilidade é a razão da decisão, sustentada pelo plano e por Chen et al. (2014), não um resultado medido.
 
-### De onde vem a alta da média (conta sobre o diagnóstico, não é resultado oficial)
+### De onde vem a alta da média (notebook; conta sobre o diagnóstico, não é resultado oficial)
 
 Calculado a partir de [`diagnostico/03-mediana/resumo.txt`](../diagnostico/03-mediana/resumo.txt), com a mediana de cada valor nas 3 rodadas e 60 s de carga:
 
@@ -145,11 +241,13 @@ Calculado a partir de [`diagnostico/03-mediana/resumo.txt`](../diagnostico/03-me
 
 ## O que refutaria esta conclusão
 
-- **Se repetir as séries em outro dia** não reproduzir a diferença. No [diagnóstico](../diagnostico/03-mediana/README.md), com API instrumentada e versões alternadas, a alta da mediana e a queda do p95 e do p99 se repetiram, mas o ganho de req/s não: 24,85 antes e 23,63 depois. O ganho de 1,33× em req/s ainda precisa ser confirmado no formato oficial, com as versões alternadas.
+- **Se repetir as séries não reproduzir a queda da cauda.** Ela já se repetiu em todas as comparações: no diagnóstico do notebook, no rodízio do notebook e nas duas sessões do desktop. O ganho de 1,33× em req/s da primeira medição não se repetiu e foi descartado.
+- **Se o pool 1 perder para o 2 em outra máquina.** No desktop, o 1 venceu nas duas versões (02 e 03) e nas três sessões em que foi medido, sem sobreposição. No notebook, empatava dentro do ruído.
+- **Se a carga tiver mais relatórios.** Com pool 1, uma consulta lenta bloqueia todas as outras. A carga do desafio tem só 10% de relatórios (8% `vendas-por-dia` e 2% `top-produtos`) e não testa esse caso.
 
 ## Próximo gargalo
 
-O banco segue a 100% de CPU. `top-produtos` (2,8 s) e `vendas-por-dia` (0,8 s) ocupam as conexões do pool por mais tempo. Candidatas: 04 (refazer `vendas-por-dia`) e 06 (pré-calcular `top-produtos`).
+O banco segue perto de 100% de CPU (96,8% na média com a 03 e pool 1). Com pool 1, toda consulta passa pela mesma fila, então reduzir o trabalho de qualquer rota acelera todas as outras. No desktop, as rotas mais lentas com a 03 fechada são `top-produtos` (509,4 ms), `pedidos-do-cliente` (339,2 ms) e `pedidos-por-status` (332,1 ms) ([Fechamento](#fechamento-a-03-com-pool-1-contra-a-02-2026-11-11)). Candidatas: 04 (refazer `vendas-por-dia`), 06 (pré-calcular `top-produtos`) e a contagem de `pedidos-por-status`.
 
 ## Referências
 
