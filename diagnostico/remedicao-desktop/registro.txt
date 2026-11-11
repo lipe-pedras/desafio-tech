@@ -97,3 +97,24 @@
 2026-11-11 02:19:48 perfil=performance carga=0.31 0.54 0.35 fixado: /remed-01-api-1 cpuset=0-15 nanocpus=500000000 /remed-01-banco-1 cpuset=0-15 nanocpus=1000000000 
 2026-11-11 02:21:12 perfil=performance carga=3.08 1.29 0.62 medido 031-pool-max-2-desktop (958aad1): Requisições/s: 58.32
 2026-11-11 02:21:22 perfil=performance carga=2.71 1.29 0.64 fim 031 pool 1
+2026-11-11 02:28:30 perfil=performance carga=0.20 0.37 0.42 fechamento 03: criando banco com os índices da 01
+2026-11-11 02:28:46 perfil=performance carga=0.38 0.40 0.43 fixado: /remed-01-api-1 cpuset=0-15 nanocpus=500000000 /remed-01-banco-1 cpuset=0-15 nanocpus=1000000000 
+2026-11-11 02:29:58 perfil=performance carga=0.27 0.34 0.40 fixado: /remed-01-api-1 cpuset=0-15 nanocpus=500000000 /remed-01-banco-1 cpuset=0-15 nanocpus=1000000000 
+2026-11-11 02:31:22 perfil=performance carga=0.11 0.27 0.37 medido 03f-02-pool-2-desktop (1fd2ae4): Requisições/s: 56.60
+2026-11-11 02:31:33 perfil=performance carga=0.32 0.31 0.38 fixado: /remed-01-api-1 cpuset=0-15 nanocpus=500000000 /remed-01-banco-1 cpuset=0-15 nanocpus=1000000000 
+2026-11-11 02:32:57 perfil=performance carga=0.73 0.38 0.39 medido 03f-02-pool-1-desktop (d9ee2e5): Requisições/s: 64.05
+2026-11-11 02:33:08 perfil=performance carga=0.77 0.41 0.40 fixado: /remed-01-api-1 cpuset=0-15 nanocpus=500000000 /remed-01-banco-1 cpuset=0-15 nanocpus=1000000000 
+2026-11-11 02:34:33 perfil=performance carga=1.83 0.89 0.58 medido 03f-03-pool-1-desktop (c7dc4f3): Requisições/s: 65.11
+2026-11-11 02:34:44 perfil=performance carga=1.55 0.86 0.57 fixado: /remed-01-api-1 cpuset=0-15 nanocpus=500000000 /remed-01-banco-1 cpuset=0-15 nanocpus=1000000000 
+2026-11-11 02:36:08 perfil=performance carga=1.93 1.24 0.74 medido 03f-02-pool-1-desktop (d9ee2e5): Requisições/s: 61.86
+2026-11-11 02:36:19 perfil=performance carga=1.64 1.19 0.73 fixado: /remed-01-api-1 cpuset=0-15 nanocpus=500000000 /remed-01-banco-1 cpuset=0-15 nanocpus=1000000000 
+2026-11-11 02:37:42 perfil=performance carga=0.80 1.05 0.72 medido 03f-03-pool-1-desktop (c7dc4f3): Requisições/s: 63.37
+2026-11-11 02:37:53 perfil=performance carga=0.71 1.02 0.71 fixado: /remed-01-api-1 cpuset=0-15 nanocpus=500000000 /remed-01-banco-1 cpuset=0-15 nanocpus=1000000000 
+2026-11-11 02:39:17 perfil=performance carga=0.58 0.88 0.69 medido 03f-02-pool-2-desktop (1fd2ae4): Requisições/s: 59.10
+2026-11-11 02:39:28 perfil=performance carga=0.53 0.86 0.68 fixado: /remed-01-api-1 cpuset=0-15 nanocpus=500000000 /remed-01-banco-1 cpuset=0-15 nanocpus=1000000000 
+2026-11-11 02:40:53 perfil=performance carga=0.52 0.75 0.65 medido 03f-03-pool-1-desktop (c7dc4f3): Requisições/s: 65.17
+2026-11-11 02:41:04 perfil=performance carga=0.44 0.72 0.65 fixado: /remed-01-api-1 cpuset=0-15 nanocpus=500000000 /remed-01-banco-1 cpuset=0-15 nanocpus=1000000000 
+2026-11-11 02:42:27 perfil=performance carga=3.38 1.61 0.97 medido 03f-02-pool-2-desktop (1fd2ae4): Requisições/s: 57.97
+2026-11-11 02:42:39 perfil=performance carga=2.70 1.55 0.96 fixado: /remed-01-api-1 cpuset=0-15 nanocpus=500000000 /remed-01-banco-1 cpuset=0-15 nanocpus=1000000000 
+2026-11-11 02:44:02 perfil=performance carga=2.66 1.80 1.10 medido 03f-02-pool-1-desktop (d9ee2e5): Requisições/s: 61.64
+2026-11-11 02:44:13 perfil=performance carga=2.15 1.73 1.08 fim fechamento 03

@@ -1,0 +1,17 @@
+Medição: 03f-02-pool-2-desktop
+Carga: 20 usuários virtuais por 60s
+
+Requisições:        3490
+Requisições/s:      57.97
+Tempo de resposta:  mediana 97.3 ms | p95 1619.9 ms | p99 2792.8 ms
+Erros:              0.00%
+
+Por rota:
+rota                  req       mediana       p95           p99           erros   
+cliente               896       10.8 ms       202.5 ms      385.6 ms      0.0%    
+cliente-por-email     498       9.4 ms        214.0 ms      390.0 ms      0.0%    
+pedidos-do-cliente    731       1083.9 ms     2752.0 ms     3590.3 ms     0.0%    
+pedidos-por-status    501       108.5 ms      429.9 ms      1020.3 ms     0.0%    
+busca-produtos        524       58.5 ms       271.0 ms      474.9 ms      0.0%    
+vendas-por-dia        279       166.9 ms      389.4 ms      596.4 ms      0.0%    
+top-produtos          61        803.7 ms      1017.6 ms     1092.9 ms     0.0%    
