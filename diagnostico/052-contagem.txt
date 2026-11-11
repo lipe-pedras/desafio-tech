@@ -1,0 +1,49 @@
+=== antes: count(*) no índice
+ total  
+--------
+ 300000
+(1 row)
+
+                                                                                      QUERY PLAN                                                                                       
+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+ Finalize Aggregate  (cost=11285.75..11285.76 rows=1 width=8) (actual time=9.435..10.251 rows=1 loops=1)
+   Buffers: shared hit=1484
+   ->  Gather  (cost=11285.53..11285.74 rows=2 width=8) (actual time=9.408..10.249 rows=3 loops=1)
+         Workers Planned: 2
+         Workers Launched: 2
+         Buffers: shared hit=1484
+         ->  Partial Aggregate  (cost=10285.53..10285.54 rows=1 width=8) (actual time=8.215..8.215 rows=1 loops=3)
+               Buffers: shared hit=1484
+               ->  Parallel Index Only Scan using pedidos_status_criado_em_inc_idx on pedidos  (cost=0.42..9973.31 rows=124889 width=0) (actual time=0.015..5.944 rows=100000 loops=3)
+                     Index Cond: (status = 'pago'::text)
+                     Heap Fetches: 0
+                     Buffers: shared hit=1484
+ Planning Time: 0.031 ms
+ Execution Time: 10.262 ms
+(14 rows)
+
+=== 05.2: total em pedidos_por_status
+ total  
+--------
+ 300000
+(1 row)
+
+                                                     QUERY PLAN                                                     
+--------------------------------------------------------------------------------------------------------------------
+ Result  (cost=1.05..1.06 rows=1 width=8) (actual time=0.001..0.001 rows=1 loops=1)
+   Buffers: shared hit=1
+   InitPlan 1 (returns $0)
+     ->  Seq Scan on pedidos_por_status  (cost=0.00..1.05 rows=1 width=8) (actual time=0.001..0.001 rows=1 loops=1)
+           Filter: (status = 'pago'::text)
+           Rows Removed by Filter: 3
+           Buffers: shared hit=1
+ Planning Time: 0.009 ms
+ Execution Time: 0.003 ms
+(9 rows)
+
+=== tamanho de pedidos_por_status
+ tabela_com_indice 
+-------------------
+ 64 kB
+(1 row)
+
