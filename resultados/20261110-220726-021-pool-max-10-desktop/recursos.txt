@@ -1,0 +1,5 @@
+container                            amostras  cpu_media    cpu_max    mem_media      mem_max
+remed-01-api-1                             31      18.7%       9.4%     39.0 MiB     46.8 MiB
+remed-01-banco-1                           31     100.0%     100.0%    335.7 MiB    412.6 MiB
+
+cpu_percentual: 100% = 1 CPU inteira.

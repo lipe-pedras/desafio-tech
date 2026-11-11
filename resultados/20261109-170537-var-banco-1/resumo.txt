@@ -1,0 +1,17 @@
+Medição: var-banco-1
+Carga: 20 usuários virtuais por 60s
+
+Requisições:        1546
+Requisições/s:      25.53
+Tempo de resposta:  mediana 197.6 ms | p95 3960.6 ms | p99 5912.5 ms
+Erros:              0.00%
+
+Por rota:
+rota                  req       mediana       p95           p99           erros   
+cliente               407       81.5 ms       582.1 ms      830.2 ms      0.0%    
+cliente-por-email     236       80.5 ms       498.5 ms      1397.3 ms     0.0%    
+pedidos-do-cliente    328       2505.2 ms     5891.9 ms     6973.9 ms     0.0%    
+pedidos-por-status    214       274.2 ms      805.6 ms      1011.6 ms     0.0%    
+busca-produtos        226       101.2 ms      499.1 ms      607.6 ms      0.0%    
+vendas-por-dia        112       321.3 ms      818.4 ms      908.1 ms      0.0%    
+top-produtos          23        2177.0 ms     2973.6 ms     3149.7 ms     0.0%    

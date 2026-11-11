@@ -2,7 +2,9 @@
 
 - **Status:** aplicada e medida
 - **Branch / commit da mudança:** `02-pool-conexoes` / `63b4693`
-- **Comparada com:** a 01* (remedida)
+- **Comparada com:** a 01, medida na mesma sessão e no mesmo banco
+
+> **Números oficiais: os do desktop (2026-11-10).** As medições do notebook variaram demais entre sessões e entre execuções, então toda a sequência foi remedida num desktop, em rodízio (ver [`diagnostico/remedicao-desktop/`](../diagnostico/remedicao-desktop/README.md)). O resultado oficial está em [Resultado no desktop](#resultado-no-desktop-oficial). A seção do notebook fica como histórico.
 
 ## Hipótese
 
@@ -67,7 +69,46 @@ Fato e opinião, separados:
 - **Fato:** são documentação de software (fontes primárias técnicas sobre o comportamento do driver e do banco), não estudos revisados por pares.
 - **Opinião minha:** a frase sobre o tamanho do pool é a experiência do autor do node-postgres, não uma medição. Uso como ponto de partida, não como prova.
 
-## Resultado
+## Resultado no desktop (oficial)
+
+2026-11-10, desktop (i7-14700K), perfil `performance`, banco e API fixados nos núcleos P, sem mudar os limites. Bloco B da remedição: um banco único com os índices da 01, 11 versões da API em 3 rodadas com a ordem deslocada ([como foi medido](../diagnostico/remedicao-desktop/README.md#como-foi-remedido)). Contrato mantido e 0,00% de erros nas 6 execuções.
+
+Mediana de 3 execuções:
+
+| Métrica | 01 (antes) | 02-pool-conexoes (`max: 10`) | Variação |
+|---|---|---|---|
+| Requisições/s | 25,69 | 38,96 | cerca de 1,5× |
+| Média | 776,1 ms | 508,3 ms | −35% |
+| Mediana | 212,9 ms | 198,2 ms | −7% |
+| p95 | 3302,8 ms | 1815,8 ms | −45% |
+| p99 | 4204,1 ms | 4496,8 ms | +7% |
+| CPU média do banco | 100,1% | 99,7% | – |
+| Memória média do banco | 223,3 MiB | 331,7 MiB | +108 MiB |
+| CPU média da API | 17,1% | 19,8% | – |
+| Memória média da API | 39,6 MiB | 40,8 MiB | – |
+
+As req/s por execução foram 26,49, 25,51 e 25,69 na 01 e 38,56, 38,96 e 39,07 na 02.
+
+| Rota (mediana da rota nas 3) | 01 | 02 |
+|---|---|---|
+| `cliente` | 100,5 ms | 26,6 ms |
+| `cliente-por-email` | 101,4 ms | 24,8 ms |
+| `pedidos-do-cliente` | 2301,2 ms | 994,9 ms |
+| `pedidos-por-status` | 422,0 ms | 298,6 ms |
+| `busca-produtos` | 202,7 ms | 195,0 ms |
+| `vendas-por-dia` | 531,9 ms | 613,9 ms |
+| `top-produtos` | 3905,0 ms | 4383,6 ms |
+
+**Pastas de resultados:**
+- antes: `resultados/20261110-211749-01-indices-rodizio-desktop`, `20261110-214642-…`, `20261110-215752-…`;
+- depois: `resultados/20261110-211927-02-pool-conexoes-desktop`, `20261110-214819-…`, `20261110-215928-…`.
+
+**Leitura:**
+- **A hipótese se confirma no desktop:** cerca de 1,5× em req/s e −45% no p95, contra 1,7× e −34% no notebook.
+- **O ganho fica nas rotas de consultas baratas e no N+1:** `cliente` e `cliente-por-email` caem cerca de 75%, e `pedidos-do-cliente` cai 57%.
+- **As rotas pesadas pioram um pouco, e o p99 sobe 7%.** `vendas-por-dia` e `top-produtos` sobem cerca de 12 a 15%. Com até 10 conexões abertas, elas dividem a CPU do banco com mais consultas ao mesmo tempo. É o efeito que a [02.1](02.1-tamanho-do-pool.md) corrige reduzindo o pool.
+
+## Resultado no notebook (histórico)
 
 Mesma sessão, 2026-11-06, notebook na tomada, perfil `balanced`, banco recriado antes de cada série. Mediana de 3 execuções:
 
@@ -118,7 +159,7 @@ Correção: uma versão anterior desta tabela usava só a execução mediana de 
 
 ## O que refutaria esta conclusão
 
-- **Se repetir as séries** não reproduzir a diferença. Ainda não repeti em outro dia.
+- **Se repetir as séries** não reproduzir a diferença. Isso foi testado duas vezes: no notebook, em rodízio (cerca de 1,6× em req/s; ver [variação do banco](../diagnostico/variacao-banco/README.md)), e no desktop (cerca de 1,5×). O ganho se repetiu nas duas.
 - **Se o ganho vier de outra coisa que mudou entre as séries.** Entre elas mudou só o `db.js` (commits `466d0f5` → `63b4693`, ver `contexto.txt`), na mesma sessão, com o banco recriado nos dois lados.
 - **Se um pool maior ou menor der resultado bem diferente.** Isso aconteceu: ver [02.1](02.1-tamanho-do-pool.md). Não invalida o pool, mas mostra que 10 não é o melhor tamanho para este caso.
 

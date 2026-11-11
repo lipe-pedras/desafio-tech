@@ -1,0 +1,18 @@
+# Ambiente das medições no desktop (registrado em 2026-11-10 20:57 -0300)
+
+CPU(s):                                  28
+Model name:                              Intel(R) Core(TM) i7-14700K
+Thread(s) per core:                      2
+Core(s) per socket:                      20
+CPU(s) scaling MHz:                      42%
+CPU max MHz:                             5600.0000
+núcleos P (cpu_core): 0-15
+núcleos E (cpu_atom): 16-27
+               total        used        free      shared  buff/cache   available
+Mem:            31Gi       3.8Gi        23Gi       1.1Gi       5.8Gi        27Gi
+governor: powersave
+epp: performance
+perfil de energia: performance
+Docker version 29.9.3, build 5457199
+Docker Compose version v5.7.0
+7.0.0-42-generic
