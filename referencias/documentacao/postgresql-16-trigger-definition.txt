@@ -1,0 +1,10 @@
+Fonte: https://www.postgresql.org/docs/16/trigger-definition.html
+Acessado em: 2026-11-11
+Trecho do texto da página (HTML convertido em texto, sem edição do conteúdo): parágrafos sobre gatilhos por linha e por comando e sobre tabelas de transição.
+
+39.1. Overview of Trigger Behavior
+
+PostgreSQL offers both per-row triggers and per-statement triggers. With a per-row trigger, the trigger function is invoked once for each row that is affected by the statement that fired the trigger. In contrast, a per-statement trigger is invoked only once when an appropriate statement is executed, regardless of the number of rows affected by that statement. In particular, a statement that affects zero rows will still result in the execution of any applicable per-statement triggers. These two types of triggers are sometimes called row-level triggers and statement-level triggers, respectively. Triggers on TRUNCATE may only be defined at statement level, not per-row.
+
+By default, statement-level triggers do not have any way to examine the individual row(s) modified by the statement. But an AFTER STATEMENT trigger can request that transition tables be created to make the sets of affected rows available to the trigger. AFTER ROW triggers can also request transition tables, so that they can see the total changes in the table as well as the change in the individual row they are currently being fired for. The method for examining the transition tables again depends on the programming language that is being used, but the typical approach is to make the transition tables act like read-only temporary tables that can be accessed by SQL commands issued within the trigger function.
+

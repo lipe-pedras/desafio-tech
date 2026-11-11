@@ -54,6 +54,8 @@ Páginas abertas em 2026-11-06 e salvas como texto (HTML convertido, sem ediçã
 | `documentacao/postgresql-16-runtime-config-autovacuum.txt` | PostgreSQL 16 Documentation, *20.10. Automatic Vacuuming* (aberta em 2026-11-11; trecho). | https://www.postgresql.org/docs/16/runtime-config-autovacuum.html | 05.1: valores padrão de `autovacuum_naptime` e do limiar de inserções |
 | `documentacao/postgresql-16-sql-analyze.txt` | PostgreSQL 16 Documentation, *ANALYZE* (aberta em 2026-11-11; trecho). | https://www.postgresql.org/docs/16/sql-analyze.html | 05.1: o `ANALYZE` só coleta estatísticas |
 | `documentacao/postgresql-16-sql-vacuum.txt` | PostgreSQL 16 Documentation, *VACUUM* (aberta em 2026-11-11; trecho). | https://www.postgresql.org/docs/16/sql-vacuum.html | 05.1: `VACUUM ANALYZE` e a restrição a bloco de transação |
+| `documentacao/postgresql-16-sql-createtrigger.txt` | PostgreSQL 16 Documentation, *CREATE TRIGGER* (aberta em 2026-11-11; trecho). | https://www.postgresql.org/docs/16/sql-createtrigger.html | 05.2: gatilhos por comando, tabelas de transição e um evento por gatilho |
+| `documentacao/postgresql-16-trigger-definition.txt` | PostgreSQL 16 Documentation, *39.1. Overview of Trigger Behavior* (aberta em 2026-11-11; trecho). | https://www.postgresql.org/docs/16/trigger-definition.html | 05.2: gatilhos por linha e por comando |
 
 ## Tamanho do pool de conexões
 
