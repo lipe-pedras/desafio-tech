@@ -1,0 +1,17 @@
+Medição: 051-vacuum-analyze-frio-desktop
+Carga: 20 usuários virtuais por 60s
+
+Requisições:        5565
+Requisições/s:      92.59
+Tempo de resposta:  mediana 91.8 ms | p95 580.0 ms | p99 922.4 ms
+Erros:              0.00%
+
+Por rota:
+rota                  req       mediana       p95           p99           erros   
+cliente               1431      69.9 ms       489.3 ms      871.6 ms      0.0%    
+cliente-por-email     828       70.9 ms       486.1 ms      842.4 ms      0.0%    
+pedidos-do-cliente    1156      127.9 ms      899.2 ms      971.6 ms      0.0%    
+pedidos-por-status    793       139.9 ms      902.5 ms      976.4 ms      0.0%    
+busca-produtos        827       76.3 ms       490.6 ms      870.3 ms      0.0%    
+vendas-por-dia        431       81.4 ms       484.0 ms      723.8 ms      0.0%    
+top-produtos          99        469.1 ms      881.1 ms      901.8 ms      0.0%    

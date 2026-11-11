@@ -1,0 +1,24 @@
+== 051-so-analyze-desktop (3 execuções) commit ['855b116'] sujo ['0', '0', '0'] erros [0, 0, 0] contrato ['mantido']
+   pastas 20261111-165219-051-so-analyze-desktop 20261111-170013-051-so-analyze-desktop 20261111-170250-051-so-analyze-desktop
+   req/s por execução [93.35, 94.11, 93.67]  p95 por execução [583.1, 570.6, 573.2]
+   medianas: rps=93.67 avg=213.11 med=91.55 p95=573.20 p99=912.55 cpu_b=99.60 mem_b=178.80 cpu_a=3.10 mem_a=28.90
+   rotas (mediana da rota, ms): cliente=66.3 cliente-por-email=70.7 pedidos-do-cliente=124.4 pedidos-por-status=136.5 busca-produtos=76.6 vendas-por-dia=78.6 top-produtos=461.2
+
+== 051-vacuum-analyze-desktop (3 execuções) commit ['6596279'] sujo ['0', '0', '0'] erros [0, 0, 0] contrato ['mantido']
+   pastas 20261111-165457-051-vacuum-analyze-desktop 20261111-165735-051-vacuum-analyze-desktop 20261111-170527-051-vacuum-analyze-desktop
+   req/s por execução [93.65, 93.9, 94.2]  p95 por execução [584.6, 562.2, 569.7]
+   medianas: rps=93.90 avg=212.88 med=91.91 p95=569.68 p99=903.40 cpu_b=99.60 mem_b=175.30 cpu_a=3.20 mem_a=28.60
+   rotas (mediana da rota, ms): cliente=67.4 cliente-por-email=67.8 pedidos-do-cliente=125.4 pedidos-por-status=148.6 busca-produtos=76.0 vendas-por-dia=79.9 top-produtos=453.6
+
+== 051-so-analyze-frio-desktop (3 execuções) commit ['855b116'] sujo ['0', '0', '0'] erros [0, 0, 0] contrato ['mantido']
+   pastas 20261111-170718-051-so-analyze-frio-desktop 20261111-171250-051-so-analyze-frio-desktop 20261111-171446-051-so-analyze-frio-desktop
+   req/s por execução [80.55, 80.81, 76.08]  p95 por execução [735.9, 718.9, 871.4]
+   medianas: rps=80.55 avg=248.09 med=118.93 p95=735.93 p99=995.79 cpu_b=99.70 mem_b=189.40 cpu_a=3.20 mem_a=27.60
+   rotas (mediana da rota, ms): cliente=88.0 cliente-por-email=89.8 pedidos-do-cliente=243.1 pedidos-por-status=291.4 busca-produtos=94.2 vendas-por-dia=96.8 top-produtos=476.9
+
+== 051-vacuum-analyze-frio-desktop (3 execuções) commit ['6596279'] sujo ['0', '0', '0'] erros [0, 0, 0] contrato ['mantido']
+   pastas 20261111-170908-051-vacuum-analyze-frio-desktop 20261111-171059-051-vacuum-analyze-frio-desktop 20261111-171637-051-vacuum-analyze-frio-desktop
+   req/s por execução [92.59, 92.62, 93.55]  p95 por execução [580.0, 583.0, 594.4]
+   medianas: rps=92.62 avg=215.69 med=91.57 p95=582.99 p99=922.35 cpu_b=99.50 mem_b=185.00 cpu_a=3.10 mem_a=28.00
+   rotas (mediana da rota, ms): cliente=67.3 cliente-por-email=67.7 pedidos-do-cliente=127.9 pedidos-por-status=143.4 busca-produtos=75.4 vendas-por-dia=81.4 top-produtos=461.8
+

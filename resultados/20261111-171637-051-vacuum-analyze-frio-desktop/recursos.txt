@@ -1,0 +1,5 @@
+container                            amostras  cpu_media    cpu_max    mem_media      mem_max
+frio-6596279-banco-1                       30      98.8%     100.0%    183.0 MiB    204.8 MiB
+frio-6596279-api-1                         30       3.3%       8.2%     28.0 MiB     29.6 MiB
+
+cpu_percentual: 100% = 1 CPU inteira.

@@ -53,3 +53,45 @@
 2026-11-11 16:42:41 perfil=performance carga=1.64 0.81 0.69 antes de medir 05-pedidos-por-status-desktop: clientes=1156/1156 vac=19:23:49 itens_pedido=9554/9555 vac=19:23:59 pedidos=20834/20834 vac=19:23:55 produtos=190/190 vac=19:23:59
 2026-11-11 16:43:59 perfil=performance carga=1.66 1.04 0.79 medido 05-pedidos-por-status-desktop (9a4968d): Requisições/s: 85.11
 2026-11-11 16:44:10 perfil=performance carga=1.40 1.00 0.78 fim do rodízio
+2026-11-11 16:50:03 perfil=performance carga=0.33 0.64 0.70 rodízio: 855b116:051-so-analyze-desktop 6596279:051-vacuum-analyze-desktop
+2026-11-11 16:50:24 perfil=performance carga=0.65 0.70 0.71 banco de 855b116 criado em 21 s
+2026-11-11 16:51:00 perfil=performance carga=1.11 0.80 0.75 banco de 6596279 criado em 26 s
+2026-11-11 16:51:17 perfil=performance carga=0.93 0.78 0.74 fixado: /rod-855b116-api-1 cpuset=0-15 nanocpus=500000000 /rod-855b116-banco-1 cpuset=0-15 nanocpus=1000000000 
+2026-11-11 16:52:19 perfil=performance carga=0.45 0.66 0.70 antes de medir 051-so-analyze-desktop: clientes=1156/1156 vac=19:51:51 itens_pedido=9555/9555 vac=19:52:01 pedidos=20834/20834 vac=19:51:58 produtos=190/190 vac=19:52:02
+2026-11-11 16:53:38 perfil=performance carga=0.12 0.50 0.64 medido 051-so-analyze-desktop (855b116): Requisições/s: 93.35
+2026-11-11 16:53:55 perfil=performance carga=0.09 0.48 0.63 fixado: /rod-6596279-api-1 cpuset=0-15 nanocpus=500000000 /rod-6596279-banco-1 cpuset=0-15 nanocpus=1000000000 
+2026-11-11 16:54:57 perfil=performance carga=1.78 0.91 0.77 antes de medir 051-vacuum-analyze-desktop: clientes=1156/1156 vac=19:54:29 itens_pedido=9555/9555 vac=19:54:33 pedidos=20834/20834 vac=19:50:56 produtos=190/190 vac=19:54:33
+2026-11-11 16:56:16 perfil=performance carga=1.56 1.05 0.83 medido 051-vacuum-analyze-desktop (6596279): Requisições/s: 93.65
+2026-11-11 16:56:32 perfil=performance carga=1.19 1.00 0.82 fixado: /rod-6596279-api-1 cpuset=0-15 nanocpus=500000000 /rod-6596279-banco-1 cpuset=0-15 nanocpus=1000000000 
+2026-11-11 16:57:35 perfil=performance carga=0.74 0.88 0.79 antes de medir 051-vacuum-analyze-desktop: clientes=1156/1156 vac=19:54:29 itens_pedido=9555/9555 vac=19:54:33 pedidos=20834/20834 vac=19:50:56 produtos=190/190 vac=19:54:33
+2026-11-11 16:58:53 perfil=performance carga=2.33 1.34 0.96 medido 051-vacuum-analyze-desktop (6596279): Requisições/s: 93.90
+2026-11-11 16:59:10 perfil=performance carga=1.81 1.27 0.94 fixado: /rod-855b116-api-1 cpuset=0-15 nanocpus=500000000 /rod-855b116-banco-1 cpuset=0-15 nanocpus=1000000000 
+2026-11-11 17:00:13 perfil=performance carga=0.81 1.07 0.89 antes de medir 051-so-analyze-desktop: clientes=1156/1156 vac=19:51:51 itens_pedido=9555/9555 vac=19:52:01 pedidos=20834/20834 vac=19:51:58 produtos=190/190 vac=19:52:02
+2026-11-11 17:01:31 perfil=performance carga=0.23 0.83 0.82 medido 051-so-analyze-desktop (855b116): Requisições/s: 94.11
+2026-11-11 17:01:48 perfil=performance carga=0.31 0.81 0.81 fixado: /rod-855b116-api-1 cpuset=0-15 nanocpus=500000000 /rod-855b116-banco-1 cpuset=0-15 nanocpus=1000000000 
+2026-11-11 17:02:50 perfil=performance carga=0.31 0.73 0.79 antes de medir 051-so-analyze-desktop: clientes=1156/1156 vac=19:51:51 itens_pedido=9555/9555 vac=19:52:01 pedidos=20834/20834 vac=19:51:58 produtos=190/190 vac=19:52:02
+2026-11-11 17:04:08 perfil=performance carga=1.04 0.82 0.81 medido 051-so-analyze-desktop (855b116): Requisições/s: 93.67
+2026-11-11 17:04:25 perfil=performance carga=0.81 0.78 0.80 fixado: /rod-6596279-api-1 cpuset=0-15 nanocpus=500000000 /rod-6596279-banco-1 cpuset=0-15 nanocpus=1000000000 
+2026-11-11 17:05:27 perfil=performance carga=1.83 1.08 0.90 antes de medir 051-vacuum-analyze-desktop: clientes=1156/1156 vac=19:54:29 itens_pedido=9555/9555 vac=19:54:33 pedidos=20834/20834 vac=19:50:56 produtos=190/190 vac=19:54:33
+2026-11-11 17:06:45 perfil=performance carga=1.77 1.24 0.98 medido 051-vacuum-analyze-desktop (6596279): Requisições/s: 94.20
+2026-11-11 17:06:56 perfil=performance carga=1.50 1.20 0.97 fim do rodízio
+2026-11-11 17:06:56 perfil=performance carga=1.50 1.20 0.97 a frio: 855b116:051-so-analyze-frio-desktop 6596279:051-vacuum-analyze-frio-desktop
+2026-11-11 17:07:18 perfil=performance carga=1.36 1.20 0.97 antes de medir 051-so-analyze-frio-desktop: pedidos=0/20834 vac=- no_ar=3s
+2026-11-11 17:08:36 perfil=performance carga=1.56 1.34 1.05 depois de medir 051-so-analyze-frio-desktop: pedidos=20834/20834 vac=20:08:00 no_ar=82s
+2026-11-11 17:08:36 perfil=performance carga=1.56 1.34 1.05 medido 051-so-analyze-frio-desktop (855b116): Requisições/s: 80.55
+2026-11-11 17:09:08 perfil=performance carga=1.14 1.26 1.03 antes de medir 051-vacuum-analyze-frio-desktop: pedidos=20834/20834 vac=20:09:04 no_ar=5s
+2026-11-11 17:10:27 perfil=performance carga=0.72 1.12 1.00 depois de medir 051-vacuum-analyze-frio-desktop: pedidos=20834/20834 vac=20:09:04 no_ar=83s
+2026-11-11 17:10:27 perfil=performance carga=0.72 1.12 1.00 medido 051-vacuum-analyze-frio-desktop (6596279): Requisições/s: 92.59
+2026-11-11 17:10:59 perfil=performance carga=0.79 1.09 0.99 antes de medir 051-vacuum-analyze-frio-desktop: pedidos=20834/20834 vac=20:10:57 no_ar=2s
+2026-11-11 17:12:17 perfil=performance carga=1.08 1.04 0.98 depois de medir 051-vacuum-analyze-frio-desktop: pedidos=20834/20834 vac=20:10:57 no_ar=80s
+2026-11-11 17:12:17 perfil=performance carga=1.08 1.04 0.98 medido 051-vacuum-analyze-frio-desktop (6596279): Requisições/s: 92.62
+2026-11-11 17:12:50 perfil=performance carga=1.12 1.05 0.98 antes de medir 051-so-analyze-frio-desktop: pedidos=0/20834 vac=- no_ar=5s
+2026-11-11 17:14:09 perfil=performance carga=1.63 1.26 1.06 depois de medir 051-so-analyze-frio-desktop: pedidos=20834/20834 vac=20:13:31 no_ar=85s
+2026-11-11 17:14:09 perfil=performance carga=1.63 1.26 1.06 medido 051-so-analyze-frio-desktop (855b116): Requisições/s: 80.81
+2026-11-11 17:14:46 perfil=performance carga=1.51 1.26 1.07 antes de medir 051-so-analyze-frio-desktop: pedidos=0/20834 vac=- no_ar=6s
+2026-11-11 17:16:04 perfil=performance carga=0.90 1.14 1.04 depois de medir 051-so-analyze-frio-desktop: pedidos=20830/20834 vac=20:15:27 no_ar=84s
+2026-11-11 17:16:04 perfil=performance carga=0.90 1.14 1.04 medido 051-so-analyze-frio-desktop (855b116): Requisições/s: 76.08
+2026-11-11 17:16:37 perfil=performance carga=0.89 1.11 1.04 antes de medir 051-vacuum-analyze-frio-desktop: pedidos=20834/20834 vac=20:16:35 no_ar=1s
+2026-11-11 17:17:55 perfil=performance carga=0.49 0.97 0.99 depois de medir 051-vacuum-analyze-frio-desktop: pedidos=20834/20834 vac=20:16:35 no_ar=80s
+2026-11-11 17:17:55 perfil=performance carga=0.49 0.97 0.99 medido 051-vacuum-analyze-frio-desktop (6596279): Requisições/s: 93.55
+2026-11-11 17:18:06 perfil=performance carga=0.41 0.93 0.98 fim das medições a frio

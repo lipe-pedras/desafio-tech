@@ -1,0 +1,17 @@
+Medição: 051-so-analyze-frio-desktop
+Carga: 20 usuários virtuais por 60s
+
+Requisições:        4916
+Requisições/s:      80.81
+Tempo de resposta:  mediana 116.3 ms | p95 718.9 ms | p99 995.8 ms
+Erros:              0.00%
+
+Por rota:
+rota                  req       mediana       p95           p99           erros   
+cliente               1275      85.6 ms       498.0 ms      835.5 ms      0.0%    
+cliente-por-email     718       89.8 ms       505.3 ms      860.9 ms      0.0%    
+pedidos-do-cliente    1024      259.5 ms      901.7 ms      1093.0 ms     0.0%    
+pedidos-por-status    704       288.7 ms      942.2 ms      1141.1 ms     0.0%    
+busca-produtos        725       93.7 ms       541.0 ms      891.4 ms      0.0%    
+vendas-por-dia        382       96.8 ms       521.5 ms      595.5 ms      0.0%    
+top-produtos          88        476.9 ms      898.3 ms      978.5 ms      0.0%    
