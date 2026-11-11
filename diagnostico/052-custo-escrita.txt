@@ -1,0 +1,118 @@
+CREATE TABLE
+CREATE FUNCTION
+ gatilhos_em_pedidos 
+---------------------
+                   4
+
+ medir 
+-------
+ 
+
+ medir 
+-------
+ 
+
+ medir 
+-------
+ 
+
+ medir 
+-------
+ 
+
+ medir 
+-------
+ 
+
+ medir 
+-------
+ 
+
+ medir 
+-------
+ 
+
+ medir 
+-------
+ 
+
+ medir 
+-------
+ 
+
+ medir 
+-------
+ 
+
+ medir 
+-------
+ 
+
+ medir 
+-------
+ 
+
+ medir 
+-------
+ 
+
+ medir 
+-------
+ 
+
+ medir 
+-------
+ 
+
+ medir 
+-------
+ 
+
+ medir 
+-------
+ 
+
+ medir 
+-------
+ 
+
+=== tempos (ms) por execução
+ rodada | cenario |  gatilhos  |   ms   
+--------+---------+------------+--------
+      1 | A       | desligados |  672.5
+      2 | A       | desligados |  616.8
+      3 | A       | desligados |  706.6
+      1 | A       | ligados    |  886.1
+      2 | A       | ligados    |  608.1
+      3 | A       | ligados    |  628.6
+      1 | B       | desligados |   83.3
+      2 | B       | desligados |   88.8
+      3 | B       | desligados |  133.5
+      1 | B       | ligados    |  277.2
+      2 | B       | ligados    |  279.5
+      3 | B       | ligados    |  271.6
+      1 | C       | desligados |  148.5
+      2 | C       | desligados | 2292.8
+      3 | C       | desligados |  274.6
+      1 | C       | ligados    | 1533.7
+      2 | C       | ligados    | 1141.4
+      3 | C       | ligados    | 1316.7
+
+=== mediana por cenário (ms)
+ cenario |  gatilhos  | mediana_ms |  min   |  max   
+---------+------------+------------+--------+--------
+ A       | desligados |      672.5 |  616.8 |  706.6
+ A       | ligados    |      628.6 |  608.1 |  886.1
+ B       | desligados |       88.8 |   83.3 |  133.5
+ B       | ligados    |      277.2 |  271.6 |  279.5
+ C       | desligados |      274.6 |  148.5 | 2292.8
+ C       | ligados    |     1316.7 | 1141.4 | 1533.7
+
+=== depois: gatilhos ainda ligados (tgenabled = O)
+           tgname            | tgenabled 
+-----------------------------+-----------
+ pedidos_por_status_delete   | O
+ pedidos_por_status_insert   | O
+ pedidos_por_status_truncate | O
+ pedidos_por_status_update   | O
+
