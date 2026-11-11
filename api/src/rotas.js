@@ -115,8 +115,14 @@ rotas.get('/pedidos', assincrono(async (req, res) => {
   if (pagina === null) return res.status(400).json({ erro: 'pagina invalida' });
 
   const [contagem] = await consultar('SELECT count(*) AS total FROM pedidos WHERE status = $1', [status]);
+  // Só as colunas que a resposta usa (sem observacoes). Com o índice da 05.1, que inclui cliente_id,
+  // a página e as linhas puladas pelo OFFSET são lidas só do índice.
   const linhas = await consultar(
-    'SELECT * FROM pedidos WHERE status = $1 ORDER BY criado_em DESC, id DESC LIMIT $2 OFFSET $3',
+    `SELECT id, cliente_id, status, criado_em
+       FROM pedidos
+      WHERE status = $1
+      ORDER BY criado_em DESC, id DESC
+      LIMIT $2 OFFSET $3`,
     [status, TAMANHO_PAGINA, (pagina - 1) * TAMANHO_PAGINA],
   );
 
