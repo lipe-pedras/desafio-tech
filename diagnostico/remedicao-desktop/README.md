@@ -63,4 +63,3 @@ Mesmo assim, as comparações das fichas usam só versões medidas **na mesma se
 - **Uma máquina só.** A ordem das versões se repetiu no notebook e no desktop, mas os valores absolutos dependem do hardware. Num servidor com outra CPU, os números seriam outros.
 - **A fixação nos núcleos P favorece a estabilidade, não a representatividade.** Num servidor real, o banco não estaria fixado.
 - **O pool 20 teve erros** em `top-produtos` (1, 4 e 2 falhas nas 3 execuções; 0,04% a 0,17% do total). O contrato foi mantido. A causa não foi investigada.
-- **A memória do banco variou entre sessões com o mesmo código:** 03 com `max=2` teve 181,1 MiB em 2026-11-10 e 349,9 MiB em 2026-11-11. Não foi investigado. Por isso, as diferenças de memória só são comparadas dentro da mesma sessão.

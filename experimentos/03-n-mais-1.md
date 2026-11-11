@@ -93,7 +93,6 @@ Três versões em 3 rodadas, com a ordem deslocada: a 02 como está na `main` (p
 - **O ganho em req/s vem mais do pool do que do N+1.** De pool 2 para 1, as execuções não se sobrepõem (56,60 a 59,10 contra 61,64 a 64,05). Do N+1 com pool 1, sim (61,64 a 64,05 contra 63,37 a 65,17): +5% é pequeno perto da variação entre execuções.
 - **A cauda é ganho da 03.** O p95 cai cerca de 51% e o p99 cerca de 54 a 61%, porque `pedidos-do-cliente` cai de cerca de 1,08 s para 0,34 s.
 - **A mediana piora**, como em todas as medições anteriores da 03. As rotas rápidas (`cliente`, `cliente-por-email`, `busca-produtos`) passam de 10 a 60 ms para 140 a 170 ms. Ver [Discussão](#discussão).
-- **Memória do banco:** 02 com pool 2 marcou 355,0 MiB nesta sessão e 194,7 MiB em 2026-11-10, com o mesmo código. A queda para cerca de 165 MiB com pool 1 está nos dois lados (02 e 03), mas o valor do pool 2 nesta sessão não é confiável para medir o tamanho do ganho.
 
 ### A 03 com pool 2 contra a 02 com pool 2 (2026-11-10)
 
@@ -214,7 +213,7 @@ Mesmo código da 03, com `DB_POOL_MAX` de 2, 5 e 10, em 2026-11-08 (22h58 a 23h1
 Contra a 02 da `main`, medida na mesma sessão e no mesmo banco no desktop ([Fechamento](#fechamento-a-03-com-pool-1-contra-a-02-2026-11-11)):
 - **+12% em req/s** (57,97 → 65,11), **p95 −51%** (1627,0 → 792,9 ms), **p99 −61%** (2779,1 → 1093,3 ms) e média −11%;
 - **mediana cerca de 2,2× pior** (97,3 → 218,0 ms): a requisição típica de uma rota rápida fica mais lenta;
-- **memória do banco menor**, sem nenhum recurso novo. Os limites dos containers não mudaram.
+- sem nenhum recurso novo: os limites dos containers não mudaram.
 
 **Por que o pool 1:** com o código da 03, ele foi o melhor tamanho em req/s, mediana, p95 e p99, sem sobreposição com o 2 ([03.1 no desktop](#031-no-desktop-tamanho-do-pool-com-o-código-da-03)). O mesmo vale para a 02 ([02.1](02.1-tamanho-do-pool.md#resultado-no-desktop-oficial)). Os riscos de um pool de 1 estão na [02.1](02.1-tamanho-do-pool.md#riscos-de-um-pool-muito-pequeno): uma consulta lenta bloqueia todas as outras, e uma transação longa prende a única conexão.
 

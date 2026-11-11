@@ -107,7 +107,6 @@ As req/s por execução foram 26,49, 25,51 e 25,69 na 01 e 38,56, 38,96 e 39,07 
 - **A hipótese se confirma no desktop:** cerca de 1,5× em req/s e −45% no p95, contra 1,7× e −34% no notebook.
 - **O ganho fica nas rotas de consultas baratas e no N+1:** `cliente` e `cliente-por-email` caem cerca de 75%, e `pedidos-do-cliente` cai 57%.
 - **As rotas pesadas pioram um pouco, e o p99 sobe 7%.** `vendas-por-dia` e `top-produtos` sobem cerca de 12 a 15%. Com até 10 conexões abertas, elas dividem a CPU do banco com mais consultas ao mesmo tempo. É o efeito que a [02.1](02.1-tamanho-do-pool.md) corrige reduzindo o pool.
-- **Custo:** +108 MiB de memória no banco, dentro do limite de 512 MB.
 
 ## Resultado no notebook (histórico)
 
