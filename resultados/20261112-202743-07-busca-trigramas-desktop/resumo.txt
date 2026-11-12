@@ -1,0 +1,17 @@
+Medição: 07-busca-trigramas-desktop
+Carga: 20 usuários virtuais por 60s
+
+Requisições:        54199
+Requisições/s:      902.65
+Tempo de resposta:  mediana 20.5 ms | p95 47.0 ms | p99 59.4 ms
+Erros:              0.00%
+
+Por rota:
+rota                  req       mediana       p95           p99           erros   
+cliente               13635     14.6 ms       33.6 ms       42.5 ms       0.0%    
+cliente-por-email     8242      14.6 ms       33.9 ms       42.9 ms       0.0%    
+pedidos-do-cliente    10772     29.3 ms       55.4 ms       66.8 ms       0.0%    
+pedidos-por-status    8021      29.8 ms       56.4 ms       68.6 ms       0.0%    
+busca-produtos        8150      15.5 ms       34.6 ms       43.9 ms       0.0%    
+vendas-por-dia        4323      23.9 ms       43.1 ms       51.5 ms       0.0%    
+top-produtos          1056      14.5 ms       33.6 ms       42.4 ms       0.0%    

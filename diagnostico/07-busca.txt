@@ -1,0 +1,138 @@
+                           
+---------------------------
+ data: 2026-11-12 23:19:45
+
+ indice  | tabela  
+---------+---------
+ 1144 kB | 1520 kB
+
+CREATE FUNCTION
+CREATE TABLE
+INSERT 0 12
+INSERT 0 6
+ aquecido 
+----------
+       18
+
+   termo   | origem | linhas | ms_sem_indice | ms_com_indice | vezes_mais_rapido | resultado 
+-----------+--------+--------+---------------+---------------+-------------------+-----------
+ cadeira   | carga  |     20 |         5.903 |         0.646 |               9.1 | igual
+ mesa      | carga  |     20 |         6.333 |         0.557 |              11.4 | igual
+ lumin     | carga  |     20 |         5.759 |         0.644 |               8.9 | igual
+ teclado   | carga  |     20 |         5.878 |         0.647 |               9.1 | igual
+ monitor   | carga  |     20 |         6.048 |         0.633 |               9.5 | igual
+ ergo      | carga  |     20 |         5.881 |         0.902 |               6.5 | igual
+ sem fio   | carga  |     20 |         5.862 |         0.937 |               6.3 | igual
+ portatil  | carga  |     20 |         5.980 |         0.997 |               6.0 | igual
+ modelo 12 | carga  |     20 |         6.167 |         0.705 |               8.8 | igual
+ slim      | carga  |     20 |         5.652 |         0.815 |               6.9 | igual
+ reforcada | carga  |     20 |         6.090 |         1.025 |               5.9 | igual
+ webcam    | carga  |     20 |         5.678 |         0.622 |               9.1 | igual
+ ado       | borda  |     20 |         5.940 |         0.970 |               6.1 | igual
+ CADEIRA   | borda  |     20 |         5.855 |         0.633 |               9.3 | igual
+ xyzw      | borda  |      0 |         5.223 |         0.034 |             152.2 | igual
+ o 1       | borda  |     20 |         6.287 |         4.757 |               1.3 | igual
+ 50%       | borda  |     20 |         5.413 |         5.368 |               1.0 | igual
+ a_b       | borda  |     20 |         5.725 |         5.713 |               1.0 | igual
+
+=== planos com o índice (cadeira, ergo, sem fio, ado, o 1)
+                                                                    QUERY PLAN                                                                    
+--------------------------------------------------------------------------------------------------------------------------------------------------
+ Limit  (cost=282.34..282.39 rows=20 width=44) (actual time=0.701..0.702 rows=20 loops=1)
+   Buffers: shared hit=202
+   ->  Sort  (cost=282.34..284.87 rows=1010 width=44) (actual time=0.700..0.701 rows=20 loops=1)
+         Sort Key: nome, id
+         Sort Method: top-N heapsort  Memory: 27kB
+         Buffers: shared hit=202
+         ->  Bitmap Heap Scan on produtos  (cost=52.84..255.47 rows=1010 width=44) (actual time=0.095..0.491 rows=1000 loops=1)
+               Recheck Cond: (nome ~~* '%cadeira%'::text)
+               Heap Blocks: exact=190
+               Buffers: shared hit=202
+               ->  Bitmap Index Scan on produtos_nome_trgm_idx  (cost=0.00..52.59 rows=1010 width=0) (actual time=0.082..0.082 rows=1000 loops=1)
+                     Index Cond: (nome ~~* '%cadeira%'::text)
+                     Buffers: shared hit=12
+ Planning:
+   Buffers: shared hit=1
+ Planning Time: 0.082 ms
+ Execution Time: 0.711 ms
+
+                                                                    QUERY PLAN                                                                    
+--------------------------------------------------------------------------------------------------------------------------------------------------
+ Limit  (cost=394.83..394.88 rows=20 width=44) (actual time=0.968..0.969 rows=20 loops=1)
+   Buffers: shared hit=126
+   ->  Sort  (cost=394.83..404.93 rows=4040 width=44) (actual time=0.968..0.968 rows=20 loops=1)
+         Sort Key: nome, id
+         Sort Method: top-N heapsort  Memory: 28kB
+         Buffers: shared hit=126
+         ->  Bitmap Heap Scan on produtos  (cost=46.83..287.33 rows=4040 width=44) (actual time=0.078..0.743 rows=2000 loops=1)
+               Recheck Cond: (nome ~~* '%ergo%'::text)
+               Heap Blocks: exact=121
+               Buffers: shared hit=126
+               ->  Bitmap Index Scan on produtos_nome_trgm_idx  (cost=0.00..45.82 rows=4040 width=0) (actual time=0.069..0.069 rows=2000 loops=1)
+                     Index Cond: (nome ~~* '%ergo%'::text)
+                     Buffers: shared hit=5
+ Planning:
+   Buffers: shared hit=1
+ Planning Time: 0.062 ms
+ Execution Time: 0.975 ms
+
+                                                                  QUERY PLAN                                                                   
+-----------------------------------------------------------------------------------------------------------------------------------------------
+ Limit  (cost=54.97..54.97 rows=2 width=44) (actual time=0.994..0.995 rows=20 loops=1)
+   Buffers: shared hit=134
+   ->  Sort  (cost=54.97..54.97 rows=2 width=44) (actual time=0.994..0.994 rows=20 loops=1)
+         Sort Key: nome, id
+         Sort Method: top-N heapsort  Memory: 27kB
+         Buffers: shared hit=134
+         ->  Bitmap Heap Scan on produtos  (cost=47.55..54.96 rows=2 width=44) (actual time=0.132..0.793 rows=2000 loops=1)
+               Recheck Cond: (nome ~~* '%sem fio%'::text)
+               Heap Blocks: exact=122
+               Buffers: shared hit=134
+               ->  Bitmap Index Scan on produtos_nome_trgm_idx  (cost=0.00..47.55 rows=2 width=0) (actual time=0.124..0.124 rows=2000 loops=1)
+                     Index Cond: (nome ~~* '%sem fio%'::text)
+                     Buffers: shared hit=12
+ Planning:
+   Buffers: shared hit=1
+ Planning Time: 0.054 ms
+ Execution Time: 1.001 ms
+
+                                                                    QUERY PLAN                                                                    
+--------------------------------------------------------------------------------------------------------------------------------------------------
+ Limit  (cost=292.41..292.46 rows=20 width=44) (actual time=1.059..1.060 rows=20 loops=1)
+   Buffers: shared hit=193
+   ->  Sort  (cost=292.41..297.46 rows=2020 width=44) (actual time=1.058..1.059 rows=20 loops=1)
+         Sort Key: nome, id
+         Sort Method: top-N heapsort  Memory: 28kB
+         Buffers: shared hit=193
+         ->  Bitmap Heap Scan on produtos  (cost=23.41..238.66 rows=2020 width=44) (actual time=0.062..0.763 rows=2000 loops=1)
+               Recheck Cond: (nome ~~* '%ado%'::text)
+               Heap Blocks: exact=190
+               Buffers: shared hit=193
+               ->  Bitmap Index Scan on produtos_nome_trgm_idx  (cost=0.00..22.91 rows=2020 width=0) (actual time=0.050..0.050 rows=2000 loops=1)
+                     Index Cond: (nome ~~* '%ado%'::text)
+                     Buffers: shared hit=3
+ Planning:
+   Buffers: shared hit=1
+ Planning Time: 0.054 ms
+ Execution Time: 1.066 ms
+
+                                                                   QUERY PLAN                                                                   
+------------------------------------------------------------------------------------------------------------------------------------------------
+ Limit  (cost=20.24..20.24 rows=2 width=44) (actual time=4.459..4.461 rows=20 loops=1)
+   Buffers: shared hit=117
+   ->  Sort  (cost=20.24..20.24 rows=2 width=44) (actual time=4.459..4.460 rows=20 loops=1)
+         Sort Key: nome, id
+         Sort Method: top-N heapsort  Memory: 27kB
+         Buffers: shared hit=117
+         ->  Bitmap Heap Scan on produtos  (cost=12.82..20.23 rows=2 width=44) (actual time=0.258..3.751 rows=11111 loops=1)
+               Recheck Cond: (nome ~~* '%o 1%'::text)
+               Heap Blocks: exact=111
+               Buffers: shared hit=117
+               ->  Bitmap Index Scan on produtos_nome_trgm_idx  (cost=0.00..12.82 rows=2 width=0) (actual time=0.249..0.250 rows=11111 loops=1)
+                     Index Cond: (nome ~~* '%o 1%'::text)
+                     Buffers: shared hit=6
+ Planning:
+   Buffers: shared hit=1
+ Planning Time: 0.054 ms
+ Execution Time: 4.469 ms
+

@@ -1,0 +1,145 @@
+                           
+---------------------------
+ data: 2026-11-12 22:40:53
+(1 row)
+
+=== produtos que casam com cada termo da carga
+     t     | produtos 
+-----------+----------
+ cadeira   |     1000
+ mesa      |     1000
+ lumin     |     1000
+ teclado   |     1000
+ monitor   |     1000
+ ergo      |     2000
+ sem fio   |     2000
+ portatil  |     2000
+ modelo 12 |     1111
+ slim      |     2000
+ reforcada |     2000
+ webcam    |     1000
+(12 rows)
+
+=== busca-produtos hoje (termo cadeira)
+                                                      QUERY PLAN                                                       
+-----------------------------------------------------------------------------------------------------------------------
+ Limit  (cost=466.88..466.93 rows=20 width=44) (actual time=6.007..6.008 rows=20 loops=1)
+   Buffers: shared hit=196
+   ->  Sort  (cost=466.88..469.40 rows=1010 width=44) (actual time=6.006..6.007 rows=20 loops=1)
+         Sort Key: nome, id
+         Sort Method: top-N heapsort  Memory: 27kB
+         Buffers: shared hit=196
+         ->  Seq Scan on produtos  (cost=0.00..440.00 rows=1010 width=44) (actual time=0.011..5.779 rows=1000 loops=1)
+               Filter: (nome ~~* '%cadeira%'::text)
+               Rows Removed by Filter: 19000
+               Buffers: shared hit=190
+ Planning:
+   Buffers: shared hit=29 read=3
+ Planning Time: 0.116 ms
+ Execution Time: 6.019 ms
+(14 rows)
+
+=== vendas-por-dia hoje (7 dias)
+                                                                           QUERY PLAN                                                                            
+-----------------------------------------------------------------------------------------------------------------------------------------------------------------
+ GroupAggregate  (cost=37427.82..37739.97 rows=4162 width=84) (actual time=13.228..13.976 rows=7 loops=1)
+   Group Key: ((p.criado_em)::date)
+   Buffers: shared hit=16493 read=1822
+   ->  Sort  (cost=37427.82..37459.03 rows=12486 width=24) (actual time=13.094..13.328 rows=12922 loops=1)
+         Sort Key: ((p.criado_em)::date), p.id
+         Sort Method: quicksort  Memory: 1091kB
+         Buffers: shared hit=16493 read=1822
+         ->  Nested Loop  (cost=100.16..36578.27 rows=12486 width=24) (actual time=0.301..10.538 rows=12922 loops=1)
+               Buffers: shared hit=16490 read=1822
+               ->  Bitmap Heap Scan on pedidos p  (cost=99.73..11253.98 rows=4162 width=12) (actual time=0.288..3.061 rows=4310 loops=1)
+                     Recheck Cond: ((criado_em >= '2024-06-01'::date) AND (criado_em < '2024-06-08'::date))
+                     Filter: (status <> 'cancelado'::text)
+                     Rows Removed by Filter: 476
+                     Heap Blocks: exact=993
+                     Buffers: shared hit=5 read=1007
+                     ->  Bitmap Index Scan on pedidos_criado_em_idx  (cost=0.00..98.69 rows=4627 width=0) (actual time=0.219..0.220 rows=4786 loops=1)
+                           Index Cond: ((criado_em >= '2024-06-01'::date) AND (criado_em < '2024-06-08'::date))
+                           Buffers: shared hit=5 read=14
+               ->  Index Scan using itens_pedido_pedido_id_idx on itens_pedido i  (cost=0.43..6.04 rows=4 width=12) (actual time=0.001..0.001 rows=3 loops=4310)
+                     Index Cond: (pedido_id = p.id)
+                     Buffers: shared hit=16485 read=815
+ Planning:
+   Buffers: shared hit=221 read=15
+ Planning Time: 0.618 ms
+ Execution Time: 14.024 ms
+(25 rows)
+
+BEGIN
+CREATE EXTENSION
+CREATE INDEX
+ANALYZE
+ indice_trgm 
+-------------
+ 1144 kB
+(1 row)
+
+=== busca-produtos com índice de trigramas, termos cadeira, ergo e modelo 12
+                                                                    QUERY PLAN                                                                    
+--------------------------------------------------------------------------------------------------------------------------------------------------
+ Limit  (cost=282.34..282.39 rows=20 width=44) (actual time=0.724..0.725 rows=20 loops=1)
+   Buffers: shared hit=202
+   ->  Sort  (cost=282.34..284.87 rows=1010 width=44) (actual time=0.723..0.724 rows=20 loops=1)
+         Sort Key: nome, id
+         Sort Method: top-N heapsort  Memory: 27kB
+         Buffers: shared hit=202
+         ->  Bitmap Heap Scan on produtos  (cost=52.84..255.47 rows=1010 width=44) (actual time=0.096..0.518 rows=1000 loops=1)
+               Recheck Cond: (nome ~~* '%cadeira%'::text)
+               Heap Blocks: exact=190
+               Buffers: shared hit=202
+               ->  Bitmap Index Scan on produtos_nome_trgm_idx  (cost=0.00..52.59 rows=1010 width=0) (actual time=0.083..0.083 rows=1000 loops=1)
+                     Index Cond: (nome ~~* '%cadeira%'::text)
+                     Buffers: shared hit=12
+ Planning:
+   Buffers: shared hit=37
+ Planning Time: 0.096 ms
+ Execution Time: 0.732 ms
+(17 rows)
+
+                                                                    QUERY PLAN                                                                    
+--------------------------------------------------------------------------------------------------------------------------------------------------
+ Limit  (cost=394.83..394.88 rows=20 width=44) (actual time=0.960..0.961 rows=20 loops=1)
+   Buffers: shared hit=126
+   ->  Sort  (cost=394.83..404.93 rows=4040 width=44) (actual time=0.960..0.960 rows=20 loops=1)
+         Sort Key: nome, id
+         Sort Method: top-N heapsort  Memory: 28kB
+         Buffers: shared hit=126
+         ->  Bitmap Heap Scan on produtos  (cost=46.83..287.33 rows=4040 width=44) (actual time=0.079..0.746 rows=2000 loops=1)
+               Recheck Cond: (nome ~~* '%ergo%'::text)
+               Heap Blocks: exact=121
+               Buffers: shared hit=126
+               ->  Bitmap Index Scan on produtos_nome_trgm_idx  (cost=0.00..45.82 rows=4040 width=0) (actual time=0.070..0.070 rows=2000 loops=1)
+                     Index Cond: (nome ~~* '%ergo%'::text)
+                     Buffers: shared hit=5
+ Planning:
+   Buffers: shared hit=1
+ Planning Time: 0.046 ms
+ Execution Time: 0.965 ms
+(17 rows)
+
+                                                                  QUERY PLAN                                                                   
+-----------------------------------------------------------------------------------------------------------------------------------------------
+ Limit  (cost=72.33..72.34 rows=2 width=44) (actual time=0.688..0.690 rows=20 loops=1)
+   Buffers: shared hit=51
+   ->  Sort  (cost=72.33..72.34 rows=2 width=44) (actual time=0.688..0.689 rows=20 loops=1)
+         Sort Key: nome, id
+         Sort Method: top-N heapsort  Memory: 27kB
+         Buffers: shared hit=51
+         ->  Bitmap Heap Scan on produtos  (cost=64.91..72.32 rows=2 width=44) (actual time=0.195..0.569 rows=1111 loops=1)
+               Recheck Cond: (nome ~~* '%modelo 12%'::text)
+               Heap Blocks: exact=14
+               Buffers: shared hit=51
+               ->  Bitmap Index Scan on produtos_nome_trgm_idx  (cost=0.00..64.91 rows=2 width=0) (actual time=0.193..0.193 rows=1111 loops=1)
+                     Index Cond: (nome ~~* '%modelo 12%'::text)
+                     Buffers: shared hit=37
+ Planning:
+   Buffers: shared hit=1
+ Planning Time: 0.042 ms
+ Execution Time: 0.693 ms
+(17 rows)
+
+ROLLBACK
