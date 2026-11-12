@@ -1,0 +1,17 @@
+Medição: 051-vacuum-analyze-desktop
+Carga: 20 usuários virtuais por 60s
+
+Requisições:        5665
+Requisições/s:      93.65
+Tempo de resposta:  mediana 89.8 ms | p95 584.6 ms | p99 919.5 ms
+Erros:              0.00%
+
+Por rota:
+rota                  req       mediana       p95           p99           erros   
+cliente               1450      66.8 ms       488.5 ms      816.2 ms      0.0%    
+cliente-por-email     845       66.7 ms       486.8 ms      816.1 ms      0.0%    
+pedidos-do-cliente    1184      125.4 ms      881.5 ms      983.0 ms      0.0%    
+pedidos-por-status    808       125.0 ms      890.8 ms      989.1 ms      0.0%    
+busca-produtos        840       75.1 ms       489.7 ms      821.5 ms      0.0%    
+vendas-por-dia        437       78.5 ms       498.2 ms      866.8 ms      0.0%    
+top-produtos          101       460.7 ms      857.8 ms      1210.4 ms     0.0%    

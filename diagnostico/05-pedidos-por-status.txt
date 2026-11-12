@@ -1,0 +1,172 @@
+=== estado: pedidos por status, páginas visíveis (relallvisible/relpages) e último vacuum
+  status   | count  
+-----------+--------
+ cancelado |  50000
+ entregue  | 125000
+ pago      | 300000
+ pendente  |  25000
+(4 rows)
+
+ relname | relallvisible | relpages 
+---------+---------------+----------
+ pedidos |         20834 |    20834
+(1 row)
+
+ relname | last_vacuum |        last_autovacuum        |         last_analyze          | last_autoanalyze 
+---------+-------------+-------------------------------+-------------------------------+------------------
+ pedidos |             | 2026-11-11 19:11:09.334636+00 | 2026-11-11 19:10:21.985582+00 | 
+(1 row)
+
+=== A1. contagem atual (status pago)
+ total  
+--------
+ 300000
+(1 row)
+
+                                                                                     QUERY PLAN                                                                                     
+------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+ Finalize Aggregate  (cost=11335.33..11335.34 rows=1 width=8) (actual time=9.027..9.732 rows=1 loops=1)
+   Buffers: shared hit=1484
+   ->  Gather  (cost=11335.12..11335.33 rows=2 width=8) (actual time=9.004..9.730 rows=3 loops=1)
+         Workers Planned: 2
+         Workers Launched: 2
+         Buffers: shared hit=1484
+         ->  Partial Aggregate  (cost=10335.12..10335.13 rows=1 width=8) (actual time=7.536..7.536 rows=1 loops=3)
+               Buffers: shared hit=1484
+               ->  Parallel Index Only Scan using pedidos_status_criado_em_idx on pedidos  (cost=0.42..10021.45 rows=125465 width=0) (actual time=0.012..5.456 rows=100000 loops=3)
+                     Index Cond: (status = 'pago'::text)
+                     Heap Fetches: 0
+                     Buffers: shared hit=1484
+ Planning Time: 0.025 ms
+ Execution Time: 9.748 ms
+(14 rows)
+
+=== A2. página atual: SELECT *, pagina 1, 500 e 1000 (OFFSET 0, 9980 e 19980)
+ count 
+-------
+    20
+(1 row)
+
+                                                                       QUERY PLAN                                                                       
+--------------------------------------------------------------------------------------------------------------------------------------------------------
+ Limit  (cost=0.42..6.22 rows=20 width=299) (actual time=0.014..0.075 rows=20 loops=1)
+   Buffers: shared hit=3 read=20
+   ->  Index Scan using pedidos_status_criado_em_idx on pedidos  (cost=0.42..87296.92 rows=301117 width=299) (actual time=0.014..0.074 rows=20 loops=1)
+         Index Cond: (status = 'pago'::text)
+         Buffers: shared hit=3 read=20
+ Planning:
+   Buffers: shared hit=6
+ Planning Time: 0.027 ms
+ Execution Time: 0.079 ms
+(9 rows)
+
+                                                                        QUERY PLAN                                                                         
+-----------------------------------------------------------------------------------------------------------------------------------------------------------
+ Limit  (cost=2893.71..2899.51 rows=20 width=299) (actual time=6.161..6.170 rows=20 loops=1)
+   Buffers: shared hit=8620 read=1432
+   ->  Index Scan using pedidos_status_criado_em_idx on pedidos  (cost=0.42..87296.92 rows=301117 width=299) (actual time=0.004..6.001 rows=10000 loops=1)
+         Index Cond: (status = 'pago'::text)
+         Buffers: shared hit=8620 read=1432
+ Planning Time: 0.014 ms
+ Execution Time: 6.174 ms
+(7 rows)
+
+                                                                        QUERY PLAN                                                                         
+-----------------------------------------------------------------------------------------------------------------------------------------------------------
+ Limit  (cost=5792.80..5798.60 rows=20 width=299) (actual time=5.218..5.224 rows=20 loops=1)
+   Buffers: shared hit=19408 read=693
+   ->  Index Scan using pedidos_status_criado_em_idx on pedidos  (cost=0.42..87296.92 rows=301117 width=299) (actual time=0.005..4.913 rows=20000 loops=1)
+         Index Cond: (status = 'pago'::text)
+         Buffers: shared hit=19408 read=693
+ Planning Time: 0.025 ms
+ Execution Time: 5.228 ms
+(7 rows)
+
+=== B. candidata 05: só as 4 colunas usadas, pagina 1000
+                                                                        QUERY PLAN                                                                        
+----------------------------------------------------------------------------------------------------------------------------------------------------------
+ Limit  (cost=5792.80..5798.60 rows=20 width=22) (actual time=3.317..3.320 rows=20 loops=1)
+   Buffers: shared hit=20101
+   ->  Index Scan using pedidos_status_criado_em_idx on pedidos  (cost=0.42..87296.92 rows=301117 width=22) (actual time=0.006..3.016 rows=20000 loops=1)
+         Index Cond: (status = 'pago'::text)
+         Buffers: shared hit=20101
+ Planning Time: 0.018 ms
+ Execution Time: 3.323 ms
+(7 rows)
+
+=== C. candidata 05.1: B com o índice incluindo cliente_id, criado só dentro de uma transação desfeita
+BEGIN
+CREATE INDEX
+ANALYZE
+   id   | cliente_id | status |      criado_em      
+--------+------------+--------+---------------------
+ 418487 |      85978 | pago   | 2025-11-13 08:03:43
+  94038 |       8299 | pago   | 2025-11-13 08:01:42
+ 168215 |       6266 | pago   | 2025-11-13 07:58:55
+ 242392 |       4233 | pago   | 2025-11-13 07:56:08
+ 316569 |       2200 | pago   | 2025-11-13 07:53:21
+ 390746 |        167 | pago   | 2025-11-13 07:50:34
+ 464923 |      98134 | pago   | 2025-11-13 07:47:47
+ 140474 |      20455 | pago   | 2025-11-13 07:45:46
+ 288828 |      16389 | pago   | 2025-11-13 07:40:12
+ 437182 |      12323 | pago   | 2025-11-13 07:34:38
+ 112733 |      34644 | pago   | 2025-11-13 07:32:37
+ 261087 |      30578 | pago   | 2025-11-13 07:27:03
+  10815 |      50866 | pago   | 2025-11-13 07:22:15
+ 409441 |      26512 | pago   | 2025-11-13 07:21:29
+  84992 |      48833 | pago   | 2025-11-13 07:19:28
+ 159169 |      46800 | pago   | 2025-11-13 07:16:41
+ 233346 |      44767 | pago   | 2025-11-13 07:13:54
+ 307523 |      42734 | pago   | 2025-11-13 07:11:07
+ 381700 |      40701 | pago   | 2025-11-13 07:08:20
+ 455877 |      38668 | pago   | 2025-11-13 07:05:33
+(20 rows)
+
+                                                                             QUERY PLAN                                                                              
+---------------------------------------------------------------------------------------------------------------------------------------------------------------------
+ Limit  (cost=0.42..1.20 rows=20 width=22) (actual time=0.031..0.032 rows=20 loops=1)
+   Buffers: shared hit=4
+   ->  Index Only Scan using diag_pedidos_status_criado_em_inc_idx on pedidos  (cost=0.42..11780.88 rows=301283 width=22) (actual time=0.030..0.031 rows=20 loops=1)
+         Index Cond: (status = 'pago'::text)
+         Heap Fetches: 0
+         Buffers: shared hit=4
+ Planning Time: 0.019 ms
+ Execution Time: 0.035 ms
+(8 rows)
+
+                                                                               QUERY PLAN                                                                               
+------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+ Limit  (cost=781.66..782.44 rows=20 width=22) (actual time=1.420..1.422 rows=20 loops=1)
+   Buffers: shared hit=102
+   ->  Index Only Scan using diag_pedidos_status_criado_em_inc_idx on pedidos  (cost=0.42..11780.88 rows=301283 width=22) (actual time=0.005..1.140 rows=20000 loops=1)
+         Index Cond: (status = 'pago'::text)
+         Heap Fetches: 0
+         Buffers: shared hit=102
+ Planning Time: 0.014 ms
+ Execution Time: 1.424 ms
+(8 rows)
+
+                                                                                         QUERY PLAN                                                                                          
+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+ Finalize Aggregate  (cost=11337.44..11337.45 rows=1 width=8) (actual time=13.757..15.052 rows=1 loops=1)
+   Buffers: shared hit=104 read=1380
+   ->  Gather  (cost=11337.23..11337.44 rows=2 width=8) (actual time=13.725..15.049 rows=3 loops=1)
+         Workers Planned: 2
+         Workers Launched: 2
+         Buffers: shared hit=104 read=1380
+         ->  Partial Aggregate  (cost=10337.23..10337.24 rows=1 width=8) (actual time=12.199..12.200 rows=1 loops=3)
+               Buffers: shared hit=104 read=1380
+               ->  Parallel Index Only Scan using diag_pedidos_status_criado_em_inc_idx on pedidos  (cost=0.42..10023.39 rows=125535 width=0) (actual time=0.039..9.642 rows=100000 loops=3)
+                     Index Cond: (status = 'pago'::text)
+                     Heap Fetches: 0
+                     Buffers: shared hit=104 read=1380
+ Planning Time: 0.035 ms
+ Execution Time: 15.064 ms
+(14 rows)
+
+ indice_novo | indice_da_01 
+-------------+--------------
+ 21 MB       | 21 MB
+(1 row)
+
+ROLLBACK

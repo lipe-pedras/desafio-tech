@@ -1,0 +1,16 @@
+Fonte: https://www.postgresql.org/docs/16/sql-vacuum.html
+Acessado em: 2026-11-11
+Trecho do texto da página (HTML convertido em texto, sem edição do conteúdo): Description, opção ANALYZE e a nota sobre bloco de transação.
+
+Description
+
+VACUUM reclaims storage occupied by dead tuples. In normal PostgreSQL operation, tuples that are deleted or obsoleted by an update are not physically removed from their table; they remain present until a VACUUM is done. Therefore it's necessary to do VACUUM periodically, especially on frequently-updated tables.
+
+Without a table_and_columns list, VACUUM processes every table and materialized view in the current database that the current user has permission to vacuum. With a list, VACUUM processes only those table(s).
+
+VACUUM ANALYZE performs a VACUUM and then an ANALYZE for each selected table. This is a handy combination form for routine maintenance scripts. See ANALYZE for more details about its processing.
+ANALYZE
+
+Updates statistics used by the planner to determine the most efficient way to execute a query.
+
+VACUUM cannot be executed inside a transaction block.

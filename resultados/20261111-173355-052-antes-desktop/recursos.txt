@@ -1,0 +1,5 @@
+container                            amostras  cpu_media    cpu_max    mem_media      mem_max
+rod-e98d400-banco-1                        30      98.8%     100.0%    171.6 MiB    196.3 MiB
+rod-e98d400-api-1                          30       2.9%       6.7%     28.2 MiB     29.1 MiB
+
+cpu_percentual: 100% = 1 CPU inteira.

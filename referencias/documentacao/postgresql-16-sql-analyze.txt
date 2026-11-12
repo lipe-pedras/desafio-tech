@@ -1,0 +1,8 @@
+Fonte: https://www.postgresql.org/docs/16/sql-analyze.html
+Acessado em: 2026-11-11
+Trecho do texto da página (HTML convertido em texto, sem edição do conteúdo): Description (primeiro parágrafo).
+
+Description
+
+ANALYZE collects statistics about the contents of tables in the database, and stores the results in the pg_statistic system catalog. Subsequently, the query planner uses these statistics to help determine the most efficient execution plans for queries.
+

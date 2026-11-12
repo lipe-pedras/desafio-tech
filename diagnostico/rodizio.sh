@@ -9,7 +9,8 @@
 # o mesmo protocolo. Os bancos são criados uma vez e ligados um por vez. Em cada vez:
 #   1. sobe a versão e fixa banco e api nos núcleos P (docker update --cpuset-cpus; limites inalterados);
 #   2. aquece por 60 s (5 VUs, semente 43, fora da medição);
-#   3. confere o contrato e mede com scripts/medir.sh;
+#   3. confere o contrato, registra o mapa de visibilidade das tabelas (relallvisible/relpages e último vacuum)
+#      e mede com scripts/medir.sh;
 #   4. desliga a versão.
 # São 3 rodadas, com a ordem deslocada a cada rodada. As pastas de resultados são copiadas para resultados/.
 # Registro de cada passo em diagnostico/rodizio-registro.txt.
@@ -31,6 +32,12 @@ fixar() {
   docker update --cpuset-cpus "$NUCLEOS_P" $ids >/dev/null
   # shellcheck disable=SC2086
   log "fixado: $(docker inspect --format '{{.Name}} cpuset={{.HostConfig.CpusetCpus}} nanocpus={{.HostConfig.NanoCpus}}' $ids | tr '\n' ' ')"
+}
+# Páginas marcadas como visíveis no mapa de visibilidade (relallvisible/relpages) e último vacuum de cada tabela.
+visibilidade() {
+  dc "$1" docker compose exec -T banco psql -U loja -d loja -Atc "SELECT string_agg(c.relname || '=' || c.relallvisible || '/' || c.relpages
+      || ' vac=' || coalesce(to_char(greatest(s.last_vacuum, s.last_autovacuum), 'HH24:MI:SS'), '-'), ' ' ORDER BY c.relname)
+    FROM pg_class c JOIN pg_stat_user_tables s ON s.relid = c.oid"
 }
 guardar() {
   local d
@@ -59,6 +66,7 @@ for (( rodada = 0; rodada < RODADAS; rodada++ )); do
     fixar "$c"
     dc "$c" docker compose run --rm -e VUS=5 -e DURACAO=60s -e SEMENTE=43 carga run --quiet --no-summary /carga/teste-carga.js >/dev/null
     dc "$c" scripts/verificar-contrato.sh comparar 2>&1 | tail -1 | grep -q "Contrato mantido" || { log "contrato quebrado em $c"; exit 1; }
+    log "antes de medir $r: $(visibilidade "$c")"
     dc "$c" scripts/medir.sh "$r" 2>&1 | tail -1
     guardar "$c" "$r"
     log "medido $r ($c): $(grep -m1 'Requisições/s' "$(ls -d "$(wt "$c")"/resultados/*-"$r" | tail -1)/resumo.txt" | tr -s ' ')"

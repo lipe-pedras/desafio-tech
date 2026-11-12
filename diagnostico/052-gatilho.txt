@@ -1,0 +1,83 @@
+CREATE VIEW
+=== 0. estado inicial: divergências (esperado: nenhuma linha)
+  status   | total  
+-----------+--------
+ cancelado |  50000
+ entregue  | 125000
+ pago      | 300000
+ pendente  |  25000
+(4 rows)
+
+ status | contado | na_tabela 
+--------+---------+-----------
+(0 rows)
+
+BEGIN
+=== 1. INSERT de 1000 pedidos num comando só, nos 4 status e num status novo (devolvido)
+INSERT 0 1000
+ status | contado | na_tabela 
+--------+---------+-----------
+(0 rows)
+
+=== 2. INSERT de 1 pedido
+INSERT 0 1
+ status | contado | na_tabela 
+--------+---------+-----------
+(0 rows)
+
+=== 3. UPDATE de status de 500 pedidos (pago -> entregue) e de 200 (pendente -> pendente, sem mudança)
+UPDATE 500
+UPDATE 200
+ status | contado | na_tabela 
+--------+---------+-----------
+(0 rows)
+
+=== 4. UPDATE de outra coluna (observacoes) de 300 pedidos
+UPDATE 300
+ status | contado | na_tabela 
+--------+---------+-----------
+(0 rows)
+
+=== 5. DELETE dos 1001 pedidos de teste
+DELETE 1001
+ status | contado | na_tabela 
+--------+---------+-----------
+(0 rows)
+
+  status   | total  
+-----------+--------
+ cancelado |  50000
+ devolvido |      0
+ entregue  | 125500
+ pago      | 299500
+ pendente  |  25000
+(5 rows)
+
+ROLLBACK
+BEGIN
+=== 6. TRUNCATE (com itens_pedido, por causa da chave estrangeira) e INSERT depois
+NOTICE:  truncate cascades to table "itens_pedido"
+TRUNCATE TABLE
+ status | contado | na_tabela 
+--------+---------+-----------
+(0 rows)
+
+INSERT 0 1
+ status | contado | na_tabela 
+--------+---------+-----------
+(0 rows)
+
+ROLLBACK
+=== 7. depois dos ROLLBACKs: divergências (esperado: nenhuma linha)
+  status   | total  
+-----------+--------
+ cancelado |  50000
+ entregue  | 125000
+ pago      | 300000
+ pendente  |  25000
+(4 rows)
+
+ status | contado | na_tabela 
+--------+---------+-----------
+(0 rows)
+

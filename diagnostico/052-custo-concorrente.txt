@@ -1,0 +1,48 @@
+data: 2026-11-11 17:26:02
+cenario clientes gatilhos   rodada           tps    latencia_ms
+insert  1        ligados    1        2804.078339          0.357
+insert  1        desligados 1        2777.961400          0.360
+insert  8        ligados    1        4711.389398          1.698
+insert  8        desligados 1        8950.976229          0.894
+update  1        ligados    1        1386.660181          0.721
+update  1        desligados 1        1301.901298          0.768
+update  8        ligados    1        1624.393115          4.925
+update  8        desligados 1        6183.269687          1.294
+insert  1        desligados 2        2379.377740          0.420
+insert  1        ligados    2        2220.370969          0.450
+insert  8        desligados 2       11376.907323          0.703
+insert  8        ligados    2        4680.448515          1.709
+update  1        desligados 2        2111.686295          0.474
+update  1        ligados    2        1389.756571          0.720
+update  8        desligados 2        4772.817793          1.676
+update  8        ligados    2        1981.643127          4.037
+insert  1        ligados    3        1388.852082          0.720
+insert  1        desligados 3        2655.862008          0.377
+insert  8        ligados    3        4659.591147          1.717
+insert  8        desligados 3       11346.908004          0.705
+update  1        ligados    3        1286.864086          0.777
+update  1        desligados 3        1240.681016          0.806
+update  8        ligados    3        1605.184106          4.984
+update  8        desligados 3        5546.874099          1.442
+
+conferência sob concorrência: total recalculado; 10 s de insert e update juntos, 8 clientes, gatilhos ligados
+number of transactions actually processed: 19099
+number of failed transactions: 0 (0.000%)
+tps = 1909.844233 (without initial connection time)
+ - 9617 transactions (50.4% of total, tps = 961.671919)
+ - number of failed transactions: 0 (0.000%)
+ - 9474 transactions (49.6% of total, tps = 947.372337)
+ - number of failed transactions: 0 (0.000%)
+divergências entre pedidos_por_status e count(*) (esperado: 0 linhas)
+ status | contado | na_tabela 
+--------+---------+-----------
+(0 rows)
+
+           tgname            | tgenabled 
+-----------------------------+-----------
+ pedidos_por_status_delete   | O
+ pedidos_por_status_insert   | O
+ pedidos_por_status_truncate | O
+ pedidos_por_status_update   | O
+(4 rows)
+

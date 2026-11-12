@@ -1,0 +1,18 @@
+Fonte: https://www.postgresql.org/docs/16/sql-createtrigger.html
+Acessado em: 2026-11-11
+Trecho do texto da página (HTML convertido em texto, sem edição do conteúdo): parágrafos da Description sobre FOR EACH ROW, TRUNCATE e REFERENCING; parâmetros event, REFERENCING e FOR EACH STATEMENT.
+
+CREATE TRIGGER
+
+A trigger that is marked FOR EACH ROW is called once for every row that the operation modifies. For example, a DELETE that affects 10 rows will cause any ON DELETE triggers on the target relation to be called 10 separate times, once for each deleted row. In contrast, a trigger that is marked FOR EACH STATEMENT only executes once for any given operation, regardless of how many rows it modifies (in particular, an operation that modifies zero rows will still result in the execution of any applicable FOR EACH STATEMENT triggers).
+
+In addition, triggers may be defined to fire for TRUNCATE, though only FOR EACH STATEMENT.
+
+The REFERENCING option enables collection of transition relations, which are row sets that include all of the rows inserted, deleted, or modified by the current SQL statement. This feature lets the trigger see a global view of what the statement did, not just one row at a time. This option is only allowed for an AFTER trigger on a plain table (not a foreign table). The trigger should not be a constraint trigger. Also, if the trigger is an UPDATE trigger, it must not specify a column_name list when using this option. OLD TABLE may only be specified once, and only for a trigger that can fire on UPDATE or DELETE; it creates a transition relation containing the before-images of all rows updated or deleted by the statement. Similarly, NEW TABLE may only be specified once, and only for a trigger that can fire on UPDATE or INSERT; it creates a transition relation containing the after-images of all rows updated or inserted by the statement.
+
+One of INSERT, UPDATE, DELETE, or TRUNCATE; this specifies the event that will fire the trigger. Multiple events can be specified using OR, except when transition relations are requested.
+
+INSTEAD OF UPDATE events do not allow a list of columns. A column list cannot be specified when requesting transition relations, either.
+
+This specifies whether the trigger function should be fired once for every row affected by the trigger event, or just once per SQL statement. If neither is specified, FOR EACH STATEMENT is the default. Constraint triggers can only be specified FOR EACH ROW.
+

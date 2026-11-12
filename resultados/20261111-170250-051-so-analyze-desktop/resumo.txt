@@ -1,0 +1,17 @@
+Medição: 051-so-analyze-desktop
+Carga: 20 usuários virtuais por 60s
+
+Requisições:        5621
+Requisições/s:      93.67
+Tempo de resposta:  mediana 91.6 ms | p95 573.2 ms | p99 912.5 ms
+Erros:              0.00%
+
+Por rota:
+rota                  req       mediana       p95           p99           erros   
+cliente               1445      64.0 ms       489.2 ms      865.2 ms      0.0%    
+cliente-por-email     840       68.9 ms       485.0 ms      831.8 ms      0.0%    
+pedidos-do-cliente    1170      124.4 ms      891.6 ms      973.8 ms      0.0%    
+pedidos-por-status    803       134.4 ms      896.2 ms      971.5 ms      0.0%    
+busca-produtos        831       76.6 ms       494.5 ms      839.2 ms      0.0%    
+vendas-por-dia        433       76.9 ms       493.0 ms      768.3 ms      0.0%    
+top-produtos          99        466.2 ms      876.6 ms      900.4 ms      0.0%    

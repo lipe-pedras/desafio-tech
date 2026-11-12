@@ -1,0 +1,5 @@
+container                            amostras  cpu_media    cpu_max    mem_media      mem_max
+rod-f7d250c-banco-1                        30      99.6%      99.8%    183.0 MiB    195.9 MiB
+rod-f7d250c-api-1                          30       2.8%       6.0%     28.8 MiB     29.6 MiB
+
+cpu_percentual: 100% = 1 CPU inteira.
