@@ -1,0 +1,18 @@
+== 06x-antes-desktop (3 execuções) commit ['ea0a026'] sujo ['0', '0', '0'] erros [0, 0, 0] contrato ['mantido']
+   pastas 20261111-225353-06x-antes-desktop 20261111-230656-06x-antes-desktop 20261111-231208-06x-antes-desktop
+   req/s por execução [132.7, 133.25, 131.83]  p95 por execução [404.4, 394.8, 400.8]
+   medianas: rps=132.70 avg=149.98 med=72.97 p95=400.84 p99=660.33 cpu_b=100.00 mem_b=174.60 cpu_a=3.70 mem_a=29.00
+   rotas (mediana da rota, ms): cliente=42.7 cliente-por-email=41.8 pedidos-do-cliente=103.2 pedidos-por-status=102.8 busca-produtos=57.5 vendas-por-dia=64.6 top-produtos=302.8
+
+== 061-sem-paralelismo-desktop (3 execuções) commit ['59708fb'] sujo ['0', '0', '0'] erros [0, 0, 0] contrato ['mantido']
+   pastas 20261111-225631-061-sem-paralelismo-desktop 20261111-230143-061-sem-paralelismo-desktop 20261111-231446-061-sem-paralelismo-desktop
+   req/s por execução [133.7, 133.63, 132.04]  p95 por execução [626.8, 413.3, 410.0]
+   medianas: rps=133.63 avg=149.21 med=45.38 p95=413.29 p99=685.39 cpu_b=98.10 mem_b=158.20 cpu_a=3.20 mem_a=29.20
+   rotas (mediana da rota, ms): cliente=31.4 cliente-por-email=31.4 pedidos-do-cliente=70.1 pedidos-por-status=71.2 busca-produtos=37.9 vendas-por-dia=40.3 top-produtos=343.2
+
+== 062-total-por-produto-desktop (3 execuções) commit ['e627abe'] sujo ['0', '0', '0'] erros [0, 0, 0] contrato ['mantido']
+   pastas 20261111-225906-062-total-por-produto-desktop 20261111-230420-062-total-por-produto-desktop 20261111-230932-062-total-por-produto-desktop
+   req/s por execução [412.21, 412.81, 409.8]  p95 por execução [97.5, 97.2, 96.9]
+   medianas: rps=412.21 avg=48.45 med=43.13 p95=97.16 p99=120.43 cpu_b=99.70 mem_b=154.00 cpu_a=10.10 mem_a=30.40
+   rotas (mediana da rota, ms): cliente=28.6 cliente-por-email=28.5 pedidos-do-cliente=68.5 pedidos-por-status=69.3 busca-produtos=36.3 vendas-por-dia=43.2 top-produtos=28.5
+
