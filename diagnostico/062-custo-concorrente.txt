@@ -1,0 +1,57 @@
+data: 2026-11-11 22:42:27
+cenario clientes gatilhos   rodada           tps    latencia_ms
+item    1        ligados    1        1992.679740          0.502
+item    1        desligados 1        1440.510919          0.694
+item    8        ligados    1        6108.143535          1.310
+item    8        desligados 1        5902.811984          1.355
+status  1        ligados    1        1012.850541          0.987
+status  1        desligados 1        1219.343287          0.820
+status  8        ligados    1        1939.563067          4.125
+status  8        desligados 1        1457.790467          5.488
+item    1        desligados 2        2014.904977          0.496
+item    1        ligados    2        1568.987393          0.637
+item    8        desligados 2        6333.263936          1.263
+item    8        ligados    2        4695.546517          1.704
+status  1        desligados 2        1432.323896          0.698
+status  1        ligados    2        1100.107172          0.909
+status  8        desligados 2        1898.339823          4.214
+status  8        ligados    2        1595.025549          5.016
+item    1        ligados    3        1301.149502          0.769
+item    1        desligados 3        1554.219682          0.643
+item    8        ligados    3        4842.594912          1.652
+item    8        desligados 3        5683.219209          1.408
+status  1        ligados    3        1117.976022          0.894
+status  1        desligados 3        1500.557634          0.666
+status  8        ligados    3        1825.498685          4.382
+status  8        desligados 3        1371.626823          5.832
+
+conferência sob disputa: total recalculado; 10 s de item e status nos mesmos 100 pedidos, 8 clientes, gatilhos ligados
+number of transactions actually processed: 35395
+number of failed transactions: 0 (0.000%)
+number of transactions retried: 0 (0.000%)
+tps = 3536.897904 (without initial connection time)
+ - 17682 transactions (50.0% of total, tps = 1766.900092)
+ - number of failed transactions: 0 (0.000%)
+ - number of transactions retried: 0 (0.000%)
+ - 17661 transactions (49.9% of total, tps = 1764.801635)
+ - number of failed transactions: 0 (0.000%)
+ - number of transactions retried: 0 (0.000%)
+produtos com divergência entre vendas_por_produto e o recálculo (esperado: 0)
+ produtos_divergentes 
+----------------------
+                    0
+(1 row)
+
+    tabela    |           tgname            | tgenabled 
+--------------+-----------------------------+-----------
+ pedidos      | pedidos_por_status_delete   | O
+ pedidos      | pedidos_por_status_insert   | O
+ pedidos      | pedidos_por_status_truncate | O
+ pedidos      | pedidos_por_status_update   | O
+ pedidos      | vendas_por_produto_status   | O
+ itens_pedido | vendas_por_produto_delete   | O
+ itens_pedido | vendas_por_produto_insert   | O
+ itens_pedido | vendas_por_produto_truncate | O
+ itens_pedido | vendas_por_produto_update   | O
+(9 rows)
+
