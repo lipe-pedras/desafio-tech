@@ -1,0 +1,5 @@
+container                            amostras  cpu_media    cpu_max    mem_media      mem_max
+rod-92207db-banco-1                        30      94.3%      96.2%    151.1 MiB    152.3 MiB
+rod-92207db-api-1                          30      12.0%       9.8%     30.6 MiB     31.5 MiB
+
+cpu_percentual: 100% = 1 CPU inteira.

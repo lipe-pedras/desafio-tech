@@ -205,3 +205,37 @@
 2026-11-11 23:46:04 perfil=performance carga=1.06 0.84 0.77 cota depois de medir 0621-062-sem-paralelismo-desktop: usage_usec 128375498 nr_periods 1379 nr_throttled 35 throttled_usec 614526 
 2026-11-11 23:46:04 perfil=performance carga=1.06 0.84 0.77 medido 0621-062-sem-paralelismo-desktop (48f8301): Requisições/s: 529.84
 2026-11-11 23:46:15 perfil=performance carga=0.90 0.81 0.76 fim do rodízio
+2026-11-12 20:20:10 perfil=performance carga=0.77 0.38 0.35 rodízio: 92207db:07-antes-desktop 72bd33f:07-busca-trigramas-desktop
+2026-11-12 20:20:36 perfil=performance carga=0.96 0.46 0.38 banco de 92207db criado em 26 s
+2026-11-12 20:21:13 perfil=performance carga=0.86 0.50 0.39 banco de 72bd33f criado em 26 s
+2026-11-12 20:21:30 perfil=performance carga=0.67 0.47 0.38 fixado: /rod-92207db-api-1 cpuset=0-15 nanocpus=500000000 /rod-92207db-banco-1 cpuset=0-15 nanocpus=1000000000 
+2026-11-12 20:22:31 perfil=performance carga=0.94 0.60 0.44 antes de medir 07-antes-desktop: clientes=1156/1156 vac=23:22:04 itens_pedido=9555/9555 vac=23:22:06 pedidos=20834/20834 vac=23:20:31 pedidos_por_status=1/1 vac=23:20:31 produtos=189/190 vac=23:22:06 vendas_por_produto=142/142 vac=23:20:33
+2026-11-12 20:22:31 perfil=performance carga=0.94 0.60 0.44 cota antes de medir 07-antes-desktop: usage_usec 56858931 nr_periods 621 nr_throttled 15 throttled_usec 351812 
+2026-11-12 20:23:49 perfil=performance carga=1.07 0.71 0.49 cota depois de medir 07-antes-desktop: usage_usec 127999434 nr_periods 1380 nr_throttled 34 throttled_usec 686856 
+2026-11-12 20:23:49 perfil=performance carga=1.07 0.71 0.49 medido 07-antes-desktop (92207db): Requisições/s: 528.16
+2026-11-12 20:24:06 perfil=performance carga=0.83 0.68 0.48 fixado: /rod-72bd33f-api-1 cpuset=0-15 nanocpus=500000000 /rod-72bd33f-banco-1 cpuset=0-15 nanocpus=1000000000 
+2026-11-12 20:25:07 perfil=performance carga=1.01 0.77 0.53 antes de medir 07-busca-trigramas-desktop: clientes=1156/1156 vac=23:24:40 itens_pedido=9554/9555 vac=23:24:42 pedidos=20834/20834 vac=23:21:07 pedidos_por_status=1/1 vac=23:21:07 produtos=190/190 vac=23:21:08 vendas_por_produto=142/142 vac=23:24:42
+2026-11-12 20:25:07 perfil=performance carga=1.01 0.77 0.53 cota antes de medir 07-busca-trigramas-desktop: usage_usec 55391382 nr_periods 623 nr_throttled 17 throttled_usec 287364 
+2026-11-12 20:26:25 perfil=performance carga=1.47 0.96 0.62 cota depois de medir 07-busca-trigramas-desktop: usage_usec 124371016 nr_periods 1385 nr_throttled 35 throttled_usec 595598 
+2026-11-12 20:26:25 perfil=performance carga=1.47 0.96 0.62 medido 07-busca-trigramas-desktop (72bd33f): Requisições/s: 900.67
+2026-11-12 20:26:41 perfil=performance carga=1.14 0.91 0.61 fixado: /rod-72bd33f-api-1 cpuset=0-15 nanocpus=500000000 /rod-72bd33f-banco-1 cpuset=0-15 nanocpus=1000000000 
+2026-11-12 20:27:42 perfil=performance carga=1.14 0.96 0.65 antes de medir 07-busca-trigramas-desktop: clientes=1156/1156 vac=23:24:40 itens_pedido=9554/9555 vac=23:24:42 pedidos=20834/20834 vac=23:21:07 pedidos_por_status=1/1 vac=23:21:07 produtos=190/190 vac=23:21:08 vendas_por_produto=142/142 vac=23:24:42
+2026-11-12 20:27:42 perfil=performance carga=1.14 0.96 0.65 cota antes de medir 07-busca-trigramas-desktop: usage_usec 55550954 nr_periods 617 nr_throttled 16 throttled_usec 222014 
+2026-11-12 20:29:00 perfil=performance carga=1.10 1.00 0.69 cota depois de medir 07-busca-trigramas-desktop: usage_usec 124574546 nr_periods 1379 nr_throttled 33 throttled_usec 482846 
+2026-11-12 20:29:00 perfil=performance carga=1.10 1.00 0.69 medido 07-busca-trigramas-desktop (72bd33f): Requisições/s: 902.65
+2026-11-12 20:29:17 perfil=performance carga=0.87 0.95 0.68 fixado: /rod-92207db-api-1 cpuset=0-15 nanocpus=500000000 /rod-92207db-banco-1 cpuset=0-15 nanocpus=1000000000 
+2026-11-12 20:30:18 perfil=performance carga=1.09 1.00 0.71 antes de medir 07-antes-desktop: clientes=1156/1156 vac=23:22:04 itens_pedido=9555/9555 vac=23:22:06 pedidos=20834/20834 vac=23:20:31 pedidos_por_status=1/1 vac=23:20:31 produtos=189/190 vac=23:22:06 vendas_por_produto=142/142 vac=23:20:33
+2026-11-12 20:30:18 perfil=performance carga=1.09 1.00 0.71 cota antes de medir 07-antes-desktop: usage_usec 57018298 nr_periods 616 nr_throttled 15 throttled_usec 289244 
+2026-11-12 20:31:36 perfil=performance carga=1.22 1.05 0.75 cota depois de medir 07-antes-desktop: usage_usec 128142119 nr_periods 1375 nr_throttled 34 throttled_usec 648969 
+2026-11-12 20:31:36 perfil=performance carga=1.22 1.05 0.75 medido 07-antes-desktop (92207db): Requisições/s: 529.01
+2026-11-12 20:31:53 perfil=performance carga=0.87 0.98 0.74 fixado: /rod-92207db-api-1 cpuset=0-15 nanocpus=500000000 /rod-92207db-banco-1 cpuset=0-15 nanocpus=1000000000 
+2026-11-12 20:32:54 perfil=performance carga=1.24 1.07 0.79 antes de medir 07-antes-desktop: clientes=1156/1156 vac=23:22:04 itens_pedido=9555/9555 vac=23:22:06 pedidos=20834/20834 vac=23:20:31 pedidos_por_status=1/1 vac=23:20:31 produtos=189/190 vac=23:22:06 vendas_por_produto=142/142 vac=23:20:33
+2026-11-12 20:32:54 perfil=performance carga=1.24 1.07 0.79 cota antes de medir 07-antes-desktop: usage_usec 57061719 nr_periods 621 nr_throttled 17 throttled_usec 328398 
+2026-11-12 20:34:12 perfil=performance carga=1.26 1.12 0.83 cota depois de medir 07-antes-desktop: usage_usec 128222749 nr_periods 1381 nr_throttled 37 throttled_usec 680738 
+2026-11-12 20:34:12 perfil=performance carga=1.26 1.12 0.83 medido 07-antes-desktop (92207db): Requisições/s: 526.25
+2026-11-12 20:34:29 perfil=performance carga=1.12 1.10 0.83 fixado: /rod-72bd33f-api-1 cpuset=0-15 nanocpus=500000000 /rod-72bd33f-banco-1 cpuset=0-15 nanocpus=1000000000 
+2026-11-12 20:35:30 perfil=performance carga=1.22 1.14 0.86 antes de medir 07-busca-trigramas-desktop: clientes=1156/1156 vac=23:24:40 itens_pedido=9554/9555 vac=23:24:42 pedidos=20834/20834 vac=23:21:07 pedidos_por_status=1/1 vac=23:21:07 produtos=190/190 vac=23:21:08 vendas_por_produto=142/142 vac=23:24:42
+2026-11-12 20:35:30 perfil=performance carga=1.22 1.14 0.86 cota antes de medir 07-busca-trigramas-desktop: usage_usec 55535634 nr_periods 619 nr_throttled 15 throttled_usec 244143 
+2026-11-12 20:36:48 perfil=performance carga=0.98 1.09 0.87 cota depois de medir 07-busca-trigramas-desktop: usage_usec 124623558 nr_periods 1378 nr_throttled 35 throttled_usec 487978 
+2026-11-12 20:36:48 perfil=performance carga=0.98 1.09 0.87 medido 07-busca-trigramas-desktop (72bd33f): Requisições/s: 902.71
+2026-11-12 20:36:59 perfil=performance carga=0.83 1.05 0.86 fim do rodízio
