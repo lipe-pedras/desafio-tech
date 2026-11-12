@@ -1,0 +1,20 @@
+== 0621-antes-desktop (3 execuções) commit ['52fb828'] sujo ['0', '0', '0'] erros [0, 0, 0] contrato ['mantido']
+   pastas 20261111-233147-0621-antes-desktop 20261111-233935-0621-antes-desktop 20261111-234211-0621-antes-desktop
+   req/s por execução [411.34, 410.46, 412.56]  p95 por execução [98.0, 96.6, 96.5]
+   medianas: rps=411.34 avg=48.57 med=43.31 p95=96.57 p99=118.54 cpu_b=99.30 mem_b=154.50 cpu_a=9.90 mem_a=30.20
+   rotas (mediana da rota, ms): cliente=28.6 cliente-por-email=28.4 pedidos-do-cliente=68.5 pedidos-por-status=68.5 busca-produtos=35.9 vendas-por-dia=42.6 top-produtos=29.1
+
+== 0621-062-sem-paralelismo-desktop (3 execuções) commit ['48f8301'] sujo ['0', '0', '0'] erros [0, 0, 0] contrato ['mantido']
+   pastas 20261111-233423-0621-062-sem-paralelismo-desktop 20261111-233659-0621-062-sem-paralelismo-desktop 20261111-234446-0621-062-sem-paralelismo-desktop
+   req/s por execução [531.19, 531.15, 529.84]  p95 por execução [70.6, 71.7, 71.1]
+   medianas: rps=531.15 avg=37.61 med=34.97 p95=71.08 p99=87.86 cpu_b=94.60 mem_b=151.60 cpu_a=11.90 mem_a=30.80
+   rotas (mediana da rota, ms): cliente=26.1 cliente-por-email=26.1 pedidos-do-cliente=51.6 pedidos-por-status=51.5 busca-produtos=32.1 vendas-por-dia=35.3 top-produtos=26.4
+
+contadores de cota de CPU do banco durante o medir.sh (depois menos antes; inclui o aquecimento de 15 s do medir.sh)
+rotulo                                  periodos  pausados %pausados  pausado_s    cpu_s
+0621-antes-desktop                           759       749      98.7      36.80    75.05
+0621-062-sem-paralelismo-desktop             760        19       2.5       0.35    71.22
+0621-062-sem-paralelismo-desktop             759        19       2.5       0.33    71.26
+0621-antes-desktop                           760       749      98.6      36.54    75.07
+0621-antes-desktop                           760       745      98.0      38.06    75.05
+0621-062-sem-paralelismo-desktop             759        20       2.6       0.32    71.25

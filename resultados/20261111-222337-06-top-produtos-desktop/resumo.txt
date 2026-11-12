@@ -1,0 +1,17 @@
+Medição: 06-top-produtos-desktop
+Carga: 20 usuários virtuais por 60s
+
+Requisições:        8080
+Requisições/s:      134.47
+Tempo de resposta:  mediana 71.4 ms | p95 401.4 ms | p99 655.4 ms
+Erros:              0.00%
+
+Por rota:
+rota                  req       mediana       p95           p99           erros   
+cliente               2037      47.3 ms       343.8 ms      601.0 ms      0.0%    
+cliente-por-email     1180      40.7 ms       319.5 ms      590.3 ms      0.0%    
+pedidos-do-cliente    1684      103.0 ms      599.2 ms      724.6 ms      0.0%    
+pedidos-por-status    1177      100.9 ms      604.3 ms      886.6 ms      0.0%    
+busca-produtos        1210      57.6 ms       354.0 ms      606.6 ms      0.0%    
+vendas-por-dia        650       64.5 ms       366.2 ms      599.7 ms      0.0%    
+top-produtos          142       303.2 ms      602.5 ms      878.7 ms      0.0%    

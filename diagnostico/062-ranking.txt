@@ -1,0 +1,33 @@
+                           
+---------------------------
+ data: 2026-11-12 01:47:47
+(1 row)
+
+ tabela  | indice 
+---------+--------
+ 1136 kB | 776 kB
+(1 row)
+
+                                                                                 QUERY PLAN                                                                                 
+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+ Nested Loop  (cost=0.57..83.79 rows=10 width=56) (actual time=0.008..0.017 rows=10 loops=1)
+   Buffers: shared hit=33
+   ->  Limit  (cost=0.29..0.64 rows=10 width=20) (actual time=0.005..0.006 rows=10 loops=1)
+         Buffers: shared hit=3
+         ->  Index Only Scan using vendas_por_produto_ranking_idx on vendas_por_produto  (cost=0.29..676.38 rows=19206 width=20) (actual time=0.005..0.006 rows=10 loops=1)
+               Heap Fetches: 0
+               Buffers: shared hit=3
+   ->  Index Scan using produtos_pkey on produtos pr  (cost=0.29..8.30 rows=1 width=40) (actual time=0.001..0.001 rows=1 loops=10)
+         Index Cond: (id = vendas_por_produto.produto_id)
+         Buffers: shared hit=30
+ Planning:
+   Buffers: shared hit=6
+ Planning Time: 0.084 ms
+ Execution Time: 0.025 ms
+(14 rows)
+
+ limites_comparados | diferentes |            md5_antiga            |             md5_nova             
+--------------------+------------+----------------------------------+----------------------------------
+                 50 |          0 | 93ce909e975cef1f2c45e9fd9381d9bc | 93ce909e975cef1f2c45e9fd9381d9bc
+(1 row)
+

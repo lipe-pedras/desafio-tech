@@ -56,6 +56,8 @@ Páginas abertas em 2026-11-06 e salvas como texto (HTML convertido, sem ediçã
 | `documentacao/postgresql-16-sql-vacuum.txt` | PostgreSQL 16 Documentation, *VACUUM* (aberta em 2026-11-11; trecho). | https://www.postgresql.org/docs/16/sql-vacuum.html | 05.1: `VACUUM ANALYZE` e a restrição a bloco de transação |
 | `documentacao/postgresql-16-sql-createtrigger.txt` | PostgreSQL 16 Documentation, *CREATE TRIGGER* (aberta em 2026-11-11; trecho). | https://www.postgresql.org/docs/16/sql-createtrigger.html | 05.2: gatilhos por comando, tabelas de transição e um evento por gatilho |
 | `documentacao/postgresql-16-trigger-definition.txt` | PostgreSQL 16 Documentation, *39.1. Overview of Trigger Behavior* (aberta em 2026-11-11; trecho). | https://www.postgresql.org/docs/16/trigger-definition.html | 05.2: gatilhos por linha e por comando |
+| `documentacao/postgresql-16-runtime-config-resource.txt` | PostgreSQL 16 Documentation, *20.4. Resource Consumption* (aberta em 2026-11-11; trecho de 20.4.6: `max_parallel_workers_per_gather`). | https://www.postgresql.org/docs/16/runtime-config-resource.html | 06.1: o valor 0 desliga as consultas paralelas; cada processo auxiliar consome recursos como uma sessão a mais |
+| `documentacao/postgresql-16-parallel-query.txt` | PostgreSQL 16 Documentation, *Chapter 15. Parallel Query* e *15.1. How Parallel Query Works* (abertas em 2026-11-11; trechos). | https://www.postgresql.org/docs/16/parallel-query.html e https://www.postgresql.org/docs/16/how-parallel-query-works.html | 06.1: paralelismo usa várias CPUs; papel do processo principal (*leader*) |
 
 ## Tamanho do pool de conexões
 

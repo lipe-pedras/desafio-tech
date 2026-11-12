@@ -1,0 +1,113 @@
+CREATE VIEW
+=== 0. estado inicial (esperado em todos os passos: 0 produtos divergentes)
+ linhas |  itens  
+--------+---------
+  19206 | 1350000
+(1 row)
+
+ produtos_divergentes 
+----------------------
+                    0
+(1 row)
+
+BEGIN
+=== 1. INSERT de 1000 itens num comando só, em pedidos de todos os status, incluindo um produto que não tinha vendas
+INSERT 0 1000
+ produtos_divergentes 
+----------------------
+                    0
+(1 row)
+
+=== 2. INSERT de 1 item
+INSERT 0 1
+ produtos_divergentes 
+----------------------
+                    0
+(1 row)
+
+=== 3. UPDATE de itens: quantidade (200), produto (200) e pedido (200, para pedidos cancelados)
+UPDATE 200
+UPDATE 200
+UPDATE 200
+ produtos_divergentes 
+----------------------
+                    0
+(1 row)
+
+=== 4. UPDATE de status de pedidos: 200 para cancelado, 200 de cancelado para pago, 200 pago -> entregue, 200 só observacoes
+UPDATE 200
+UPDATE 200
+UPDATE 200
+UPDATE 200
+ produtos_divergentes 
+----------------------
+                    0
+(1 row)
+
+=== 5. DELETE de itens: os 1001 de teste e 300 originais
+DELETE 1001
+DELETE 300
+ produtos_divergentes 
+----------------------
+                    0
+(1 row)
+
+=== 6. Pedido novo com 3 itens, cancelado, reaberto, e apagado (itens e pedido)
+INSERT 0 1
+INSERT 0 3
+ produtos_divergentes 
+----------------------
+                    0
+(1 row)
+
+UPDATE 1
+ produtos_divergentes 
+----------------------
+                    0
+(1 row)
+
+UPDATE 1
+ produtos_divergentes 
+----------------------
+                    0
+(1 row)
+
+DELETE 3
+DELETE 1
+ produtos_divergentes 
+----------------------
+                    0
+(1 row)
+
+ROLLBACK
+BEGIN
+=== 7. TRUNCATE de itens_pedido e INSERT de 500 itens depois
+TRUNCATE TABLE
+ produtos_divergentes 
+----------------------
+                    0
+(1 row)
+
+INSERT 0 500
+ produtos_divergentes 
+----------------------
+                    0
+(1 row)
+
+ROLLBACK
+=== 8. depois dos ROLLBACKs
+ produtos_divergentes 
+----------------------
+                    0
+(1 row)
+
+BEGIN
+=== 9. controle: com os gatilhos de itens_pedido desligados, um INSERT de 1 item (esperado: 1 produto divergente)
+ALTER TABLE
+INSERT 0 1
+ produtos_divergentes 
+----------------------
+                    1
+(1 row)
+
+ROLLBACK
