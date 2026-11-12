@@ -1,6 +1,6 @@
 # 06 · `top-produtos` agrega por `produto_id` antes de juntar `produtos`
 
-- **Status:** aplicada e medida na branch `06-top-produtos`; o merge não foi feito
+- **Status:** aplicada e medida; entrou na `main` junto com a 06.1 e a 06.2. Na versão final, a consulta desta ficha foi substituída pela da [06.2](06.2-total-por-produto.md)
 - **Branch / commits:** `06-top-produtos`, a partir da `main` com a 05.2 (`bc83df2`) / `ea59e24` (API)
 - **Comparada com:** a `main` (commit `bc83df2`), medida na mesma sessão, em rodízio
 
