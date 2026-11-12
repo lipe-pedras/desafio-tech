@@ -1,6 +1,6 @@
 # 07 · Índice de trigramas para `busca-produtos`
 
-- **Status:** aplicada e medida na branch `07-busca-trigramas`; o merge não foi feito
+- **Status:** aplicada, medida e adotada (merge na `main`)
 - **Branch / commits:** `07-busca-trigramas`, a partir da `main` com a 06 fechada (`92207db`) / `72bd33f` (banco)
 - **Comparada com:** a `main` (commit `92207db`), medida na mesma sessão, em rodízio
 
