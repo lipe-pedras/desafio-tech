@@ -200,18 +200,14 @@ rotas.get('/relatorios/top-produtos', assincrono(async (req, res) => {
   const limite = req.query.limite === undefined ? 10 : inteiroPositivo(req.query.limite);
   if (limite === null || limite > 50) return res.status(400).json({ erro: 'limite deve ser um inteiro entre 1 e 50' });
 
-  // Agrega por produto_id e só junta produtos (nome, categoria) às linhas que entram no LIMIT,
-  // em vez de juntar produtos às 1,35 milhão de linhas de itens antes de agrupar.
+  // O ranking vem da tabela mantida por gatilhos (banco/06-total-vendas-por-produto.sql), lido em ordem
+  // pelo índice parcial (itens > 0), sem agrupar os itens. Só os produtos do LIMIT são juntados a produtos.
   const linhas = await consultar(
     `WITH ranking AS (
-       SELECT i.produto_id,
-              sum(i.quantidade) AS unidades,
-              sum(i.quantidade * i.preco_unitario_centavos) AS receita_centavos
-         FROM itens_pedido i
-         JOIN pedidos p ON p.id = i.pedido_id
-        WHERE p.status <> 'cancelado'
-        GROUP BY i.produto_id
-        ORDER BY receita_centavos DESC, i.produto_id
+       SELECT produto_id, unidades, receita_centavos
+         FROM vendas_por_produto
+        WHERE itens > 0
+        ORDER BY receita_centavos DESC, produto_id
         LIMIT $1
      )
      SELECT pr.id, pr.nome, pr.categoria, r.unidades, r.receita_centavos
