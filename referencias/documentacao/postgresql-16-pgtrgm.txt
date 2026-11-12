@@ -1,0 +1,46 @@
+Fonte: https://www.postgresql.org/docs/16/pgtrgm.html
+Acessado em: 2026-11-12
+Trecho do texto da página (HTML convertido em texto, sem edição do conteúdo): introdução, F.35.1 (conceito de trigrama) e F.35.4 (Index Support).
+
+F.35. pg_trgm — support for similarity of text using trigram matching #
+The pg_trgm module provides functions and operators for determining the similarity of alphanumeric text based on trigram matching, as well as index operator classes that support fast searching for similar strings.
+
+This module is considered “trusted”, that is, it can be installed by non-superusers who have CREATE privilege on the current database.
+F.35.1. Trigram (or Trigraph) Concepts #
+
+A trigram is a group of three consecutive characters taken from a string. We can measure the similarity of two strings by counting the number of trigrams they share. This simple idea turns out to be very effective for measuring the similarity of words in many natural languages.
+
+Note
+
+pg_trgm ignores non-word characters (non-alphanumerics) when extracting trigrams from a string. Each word is considered to have two spaces prefixed and one space suffixed when determining the set of trigrams contained in the string. For example, the set of trigrams in the string “cat” is “ c”, “ ca”, “cat”, and “at ”. The set of trigrams in the string “foo|bar” is “ f”, “ fo”, “foo”, “oo ”, “ b”, “ ba”, “bar”, and “ar ”.
+
+
+
+F.35.4. Index Support #
+
+The pg_trgm module provides GiST and GIN index operator classes that allow you to create an index over a text column for the purpose of very fast similarity searches. These index types support the above-described similarity operators, and additionally support trigram-based index searches for LIKE, ILIKE, ~, ~* and = queries. The similarity comparisons are case-insensitive in a default build of pg_trgm. Inequality operators are not supported. Note that those indexes may not be as efficient as regular B-tree indexes for equality operator.
+
+Example:
+
+
+SELECT t, 'word' <<<-> t AS dist
+FROM test_trgm
+ORDER BY dist LIMIT 10;
+
+This can be implemented quite efficiently by GiST indexes, but not by GIN indexes.
+
+Beginning in PostgreSQL 9.1, these index types also support index searches for LIKE and ILIKE, for example
+
+SELECT * FROM test_trgm WHERE t LIKE '%foo%bar';
+
+The index search works by extracting trigrams from the search string and then looking these up in the index. The more trigrams in the search string, the more effective the index search is. Unlike B-tree based searches, the search string need not be left-anchored.
+
+Beginning in PostgreSQL 9.3, these index types also support index searches for regular-expression matches (~ and ~* operators), for example
+
+SELECT * FROM test_trgm WHERE t ~ '(foo|bar)';
+
+The index search works by extracting trigrams from the regular expression and then looking these up in the index. The more trigrams that can be extracted from the regular expression, the more effective the index search is. Unlike B-tree based searches, the search string need not be left-anchored.
+
+For both LIKE and regular-expression searches, keep in mind that a pattern with no extractable trigrams will degenerate to a full-index scan.
+
+The choice between GiST and GIN indexing depends on the relative performance characteristics of GiST and GIN, which are discussed elsewhere.
