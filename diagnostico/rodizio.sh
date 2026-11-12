@@ -10,7 +10,7 @@
 #   1. sobe a versão e fixa banco e api nos núcleos P (docker update --cpuset-cpus; limites inalterados);
 #   2. aquece por 60 s (5 VUs, semente 43, fora da medição);
 #   3. confere o contrato, registra o mapa de visibilidade das tabelas (relallvisible/relpages e último vacuum)
-#      e mede com scripts/medir.sh, registrando antes e depois os contadores de cota de CPU do banco;
+#      e mede com scripts/medir.sh, registrando antes e depois os contadores de cota de CPU do banco e da API;
 #   4. desliga a versão.
 # São 3 rodadas, com a ordem deslocada a cada rodada. As pastas de resultados são copiadas para resultados/.
 # Registro de cada passo em diagnostico/rodizio-registro.txt.
@@ -39,11 +39,14 @@ visibilidade() {
       || ' vac=' || coalesce(to_char(greatest(s.last_vacuum, s.last_autovacuum), 'HH24:MI:SS'), '-'), ' ' ORDER BY c.relname)
     FROM pg_class c JOIN pg_stat_user_tables s ON s.relid = c.oid"
 }
-# Contadores de cota de CPU do cgroup do banco (cpu.stat): períodos, períodos em que o banco foi pausado por
+# Contadores de cota de CPU do cgroup do banco e da API (cpu.stat): períodos, períodos em que o banco foi pausado por
 # esgotar a cota (nr_throttled) e tempo total pausado (throttled_usec). Lidos antes e depois do medir.sh
 # (a diferença inclui o aquecimento de 15 s do próprio medir.sh).
 cota() {
-  dc "$1" docker compose exec -T banco sh -c "grep -E '^(usage_usec|nr_periods|nr_throttled|throttled_usec) ' /sys/fs/cgroup/cpu.stat | tr '\n' ' '"
+  local s
+  for s in banco api; do
+    echo -n "$s: $(dc "$1" docker compose exec -T "$s" sh -c "grep -E '^(usage_usec|nr_periods|nr_throttled|throttled_usec) ' /sys/fs/cgroup/cpu.stat | tr '\n' ' '")"
+  done
 }
 guardar() {
   local d
