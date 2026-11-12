@@ -200,17 +200,24 @@ rotas.get('/relatorios/top-produtos', assincrono(async (req, res) => {
   const limite = req.query.limite === undefined ? 10 : inteiroPositivo(req.query.limite);
   if (limite === null || limite > 50) return res.status(400).json({ erro: 'limite deve ser um inteiro entre 1 e 50' });
 
+  // Agrega por produto_id e só junta produtos (nome, categoria) às linhas que entram no LIMIT,
+  // em vez de juntar produtos às 1,35 milhão de linhas de itens antes de agrupar.
   const linhas = await consultar(
-    `SELECT pr.id, pr.nome, pr.categoria,
-            sum(i.quantidade) AS unidades,
-            sum(i.quantidade * i.preco_unitario_centavos) AS receita_centavos
-       FROM itens_pedido i
-       JOIN pedidos p ON p.id = i.pedido_id
-       JOIN produtos pr ON pr.id = i.produto_id
-      WHERE p.status <> 'cancelado'
-      GROUP BY pr.id, pr.nome, pr.categoria
-      ORDER BY receita_centavos DESC, pr.id
-      LIMIT $1`,
+    `WITH ranking AS (
+       SELECT i.produto_id,
+              sum(i.quantidade) AS unidades,
+              sum(i.quantidade * i.preco_unitario_centavos) AS receita_centavos
+         FROM itens_pedido i
+         JOIN pedidos p ON p.id = i.pedido_id
+        WHERE p.status <> 'cancelado'
+        GROUP BY i.produto_id
+        ORDER BY receita_centavos DESC, i.produto_id
+        LIMIT $1
+     )
+     SELECT pr.id, pr.nome, pr.categoria, r.unidades, r.receita_centavos
+       FROM ranking r
+       JOIN produtos pr ON pr.id = r.produto_id
+      ORDER BY r.receita_centavos DESC, pr.id`,
     [limite],
   );
 
