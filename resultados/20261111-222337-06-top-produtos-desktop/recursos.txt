@@ -1,0 +1,5 @@
+container                            amostras  cpu_media    cpu_max    mem_media      mem_max
+rod-ea59e24-api-1                          30       3.5%       6.2%     29.4 MiB     30.3 MiB
+rod-ea59e24-banco-1                        30     100.3%     100.0%    173.3 MiB    185.8 MiB
+
+cpu_percentual: 100% = 1 CPU inteira.

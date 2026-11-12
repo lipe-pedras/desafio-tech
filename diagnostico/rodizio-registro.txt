@@ -117,3 +117,25 @@
 2026-11-11 17:47:04 perfil=performance carga=0.64 1.18 1.40 antes de medir 052-total-por-status-desktop: clientes=1156/1156 vac=20:36:05 itens_pedido=9553/9555 vac=20:36:09 pedidos=20834/20834 vac=20:32:32 pedidos_por_status=1/1 vac=20:32:32 produtos=190/190 vac=20:36:09
 2026-11-11 17:48:22 perfil=performance carga=1.69 1.31 1.42 medido 052-total-por-status-desktop (2b3b6eb): Requisições/s: 105.63
 2026-11-11 17:48:33 perfil=performance carga=1.43 1.27 1.41 fim do rodízio
+2026-11-11 22:16:07 perfil=performance carga=0.48 0.47 0.21 rodízio: bc83df2:06-antes-desktop ea59e24:06-top-produtos-desktop
+2026-11-11 22:16:33 perfil=performance carga=0.73 0.52 0.23 banco de bc83df2 criado em 26 s
+2026-11-11 22:17:04 perfil=performance carga=0.81 0.57 0.26 banco de ea59e24 criado em 21 s
+2026-11-11 22:17:21 perfil=performance carga=0.73 0.57 0.27 fixado: /rod-bc83df2-api-1 cpuset=0-15 nanocpus=500000000 /rod-bc83df2-banco-1 cpuset=0-15 nanocpus=1000000000 
+2026-11-11 22:18:24 perfil=performance carga=0.33 0.48 0.25 antes de medir 06-antes-desktop: clientes=1156/1156 vac=01:17:55 itens_pedido=9554/9555 vac=01:17:59 pedidos=20834/20834 vac=01:16:25 pedidos_por_status=1/1 vac=01:16:28 produtos=190/190 vac=01:17:59
+2026-11-11 22:19:42 perfil=performance carga=0.41 0.45 0.26 medido 06-antes-desktop (bc83df2): Requisições/s: 110.33
+2026-11-11 22:19:58 perfil=performance carga=0.32 0.43 0.26 fixado: /rod-ea59e24-api-1 cpuset=0-15 nanocpus=500000000 /rod-ea59e24-banco-1 cpuset=0-15 nanocpus=1000000000 
+2026-11-11 22:21:00 perfil=performance carga=0.10 0.34 0.24 antes de medir 06-top-produtos-desktop: clientes=1156/1156 vac=01:20:33 itens_pedido=9555/9555 vac=01:20:36 pedidos=20834/20834 vac=01:17:01 pedidos_por_status=1/1 vac=01:17:02 produtos=190/190 vac=01:20:36
+2026-11-11 22:22:18 perfil=performance carga=1.87 0.86 0.43 medido 06-top-produtos-desktop (ea59e24): Requisições/s: 133.78
+2026-11-11 22:22:35 perfil=performance carga=1.48 0.84 0.43 fixado: /rod-ea59e24-api-1 cpuset=0-15 nanocpus=500000000 /rod-ea59e24-banco-1 cpuset=0-15 nanocpus=1000000000 
+2026-11-11 22:23:37 perfil=performance carga=1.43 0.94 0.50 antes de medir 06-top-produtos-desktop: clientes=1156/1156 vac=01:20:33 itens_pedido=9555/9555 vac=01:20:36 pedidos=20834/20834 vac=01:17:01 pedidos_por_status=1/1 vac=01:17:02 produtos=190/190 vac=01:20:36
+2026-11-11 22:24:55 perfil=performance carga=0.72 0.83 0.49 medido 06-top-produtos-desktop (ea59e24): Requisições/s: 134.47
+2026-11-11 22:25:12 perfil=performance carga=0.66 0.81 0.49 fixado: /rod-bc83df2-api-1 cpuset=0-15 nanocpus=500000000 /rod-bc83df2-banco-1 cpuset=0-15 nanocpus=1000000000 
+2026-11-11 22:26:14 perfil=performance carga=1.35 0.92 0.54 antes de medir 06-antes-desktop: clientes=1156/1156 vac=01:17:55 itens_pedido=9554/9555 vac=01:17:59 pedidos=20834/20834 vac=01:16:25 pedidos_por_status=1/1 vac=01:16:28 produtos=190/190 vac=01:17:59
+2026-11-11 22:27:32 perfil=performance carga=2.20 1.32 0.72 medido 06-antes-desktop (bc83df2): Requisições/s: 110.13
+2026-11-11 22:27:49 perfil=performance carga=1.71 1.25 0.71 fixado: /rod-bc83df2-api-1 cpuset=0-15 nanocpus=500000000 /rod-bc83df2-banco-1 cpuset=0-15 nanocpus=1000000000 
+2026-11-11 22:28:51 perfil=performance carga=0.63 1.02 0.66 antes de medir 06-antes-desktop: clientes=1156/1156 vac=01:17:55 itens_pedido=9554/9555 vac=01:17:59 pedidos=20834/20834 vac=01:16:25 pedidos_por_status=1/1 vac=01:16:28 produtos=190/190 vac=01:17:59
+2026-11-11 22:30:09 perfil=performance carga=0.24 0.82 0.62 medido 06-antes-desktop (bc83df2): Requisições/s: 109.54
+2026-11-11 22:30:26 perfil=performance carga=0.31 0.80 0.62 fixado: /rod-ea59e24-api-1 cpuset=0-15 nanocpus=500000000 /rod-ea59e24-banco-1 cpuset=0-15 nanocpus=1000000000 
+2026-11-11 22:31:27 perfil=performance carga=0.35 0.73 0.60 antes de medir 06-top-produtos-desktop: clientes=1156/1156 vac=01:20:33 itens_pedido=9555/9555 vac=01:20:36 pedidos=20834/20834 vac=01:17:01 pedidos_por_status=1/1 vac=01:17:02 produtos=190/190 vac=01:20:36
+2026-11-11 22:32:46 perfil=performance carga=0.15 0.58 0.56 medido 06-top-produtos-desktop (ea59e24): Requisições/s: 132.97
+2026-11-11 22:32:56 perfil=performance carga=0.12 0.56 0.55 fim do rodízio
