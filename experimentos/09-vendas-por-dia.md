@@ -1,6 +1,6 @@
 # 09 · Índices que cobrem `vendas-por-dia`
 
-- **Status:** aplicada e medida; o merge não foi feito. A mudança está na branch `09-vendas-por-dia`; as medições e esta ficha estão na `092-total-por-dia`, que parte dela
+- **Status:** aplicada e medida; entrou na `main` junto com a 09.2. Os índices desta ficha continuam no banco, e a consulta da rota foi substituída pela da [09.2](09.2-total-por-dia.md)
 - **Branch / commits:** `09-vendas-por-dia`, a partir da `main` com a 08 (`93a6cd9`) / `a4a7821` (banco)
 - **Comparada com:** a `main` (commit `93a6cd9`), medida na mesma sessão, em rodízio com a [09.2](09.2-total-por-dia.md)
 
