@@ -1,7 +1,7 @@
 # 08 · Tamanho do pool depois da 07 (`DB_POOL_MAX` 1, 2, 3 e 5)
 
-- **Status:** medida na branch `08-tamanho-do-pool`; o valor final não foi decidido
-- **Branch / commits:** `08-tamanho-do-pool`, a partir da `main` com a 07 (`7a0baaf`) / `a835ee4` (2), `879d362` (3), `5991028` (5); o tamanho 1 é a própria `main`
+- **Status:** medida; mantido `DB_POOL_MAX=1` (merge na `main` sem mudar o pool)
+- **Branch / commits:** `08-tamanho-do-pool`, a partir da `main` com a 07 (`7a0baaf`) / `a835ee4` (2), `879d362` (3), `5991028` (5); o tamanho 1 é a própria `main`, e `1d44cd4` volta a branch para 1
 - **Comparada com:** `DB_POOL_MAX=1` (`main`), medido na mesma sessão, em rodízio
 
 ## Hipótese
@@ -74,7 +74,7 @@ Mediana de 3 execuções ([`diagnostico/08-resumo.txt`](../diagnostico/08-resumo
 
 ## Decisão
 
-Ainda não foi tomada. Depende do critério:
+Mantido `DB_POOL_MAX=1`. O merge na `main` leva o registro da cota de CPU da API no rodízio, as medições e esta ficha, mas não muda o pool.
 
 | Critério | Melhor |
 |---|---|
@@ -82,7 +82,7 @@ Ainda não foi tomada. Depende do critério:
 | Mediana | 5 conexões (−77%), mas com p95 +87% |
 | p95, p99 e memória | 1 conexão (`main`) |
 
-Minha recomendação é manter 1 conexão. O ganho de vazão com 2 é pequeno (+5,8%), e a cauda piora bem mais (p95 +40%, p99 +19%). Além disso, com 2 conexões o banco volta a ser pausado pela cota em quase todo período.
+O ganho de vazão com 2 conexões é pequeno (+5,8%), e a cauda piora bem mais (p95 +40%, p99 +19%). Além disso, com 2 conexões o banco volta a ser pausado pela cota em quase todo período.
 
 ## O que refutaria esta conclusão
 
