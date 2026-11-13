@@ -1,0 +1,50 @@
+== 08-pool-1-desktop (3 execuções) commit ['7a0baaf'] sujo ['0', '0', '0'] erros [0, 0, 0] contrato ['mantido']
+   pastas 20261112-205709-08-pool-1-desktop 20261112-211521-08-pool-1-desktop 20261112-212308-08-pool-1-desktop
+   req/s por execução [901.99, 899.17, 898.8]  p95 por execução [47.0, 47.1, 46.9]
+   medianas: rps=899.17 avg=22.20 med=20.49 p95=47.05 p99=62.59 cpu_b=91.60 mem_b=151.70 cpu_a=19.40 mem_a=31.20
+   rotas (mediana da rota, ms): cliente=14.6 cliente-por-email=14.6 pedidos-do-cliente=29.3 pedidos-por-status=29.7 busca-produtos=15.5 vendas-por-dia=23.8 top-produtos=14.6
+
+== 08-pool-2-desktop (3 execuções) commit ['a835ee4'] sujo ['0', '0', '0'] erros [0, 0, 0] contrato ['mantido']
+   pastas 20261112-205945-08-pool-2-desktop 20261112-210733-08-pool-2-desktop 20261112-212544-08-pool-2-desktop
+   req/s por execução [938.52, 954.66, 950.95]  p95 por execução [66.0, 65.9, 65.8]
+   medianas: rps=950.95 avg=20.99 med=12.18 p95=65.90 p99=74.48 cpu_b=99.90 mem_b=154.80 cpu_a=20.70 mem_a=31.10
+   rotas (mediana da rota, ms): cliente=7.1 cliente-por-email=7.0 pedidos-do-cliente=16.6 pedidos-por-status=17.2 busca-produtos=7.9 vendas-por-dia=19.9 top-produtos=6.8
+
+== 08-pool-3-desktop (3 execuções) commit ['879d362'] sujo ['0', '0', '0'] erros [0, 0, 0] contrato ['mantido']
+   pastas 20261112-210221-08-pool-3-desktop 20261112-211009-08-pool-3-desktop 20261112-211756-08-pool-3-desktop
+   req/s por execução [921.74, 924.5, 918.72]  p95 por execução [77.9, 77.9, 78.2]
+   medianas: rps=921.74 avg=21.66 med=7.65 p95=77.93 p99=84.30 cpu_b=99.70 mem_b=157.90 cpu_a=19.30 mem_a=31.20
+   rotas (mediana da rota, ms): cliente=4.4 cliente-por-email=4.4 pedidos-do-cliente=11.3 pedidos-por-status=12.0 busca-produtos=5.3 vendas-por-dia=17.1 top-produtos=4.4
+
+== 08-pool-5-desktop (3 execuções) commit ['5991028'] sujo ['0', '0', '0'] erros [0, 0, 0] contrato ['mantido']
+   pastas 20261112-210457-08-pool-5-desktop 20261112-211245-08-pool-5-desktop 20261112-212032-08-pool-5-desktop
+   req/s por execução [878.35, 892.22, 876.48]  p95 por execução [87.8, 87.6, 88.2]
+   medianas: rps=878.35 avg=22.72 med=4.69 p95=87.84 p99=92.76 cpu_b=99.80 mem_b=163.80 cpu_a=18.40 mem_a=31.10
+   rotas (mediana da rota, ms): cliente=2.9 cliente-por-email=2.9 pedidos-do-cliente=6.1 pedidos-por-status=6.5 busca-produtos=3.8 vendas-por-dia=86.0 top-produtos=3.0
+
+contadores de cota de CPU durante o medir.sh (depois menos antes; inclui o aquecimento de 15 s do medir.sh)
+rotulo                 svc     periodos  pausados %pausados  pausado_s    cpu_s
+08-pool-1-desktop      banco        760        19       2.5       0.28    69.04
+08-pool-1-desktop      api          766         0       0.0       0.00    14.44
+08-pool-2-desktop      banco        761       749      98.4      66.40    75.17
+08-pool-2-desktop      api          763         0       0.0       0.00    15.76
+08-pool-3-desktop      banco        760       750      98.7     137.07    75.16
+08-pool-3-desktop      api          763         0       0.0       0.00    14.67
+08-pool-5-desktop      banco        761       751      98.7     272.09    75.25
+08-pool-5-desktop      api          763         0       0.0       0.00    13.98
+08-pool-2-desktop      banco        761       750      98.6      66.64    75.19
+08-pool-2-desktop      api          763         0       0.0       0.00    15.32
+08-pool-3-desktop      banco        760       751      98.8     137.81    75.24
+08-pool-3-desktop      api          763         0       0.0       0.00    14.61
+08-pool-5-desktop      banco        763       750      98.3     270.56    75.20
+08-pool-5-desktop      api          765         0       0.0       0.00    13.79
+08-pool-1-desktop      banco        759        19       2.5       0.31    69.10
+08-pool-1-desktop      api          764         0       0.0       0.00    14.47
+08-pool-3-desktop      banco        760       750      98.7     137.94    75.16
+08-pool-3-desktop      api          763         0       0.0       0.00    14.54
+08-pool-5-desktop      banco        762       751      98.6     272.40    75.18
+08-pool-5-desktop      api          761         0       0.0       0.00    13.90
+08-pool-1-desktop      banco        759        19       2.5       0.31    69.01
+08-pool-1-desktop      api          763         0       0.0       0.00    14.61
+08-pool-2-desktop      banco        761       750      98.6      66.74    75.13
+08-pool-2-desktop      api          764         0       0.0       0.00    15.49
