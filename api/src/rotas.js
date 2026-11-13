@@ -171,20 +171,15 @@ rotas.get('/relatorios/vendas-por-dia', assincrono(async (req, res) => {
     return res.status(400).json({ erro: `o periodo deve ter entre 1 e ${MAX_DIAS_RELATORIO} dias` });
   }
 
-  // Intervalo direto em criado_em (sem converter cada linha para date) e agregação por dia no banco:
-  // a API recebe uma linha por dia, e não todas as linhas de itens do período.
+  // 09.2: pedidos, unidades e receita de cada dia vêm de vendas_por_dia, mantida por gatilhos
+  // (banco/09-total-vendas-por-dia.sql). Dias sem pedidos contados não aparecem, como no JOIN de antes.
   const linhas = await consultar(
-    `SELECT to_char(p.criado_em::date, 'YYYY-MM-DD') AS dia,
-            count(DISTINCT p.id) AS pedidos,
-            sum(i.quantidade) AS itens,
-            sum(i.quantidade::bigint * i.preco_unitario_centavos) AS receita_centavos
-       FROM pedidos p
-       JOIN itens_pedido i ON i.pedido_id = p.id
-      WHERE p.criado_em >= $1::date
-        AND p.criado_em < $2::date + 1
-        AND p.status <> 'cancelado'
-      GROUP BY p.criado_em::date
-      ORDER BY p.criado_em::date`,
+    `SELECT to_char(dia, 'YYYY-MM-DD') AS dia, pedidos, unidades AS itens, receita_centavos
+       FROM vendas_por_dia
+      WHERE dia >= $1::date
+        AND dia <= $2::date
+        AND pedidos > 0
+      ORDER BY vendas_por_dia.dia`,
     [req.query.inicio, req.query.fim],
   );
 

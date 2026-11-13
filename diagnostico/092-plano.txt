@@ -1,0 +1,17 @@
+                                                             QUERY PLAN                                                              
+-------------------------------------------------------------------------------------------------------------------------------------
+ Index Scan using vendas_por_dia_pkey on vendas_por_dia  (cost=0.28..8.47 rows=7 width=60) (actual time=0.053..0.057 rows=7 loops=1)
+   Index Cond: ((dia >= '2024-06-01'::date) AND (dia <= '2024-06-07'::date))
+   Filter: (pedidos > 0)
+   Buffers: shared hit=3
+ Planning:
+   Buffers: shared hit=78
+ Planning Time: 0.208 ms
+ Execution Time: 0.089 ms
+(8 rows)
+
+ tamanho_vendas_por_dia 
+------------------------
+ 112 kB
+(1 row)
+
