@@ -30,30 +30,11 @@ SELECT p.criado_em::date, count(DISTINCT p.id), sum(i.quantidade), sum(i.quantid
  WHERE p.status <> 'cancelado'
  GROUP BY p.criado_em::date;
 
--- Aplica as diferenças por pedido (linhas de itens, unidades, receita) no dia de cada pedido.
--- n_agora é o número de linhas de itens do pedido depois do comando; antes, eram n_agora - linhas.
-CREATE FUNCTION vendas_por_dia_aplicar(ids integer[], linhas bigint[], unidades bigint[], receitas bigint[])
-RETURNS void LANGUAGE sql AS $$
-    INSERT INTO vendas_por_dia AS t (dia, pedidos, unidades, receita_centavos)
-    SELECT p.criado_em::date,
-           sum((d.n_agora > 0)::int - (d.n_agora - d.linhas > 0)::int),
-           sum(d.unidades), sum(d.receita)
-      FROM (SELECT m.id, m.linhas, m.unidades, m.receita,
-                   (SELECT count(*) FROM itens_pedido i WHERE i.pedido_id = m.id) AS n_agora
-              FROM unnest(ids, linhas, unidades, receitas) AS m(id, linhas, unidades, receita)) d
-      JOIN pedidos p ON p.id = d.id
-     WHERE p.status <> 'cancelado'
-     GROUP BY p.criado_em::date
-    HAVING sum((d.n_agora > 0)::int - (d.n_agora - d.linhas > 0)::int) <> 0 OR sum(d.unidades) <> 0 OR sum(d.receita) <> 0
-     ORDER BY p.criado_em::date
-    ON CONFLICT (dia) DO UPDATE
-       SET pedidos = t.pedidos + excluded.pedidos,
-           unidades = t.unidades + excluded.unidades,
-           receita_centavos = t.receita_centavos + excluded.receita_centavos;
-$$;
-
+-- Os gatilhos de itens somam as diferenças de cada pedido (d: linhas de itens, unidades, receita) no dia dele.
+-- a.n é o número de linhas de itens do pedido depois do comando; antes, eram a.n - d.linhas. O pedido passa a
+-- contar quando a.n > 0 e antes não, e deixa de contar no caso contrário.
+-- O comando está escrito por inteiro em cada ramo (e não numa função auxiliar) para o PL/pgSQL guardar o plano.
 CREATE FUNCTION vendas_por_dia_itens() RETURNS trigger LANGUAGE plpgsql AS $$
-DECLARE ids integer[]; linhas bigint[]; unidades bigint[]; receitas bigint[];
 BEGIN
     IF TG_OP = 'TRUNCATE' THEN
         DELETE FROM vendas_por_dia;
@@ -69,22 +50,52 @@ BEGIN
     END IF;
 
     IF TG_OP = 'INSERT' THEN
-        SELECT array_agg(pedido_id), array_agg(n), array_agg(q), array_agg(r) INTO ids, linhas, unidades, receitas
-          FROM (SELECT pedido_id, count(*) AS n, sum(quantidade) AS q, sum(quantidade::bigint * preco_unitario_centavos) AS r
-                  FROM novos GROUP BY pedido_id) x;
+        INSERT INTO vendas_por_dia AS t (dia, pedidos, unidades, receita_centavos)
+        SELECT p.criado_em::date, sum((a.n > 0)::int - (a.n - d.linhas > 0)::int), sum(d.unidades), sum(d.receita)
+          FROM (SELECT pedido_id, count(*) AS linhas, sum(quantidade) AS unidades, sum(quantidade::bigint * preco_unitario_centavos) AS receita
+                  FROM novos GROUP BY pedido_id) d
+         CROSS JOIN LATERAL (SELECT count(*) AS n FROM itens_pedido i WHERE i.pedido_id = d.pedido_id) a
+          JOIN pedidos p ON p.id = d.pedido_id
+         WHERE p.status <> 'cancelado'
+         GROUP BY p.criado_em::date
+        HAVING sum((a.n > 0)::int - (a.n - d.linhas > 0)::int) <> 0 OR sum(d.unidades) <> 0 OR sum(d.receita) <> 0
+         ORDER BY p.criado_em::date
+        ON CONFLICT (dia) DO UPDATE
+           SET pedidos = t.pedidos + excluded.pedidos,
+               unidades = t.unidades + excluded.unidades,
+               receita_centavos = t.receita_centavos + excluded.receita_centavos;
     ELSIF TG_OP = 'DELETE' THEN
-        SELECT array_agg(pedido_id), array_agg(n), array_agg(q), array_agg(r) INTO ids, linhas, unidades, receitas
-          FROM (SELECT pedido_id, -count(*) AS n, -sum(quantidade) AS q, -sum(quantidade::bigint * preco_unitario_centavos) AS r
-                  FROM antigos GROUP BY pedido_id) x;
+        INSERT INTO vendas_por_dia AS t (dia, pedidos, unidades, receita_centavos)
+        SELECT p.criado_em::date, sum((a.n > 0)::int - (a.n - d.linhas > 0)::int), sum(d.unidades), sum(d.receita)
+          FROM (SELECT pedido_id, -count(*) AS linhas, -sum(quantidade) AS unidades, -sum(quantidade::bigint * preco_unitario_centavos) AS receita
+                  FROM antigos GROUP BY pedido_id) d
+         CROSS JOIN LATERAL (SELECT count(*) AS n FROM itens_pedido i WHERE i.pedido_id = d.pedido_id) a
+          JOIN pedidos p ON p.id = d.pedido_id
+         WHERE p.status <> 'cancelado'
+         GROUP BY p.criado_em::date
+        HAVING sum((a.n > 0)::int - (a.n - d.linhas > 0)::int) <> 0 OR sum(d.unidades) <> 0 OR sum(d.receita) <> 0
+         ORDER BY p.criado_em::date
+        ON CONFLICT (dia) DO UPDATE
+           SET pedidos = t.pedidos + excluded.pedidos,
+               unidades = t.unidades + excluded.unidades,
+               receita_centavos = t.receita_centavos + excluded.receita_centavos;
     ELSE -- UPDATE: tira a versão antiga de cada item e põe a nova (o item pode mudar de pedido)
-        SELECT array_agg(pedido_id), array_agg(n), array_agg(q), array_agg(r) INTO ids, linhas, unidades, receitas
-          FROM (SELECT pedido_id, sum(s) AS n, sum(s * quantidade) AS q, sum(s * quantidade::bigint * preco_unitario_centavos) AS r
+        INSERT INTO vendas_por_dia AS t (dia, pedidos, unidades, receita_centavos)
+        SELECT p.criado_em::date, sum((a.n > 0)::int - (a.n - d.linhas > 0)::int), sum(d.unidades), sum(d.receita)
+          FROM (SELECT pedido_id, sum(s) AS linhas, sum(s * quantidade) AS unidades, sum(s * quantidade::bigint * preco_unitario_centavos) AS receita
                   FROM (SELECT 1 AS s, pedido_id, quantidade, preco_unitario_centavos FROM novos
                         UNION ALL SELECT -1, pedido_id, quantidade, preco_unitario_centavos FROM antigos) u
-                 GROUP BY pedido_id) x;
-    END IF;
-    IF ids IS NOT NULL THEN
-        PERFORM vendas_por_dia_aplicar(ids, linhas, unidades, receitas);
+                 GROUP BY pedido_id) d
+         CROSS JOIN LATERAL (SELECT count(*) AS n FROM itens_pedido i WHERE i.pedido_id = d.pedido_id) a
+          JOIN pedidos p ON p.id = d.pedido_id
+         WHERE p.status <> 'cancelado'
+         GROUP BY p.criado_em::date
+        HAVING sum((a.n > 0)::int - (a.n - d.linhas > 0)::int) <> 0 OR sum(d.unidades) <> 0 OR sum(d.receita) <> 0
+         ORDER BY p.criado_em::date
+        ON CONFLICT (dia) DO UPDATE
+           SET pedidos = t.pedidos + excluded.pedidos,
+               unidades = t.unidades + excluded.unidades,
+               receita_centavos = t.receita_centavos + excluded.receita_centavos;
     END IF;
     RETURN NULL;
 END;
