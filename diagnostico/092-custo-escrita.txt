@@ -1,0 +1,160 @@
+CREATE TABLE
+CREATE FUNCTION
+ gatilhos 
+----------
+       14
+
+ medir 
+-------
+ 
+
+ medir 
+-------
+ 
+
+ medir 
+-------
+ 
+
+ medir 
+-------
+ 
+
+ medir 
+-------
+ 
+
+ medir 
+-------
+ 
+
+ medir 
+-------
+ 
+
+ medir 
+-------
+ 
+
+ medir 
+-------
+ 
+
+ medir 
+-------
+ 
+
+ medir 
+-------
+ 
+
+ medir 
+-------
+ 
+
+ medir 
+-------
+ 
+
+ medir 
+-------
+ 
+
+ medir 
+-------
+ 
+
+ medir 
+-------
+ 
+
+ medir 
+-------
+ 
+
+ medir 
+-------
+ 
+
+ medir 
+-------
+ 
+
+ medir 
+-------
+ 
+
+ medir 
+-------
+ 
+
+ medir 
+-------
+ 
+
+ medir 
+-------
+ 
+
+ medir 
+-------
+ 
+
+=== tempos (ms) por execução
+ rodada | cenario |  gatilhos  |   ms   
+--------+---------+------------+--------
+      1 | A       | desligados | 1541.7
+      2 | A       | desligados | 1591.5
+      3 | A       | desligados | 3894.3
+      1 | A       | ligados    | 4890.6
+      2 | A       | ligados    | 2511.2
+      3 | A       | ligados    | 4838.3
+      1 | B       | desligados |  300.2
+      2 | B       | desligados |  278.4
+      3 | B       | desligados |  258.6
+      1 | B       | ligados    |  534.7
+      2 | B       | ligados    |  503.3
+      3 | B       | ligados    |  524.4
+      1 | C       | desligados | 1705.2
+      2 | C       | desligados | 2024.2
+      3 | C       | desligados | 1758.0
+      1 | C       | ligados    | 2268.0
+      2 | C       | ligados    | 3984.7
+      3 | C       | ligados    | 2339.7
+      1 | D       | desligados | 2913.9
+      2 | D       | desligados | 1471.4
+      3 | D       | desligados | 4702.3
+      1 | D       | ligados    | 3975.9
+      2 | D       | ligados    | 3632.7
+      3 | D       | ligados    | 2079.3
+
+=== mediana por cenário (ms)
+ cenario |  gatilhos  | mediana_ms |  min   |  max   
+---------+------------+------------+--------+--------
+ A       | desligados |     1591.5 | 1541.7 | 3894.3
+ A       | ligados    |     4838.3 | 2511.2 | 4890.6
+ B       | desligados |      278.4 |  258.6 |  300.2
+ B       | ligados    |      524.4 |  503.3 |  534.7
+ C       | desligados |       1758 | 1705.2 | 2024.2
+ C       | ligados    |     2339.7 | 2268.0 | 3984.7
+ D       | desligados |     2913.9 | 1471.4 | 4702.3
+ D       | ligados    |     3632.7 | 2079.3 | 3975.9
+
+=== depois: gatilhos ainda ligados (tgenabled = O)
+    tabela    |           tgname            | tgenabled 
+--------------+-----------------------------+-----------
+ pedidos      | pedidos_por_status_delete   | O
+ pedidos      | pedidos_por_status_insert   | O
+ pedidos      | pedidos_por_status_truncate | O
+ pedidos      | pedidos_por_status_update   | O
+ pedidos      | vendas_por_dia_status       | O
+ pedidos      | vendas_por_produto_status   | O
+ itens_pedido | vendas_por_dia_delete       | O
+ itens_pedido | vendas_por_dia_insert       | O
+ itens_pedido | vendas_por_dia_truncate     | O
+ itens_pedido | vendas_por_dia_update       | O
+ itens_pedido | vendas_por_produto_delete   | O
+ itens_pedido | vendas_por_produto_insert   | O
+ itens_pedido | vendas_por_produto_truncate | O
+ itens_pedido | vendas_por_produto_update   | O
+

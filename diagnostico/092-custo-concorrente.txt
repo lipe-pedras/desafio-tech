@@ -1,0 +1,75 @@
+NOTICE:  table "pedidos_do_dia" does not exist, skipping
+data: 2026-11-13 12:15:28
+cenario clientes gatilhos   rodada           tps    latencia_ms
+item    1        ligados    1        1781.028234          0.561
+item    1        desligados 1        1487.531200          0.672
+item    8        ligados    1        3042.344747          2.630
+item    8        desligados 1        5872.009537          1.362
+item-dia 1        ligados    1        2376.418108          0.421
+item-dia 1        desligados 1        2684.236628          0.373
+item-dia 8        ligados    1        2701.265260          2.962
+item-dia 8        desligados 1       10531.056445          0.760
+status  1        ligados    1        1485.504580          0.673
+status  1        desligados 1        2114.476333          0.473
+status  8        ligados    1        2182.155219          3.666
+status  8        desligados 1        2184.922653          3.661
+item    1        desligados 2        1738.136965          0.575
+item    1        ligados    2        1467.884844          0.681
+item    8        desligados 2        6438.859782          1.242
+item    8        ligados    2        4498.465517          1.778
+item-dia 1        desligados 2        2655.673681          0.377
+item-dia 1        ligados    2        2359.742528          0.424
+item-dia 8        desligados 2        7855.253222          1.018
+item-dia 8        ligados    2        2689.979758          2.974
+status  1        desligados 2        1218.883859          0.820
+status  1        ligados    2        1549.384132          0.645
+status  8        desligados 2        1634.751238          4.894
+status  8        ligados    2        1235.524061          6.475
+item    1        ligados    3        1277.097826          0.783
+item    1        desligados 3        2262.975607          0.442
+item    8        ligados    3        4334.926835          1.845
+item    8        desligados 3        4332.536368          1.846
+item-dia 1        ligados    3        2388.560989          0.419
+item-dia 1        desligados 3        2649.225308          0.377
+item-dia 8        ligados    3        2712.432100          2.949
+item-dia 8        desligados 3       10793.854698          0.741
+status  1        ligados    3        1336.076023          0.748
+status  1        desligados 3        1664.278720          0.601
+status  8        ligados    3        2119.582063          3.774
+status  8        desligados 3        1344.353418          5.951
+
+conferência sob disputa: total recalculado; 10 s de item-dia e status-dia nos pedidos de 2025-12-31, 8 clientes, gatilhos ligados
+number of transactions actually processed: 5173
+number of failed transactions: 0 (0.000%)
+number of transactions retried: 0 (0.000%)
+tps = 514.502905 (without initial connection time)
+ - 2545 transactions (49.2% of total, tps = 253.123892)
+ - number of failed transactions: 0 (0.000%)
+ - number of transactions retried: 0 (0.000%)
+ - 2628 transactions (50.8% of total, tps = 261.379013)
+ - number of failed transactions: 0 (0.000%)
+ - number of transactions retried: 0 (0.000%)
+dias com divergência entre vendas_por_dia e o recálculo (esperado: 0)
+ dias_divergentes 
+------------------
+                0
+(1 row)
+
+    tabela    |           tgname            | tgenabled 
+--------------+-----------------------------+-----------
+ pedidos      | pedidos_por_status_delete   | O
+ pedidos      | pedidos_por_status_insert   | O
+ pedidos      | pedidos_por_status_truncate | O
+ pedidos      | pedidos_por_status_update   | O
+ pedidos      | vendas_por_dia_status       | O
+ pedidos      | vendas_por_produto_status   | O
+ itens_pedido | vendas_por_dia_delete       | O
+ itens_pedido | vendas_por_dia_insert       | O
+ itens_pedido | vendas_por_dia_truncate     | O
+ itens_pedido | vendas_por_dia_update       | O
+ itens_pedido | vendas_por_produto_delete   | O
+ itens_pedido | vendas_por_produto_insert   | O
+ itens_pedido | vendas_por_produto_truncate | O
+ itens_pedido | vendas_por_produto_update   | O
+(14 rows)
+

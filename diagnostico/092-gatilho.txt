@@ -1,0 +1,126 @@
+CREATE VIEW
+=== 0. estado inicial (esperado em todos os passos: 0 dias divergentes)
+ linhas | pedidos | unidades 
+--------+---------+----------
+    731 |  450000 |  2699998
+(1 row)
+
+ dias_divergentes 
+------------------
+                0
+(1 row)
+
+BEGIN
+=== 1. INSERT de 1000 itens num comando só, em pedidos de todos os status (alguns pedidos sem itens antes)
+INSERT 0 40
+INSERT 0 1000
+ dias_divergentes 
+------------------
+                0
+(1 row)
+
+=== 2. INSERT de 1 item
+INSERT 0 1
+ dias_divergentes 
+------------------
+                0
+(1 row)
+
+=== 3. UPDATE de itens: quantidade (200), preço (200) e pedido (200, para pedidos cancelados e para um pedido sem itens)
+UPDATE 200
+UPDATE 200
+UPDATE 200
+INSERT 0 1
+UPDATE 3
+ dias_divergentes 
+------------------
+                0
+(1 row)
+
+=== 4. UPDATE de pedidos: 200 para cancelado, 200 de cancelado para pago, 200 pago -> entregue, 200 só observacoes
+UPDATE 200
+UPDATE 200
+UPDATE 200
+UPDATE 200
+ dias_divergentes 
+------------------
+                0
+(1 row)
+
+=== 5. UPDATE de data: 200 pedidos mudam de dia, 200 mudam de hora no mesmo dia, 100 cancelados mudam de dia e 100 mudam de dia e são cancelados
+UPDATE 200
+UPDATE 200
+UPDATE 100
+UPDATE 100
+ dias_divergentes 
+------------------
+                0
+(1 row)
+
+=== 6. DELETE de itens: os de teste e 300 originais (alguns pedidos ficam sem itens)
+DELETE 1001
+DELETE 300
+ dias_divergentes 
+------------------
+                0
+(1 row)
+
+=== 7. Pedido novo hoje com 3 itens, cancelado, reaberto, e apagado (itens e pedido)
+INSERT 0 1
+INSERT 0 3
+ dias_divergentes 
+------------------
+                0
+(1 row)
+
+UPDATE 1
+ dias_divergentes 
+------------------
+                0
+(1 row)
+
+UPDATE 1
+ dias_divergentes 
+------------------
+                0
+(1 row)
+
+DELETE 3
+DELETE 1
+ dias_divergentes 
+------------------
+                0
+(1 row)
+
+ROLLBACK
+BEGIN
+=== 8. TRUNCATE de itens_pedido e INSERT de 500 itens depois
+TRUNCATE TABLE
+ dias_divergentes 
+------------------
+                0
+(1 row)
+
+INSERT 0 500
+ dias_divergentes 
+------------------
+                0
+(1 row)
+
+ROLLBACK
+=== 9. depois dos ROLLBACKs
+ dias_divergentes 
+------------------
+                0
+(1 row)
+
+BEGIN
+=== 10. controle: com os gatilhos de vendas_por_dia desligados, um INSERT de 1 item (esperado: 1 dia divergente)
+ALTER TABLE
+INSERT 0 1
+ dias_divergentes 
+------------------
+                1
+(1 row)
+
+ROLLBACK
