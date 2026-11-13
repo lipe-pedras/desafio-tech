@@ -179,7 +179,7 @@ rotas.get('/relatorios/vendas-por-dia', assincrono(async (req, res) => {
       WHERE dia >= $1::date
         AND dia <= $2::date
         AND pedidos > 0
-      ORDER BY dia`,
+      ORDER BY vendas_por_dia.dia`,
     [req.query.inicio, req.query.fim],
   );
 
