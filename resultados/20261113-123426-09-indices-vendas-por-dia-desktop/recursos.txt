@@ -1,0 +1,5 @@
+container                            amostras  cpu_media    cpu_max    mem_media      mem_max
+rod-a4a7821-api-1                          30      23.0%      26.0%     30.7 MiB     31.4 MiB
+rod-a4a7821-banco-1                        30      89.9%      93.6%    151.2 MiB    152.7 MiB
+
+cpu_percentual: 100% = 1 CPU inteira.

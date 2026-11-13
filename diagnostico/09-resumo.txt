@@ -1,0 +1,38 @@
+== 09-antes-desktop (3 execuções) commit ['93a6cd9'] sujo ['0', '0', '0'] erros [0, 0, 0] contrato ['mantido']
+   pastas 20261113-122638-09-antes-desktop 20261113-123938-09-antes-desktop 20261113-124450-09-antes-desktop
+   req/s por execução [904.5, 903.64, 904.69]  p95 por execução [46.9, 47.0, 46.7]
+   medianas: rps=904.50 avg=22.08 med=20.45 p95=46.86 p99=59.26 cpu_b=91.80 mem_b=151.80 cpu_a=19.50 mem_a=31.20
+   rotas (mediana da rota, ms): cliente=14.6 cliente-por-email=14.6 pedidos-do-cliente=29.3 pedidos-por-status=29.7 busca-produtos=15.4 vendas-por-dia=23.8 top-produtos=14.6
+
+== 09-indices-vendas-por-dia-desktop (3 execuções) commit ['a4a7821'] sujo ['0', '0', '0'] erros [0, 0, 0] contrato ['mantido']
+   pastas 20261113-122914-09-indices-vendas-por-dia-desktop 20261113-123426-09-indices-vendas-por-dia-desktop 20261113-124726-09-indices-vendas-por-dia-desktop
+   req/s por execução [1097.9, 1096.89, 1096.13]  p95 por execução [37.3, 37.3, 37.1]
+   medianas: rps=1096.89 avg=18.20 med=17.27 p95=37.27 p99=46.85 cpu_b=89.90 mem_b=151.30 cpu_a=23.30 mem_a=31.00
+   rotas (mediana da rota, ms): cliente=12.2 cliente-por-email=12.2 pedidos-do-cliente=24.4 pedidos-por-status=24.8 busca-produtos=13.0 vendas-por-dia=19.0 top-produtos=12.4
+
+== 092-total-por-dia-desktop (3 execuções) commit ['49af9c9'] sujo ['0', '0', '0'] erros [0, 0, 0] contrato ['mantido']
+   pastas 20261113-123150-092-total-por-dia-desktop 20261113-123702-092-total-por-dia-desktop 20261113-124215-092-total-por-dia-desktop
+   req/s por execução [2543.16, 2550.31, 2528.17]  p95 por execução [14.0, 13.9, 14.0]
+   medianas: rps=2543.16 avg=7.83 med=6.62 p95=14.02 p99=24.96 cpu_b=70.50 mem_b=150.80 cpu_a=49.70 mem_a=30.70
+   rotas (mediana da rota, ms): cliente=5.3 cliente-por-email=5.3 pedidos-do-cliente=10.5 pedidos-por-status=10.9 busca-produtos=6.1 vendas-por-dia=5.3 top-produtos=5.4
+
+contadores de cota de CPU durante o medir.sh (depois menos antes; inclui o aquecimento de 15 s do medir.sh)
+rotulo                                 svc    periodos  pausados %pausados  pausado_s    cpu_s
+09-antes-desktop                       banco       759        17       2.2       0.25    68.92
+09-antes-desktop                       api         762         0       0.0       0.00    14.68
+09-indices-vendas-por-dia-desktop      banco       758        18       2.4       0.25    67.74
+09-indices-vendas-por-dia-desktop      api         763         0       0.0       0.00    17.14
+092-total-por-dia-desktop              banco       760         7       0.9       0.03    53.53
+092-total-por-dia-desktop              api         763       491      64.4       5.55    36.90
+09-indices-vendas-por-dia-desktop      banco       760        20       2.6       0.22    67.88
+09-indices-vendas-por-dia-desktop      api         763         0       0.0       0.00    17.01
+092-total-por-dia-desktop              banco       760         7       0.9       0.03    53.63
+092-total-por-dia-desktop              api         763       486      63.7       5.25    36.96
+09-antes-desktop                       banco       760        20       2.6       0.31    69.07
+09-antes-desktop                       api         761         0       0.0       0.00    14.52
+092-total-por-dia-desktop              banco       758         4       0.5       0.02    53.45
+092-total-por-dia-desktop              api         763       513      67.2       5.32    37.01
+09-antes-desktop                       banco       758        20       2.6       0.28    69.16
+09-antes-desktop                       api         762         0       0.0       0.00    14.38
+09-indices-vendas-por-dia-desktop      banco       759        18       2.4       0.26    67.68
+09-indices-vendas-por-dia-desktop      api         761         0       0.0       0.00    17.33
