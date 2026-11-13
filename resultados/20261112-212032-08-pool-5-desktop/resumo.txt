@@ -1,0 +1,17 @@
+Medição: 08-pool-5-desktop
+Carga: 20 usuários virtuais por 60s
+
+Requisições:        52671
+Requisições/s:      876.48
+Tempo de resposta:  mediana 4.7 ms | p95 88.2 ms | p99 93.2 ms
+Erros:              0.00%
+
+Por rota:
+rota                  req       mediana       p95           p99           erros   
+cliente               13253     2.9 ms        81.9 ms       85.9 ms       0.0%    
+cliente-por-email     7986      2.9 ms        82.0 ms       85.9 ms       0.0%    
+pedidos-do-cliente    10465     6.1 ms        87.4 ms       91.4 ms       0.0%    
+pedidos-por-status    7813      6.5 ms        88.0 ms       91.7 ms       0.0%    
+busca-produtos        7913      3.8 ms        83.5 ms       87.3 ms       0.0%    
+vendas-por-dia        4212      86.4 ms       95.0 ms       99.3 ms       0.0%    
+top-produtos          1029      3.0 ms        81.6 ms       84.9 ms       0.0%    
