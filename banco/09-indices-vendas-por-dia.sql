@@ -1,12 +1,9 @@
--- Mudança 09 (versão conservadora): troca dois índices por versões que cobrem a consulta de
--- /relatorios/vendas-por-dia, para que ela leia só índices (Index Only Scan), sem ir às tabelas:
---   itens_pedido (pedido_id), da 01       -> (pedido_id) INCLUDE (quantidade, preco_unitario_centavos)
---   pedidos (criado_em), da 04.1          -> (criado_em) INCLUDE (id, status)
--- Hoje a rota lê cerca de 4.300 pedidos e 13 mil itens por chamada direto das tabelas (235 MB juntas), que
--- não cabem nos 128 MB de shared_buffers. Os dois índices novos somam 64 MB.
--- Evidência: diagnostico/09-vendas-por-dia.txt (29,2 ms -> 6,5 ms por chamada, mesmo resultado nos 725 períodos).
--- Custo: +24 MB no índice de itens e +8 MB no de pedidos; cada escrita grava as colunas incluídas no índice.
--- VACUUM (ANALYZE) marca as páginas no mapa de visibilidade já na criação do banco (como na 05.1).
+-- Troca dois índices por versões que cobrem a consulta de /relatorios/vendas-por-dia da mudança 09, para ela
+-- ler só índices, sem ir às tabelas:
+--   itens_pedido (pedido_id), de 03-indices.sql          -> (pedido_id) INCLUDE (quantidade, preco_unitario_centavos)
+--   pedidos (criado_em), de 04-indice-pedidos-criado-em.sql -> (criado_em) INCLUDE (id, status)
+-- Desde 09-total-vendas-por-dia.sql, a rota lê vendas_por_dia e não usa mais aquela consulta.
+-- O VACUUM marca as páginas no mapa de visibilidade já na criação. Detalhes: experimentos/09-vendas-por-dia.md.
 
 \echo 'Trocando os índices de itens_pedido (pedido_id) e pedidos (criado_em) por versões com INCLUDE...'
 DROP INDEX itens_pedido_pedido_id_idx;

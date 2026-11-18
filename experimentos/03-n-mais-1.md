@@ -52,7 +52,7 @@ Yang, Chen e Yan estudam aplicações com ORM; aqui a API escreve SQL direto. To
 
 ## Resultado no desktop (oficial)
 
-Desktop (i7-14700K), perfil `performance`, banco e API fixados nos núcleos P, sem mudar os limites. Em todas as séries, um banco único com os índices da 01 e as versões em rodízio, trocando só o container da API ([como foi medido](../diagnostico/remedicao-desktop/README.md#como-foi-remedido)). Contrato mantido, 0,00% de erros e `arquivos alterados sem commit: 0` em todas as execuções desta seção. Os números são medianas de 3 execuções, calculadas por [`analisar.py`](../diagnostico/remedicao-desktop/analisar.py) ([`resumo.txt`](../diagnostico/remedicao-desktop/resumo.txt)).
+Desktop (i7-14700K), perfil `performance`, banco e API fixados nos núcleos P, sem mudar os limites. Em todas as séries, um banco único com os índices da 01 e as versões em rodízio, trocando só o container da API ([como foi medido](../diagnostico/remedicao-desktop/README.md#como-foi-remedido)). Contrato mantido, 0,00% de erros e `arquivos alterados sem commit: 0` em todas as execuções desta seção. Os números são medianas de 3 execuções, calculadas por [`analisar.py`](../diagnostico/analisar.py) com `--serie remedicao-desktop` ([`resumo.txt`](../diagnostico/remedicao-desktop/resumo.txt)).
 
 ### Fechamento: a 03 com pool 1 contra a 02 (2026-11-11)
 
@@ -119,7 +119,7 @@ Com pool 2, a 03 empata em req/s e só ganha na cauda, o mesmo resultado do rod�
 | 5 | 47,28 | 312,4 ms | 997,3 ms | 2249,9 ms | 240,7 MiB |
 | 10 | 39,17 | 298,5 ms | 1275,3 ms | 4797,0 ms | 335,3 MiB |
 
-**2026-11-11** (rodízio só entre 1 e 2, banco novo; [`rodar-031-pool-1.sh`](../diagnostico/remedicao-desktop/rodar-031-pool-1.sh)):
+**2026-11-11** (rodízio só entre 1 e 2, banco novo; [`rodar-bloco-b.sh`](../diagnostico/remedicao-desktop/rodar-bloco-b.sh), título "031 pool 1"):
 
 | `max` | req/s (3 execuções) | Mediana | p95 | p99 | Memória do banco |
 |---|---|---|---|---|---|

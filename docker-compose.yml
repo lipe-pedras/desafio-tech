@@ -3,7 +3,7 @@ name: desafio-performance
 services:
   banco:
     image: postgres:16.4
-    # 06.1: sem consultas paralelas. O banco tem 1 CPU, e os processos auxiliares disputam essa CPU com o principal.
+    # Sem consultas paralelas: com 1 CPU, os processos auxiliares só disputam a CPU com o principal.
     command: ["postgres", "-c", "max_parallel_workers_per_gather=0"]
     shm_size: 256mb
     environment:

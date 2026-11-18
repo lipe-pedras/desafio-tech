@@ -1,10 +1,6 @@
--- Mudança 07: índice de trigramas (pg_trgm, GIN) em produtos (nome) para /produtos/busca?q=.
--- A rota filtra com nome ILIKE '%termo%'. Com o % no começo, nenhum B-tree serve, e o banco lia os 20 mil
--- produtos a cada chamada (cerca de 6 ms; depois da 06, 58% do tempo de execução no banco,
--- diagnostico/07-custo-por-rota.txt). O índice de trigramas atende LIKE e ILIKE sem âncora no começo
--- (documentação do PostgreSQL 16, F.35.4). O ILIKE continua sendo conferido em cada linha encontrada,
--- então o resultado não muda.
--- Custo: cerca de 1,1 MB de disco; escritas em produtos atualizam também este índice.
+-- Índice de trigramas (pg_trgm, GIN) em produtos (nome) para /produtos/busca?q=, que filtra com
+-- nome ILIKE '%termo%': com o % no começo, nenhum B-tree serve. O ILIKE continua sendo conferido em cada
+-- linha encontrada, então o resultado não muda. Detalhes: experimentos/07-busca-trigramas.md.
 
 \echo 'Criando o índice de trigramas em produtos (nome)...'
 CREATE EXTENSION IF NOT EXISTS pg_trgm;

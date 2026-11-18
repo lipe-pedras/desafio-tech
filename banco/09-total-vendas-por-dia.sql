@@ -1,20 +1,17 @@
--- Mudança 09.2 (versão agressiva da 09): pedidos, unidades e receita de cada dia, só de pedidos não
--- cancelados, passam a ficar numa tabela mantida por gatilhos (triggers) em itens_pedido e em pedidos.
--- A rota /relatorios/vendas-por-dia lê as 7 linhas do período, em vez de juntar cerca de 4.300 pedidos
--- com 13 mil itens a cada chamada (diagnostico/09-vendas-por-dia.txt, seção E).
--- "pedidos" conta os pedidos não cancelados do dia que têm pelo menos 1 item (como o JOIN da consulta antiga).
--- Gatilhos por comando (FOR EACH STATEMENT), com tabelas de transição, como na 05.2 e na 06.2:
---   itens_pedido INSERT/UPDATE/DELETE: soma a diferença de cada pedido (itens, unidades, receita) no dia dele;
---     o pedido passa a contar (ou deixa de contar) quando ganha o 1º item (ou perde o último);
+-- Pedidos, unidades e receita de cada dia, só de pedidos não cancelados, mantidos por gatilhos, para
+-- /relatorios/vendas-por-dia ler as linhas do período em vez de juntar pedidos e itens a cada chamada.
+-- "pedidos" conta os pedidos não cancelados do dia com pelo menos 1 item, como o JOIN da consulta antiga.
+-- Gatilhos por comando, com tabelas de transição, como em 05-total-pedidos-por-status.sql:
+--   itens_pedido INSERT/UPDATE/DELETE: soma a diferença de cada pedido no dia dele; o pedido passa a contar
+--     quando ganha o 1º item e deixa de contar quando perde o último;
 --   itens_pedido TRUNCATE: apaga tudo;
---   pedidos UPDATE: quando um pedido entra ou sai de cancelado, ou muda de dia (criado_em), tira os itens
---     dele do dia antigo e põe no novo.
+--   pedidos UPDATE: quando um pedido entra ou sai de cancelado, ou muda de dia, tira os itens dele do dia
+--     antigo e põe no novo.
 -- INSERT e DELETE em pedidos não mudam nada: pedido novo não tem itens, e a chave estrangeira impede apagar
--- um pedido com itens (nem mudar o id dele).
--- Concorrência: os gatilhos de itens travam os pedidos envolvidos com FOR SHARE antes de ler status e dia,
--- como na 06.2. Todo pedido novo cai no dia de hoje, então escritas simultâneas disputam a mesma linha
--- (como na 05.2, e não espalhadas como na 06.2).
--- Custo: toda escrita em itens_pedido e toda mudança de status ou de data de pedido passam a atualizar esta tabela.
+-- um pedido com itens.
+-- Custo: toda escrita em itens_pedido e toda mudança de status ou de data de pedido atualizam esta tabela.
+-- Todo pedido novo cai no dia de hoje, então escritas simultâneas disputam a mesma linha.
+-- Detalhes: experimentos/09.2-total-por-dia.md.
 
 \echo 'Criando o total de vendas por dia e os gatilhos que o mantêm...'
 CREATE TABLE vendas_por_dia (
@@ -33,7 +30,8 @@ SELECT p.criado_em::date, count(DISTINCT p.id), sum(i.quantidade), sum(i.quantid
 -- Os gatilhos de itens somam as diferenças de cada pedido (d: linhas de itens, unidades, receita) no dia dele.
 -- a.n é o número de linhas de itens do pedido depois do comando; antes, eram a.n - d.linhas. O pedido passa a
 -- contar quando a.n > 0 e antes não, e deixa de contar no caso contrário.
--- O comando está escrito por inteiro em cada ramo (e não numa função auxiliar) para o PL/pgSQL guardar o plano.
+-- Cada ramo repete o comando inteiro: a versão com uma função auxiliar comum ficou mais lenta
+-- (experimentos/09.2-total-por-dia.md).
 CREATE FUNCTION vendas_por_dia_itens() RETURNS trigger LANGUAGE plpgsql AS $$
 BEGIN
     IF TG_OP = 'TRUNCATE' THEN
@@ -42,6 +40,8 @@ BEGIN
     END IF;
 
     -- Trava os pedidos envolvidos (em ordem de id) para ler status e dia sem disputa com uma mudança simultânea.
+    -- O outro gatilho de itens_pedido (06-total-vendas-por-produto.sql) trava os mesmos pedidos. Repetir é inofensivo:
+    -- na mesma transação, a segunda trava não espera. Fica nos dois arquivos para cada um funcionar sozinho.
     IF TG_OP IN ('INSERT', 'UPDATE') THEN
         PERFORM 1 FROM pedidos WHERE id IN (SELECT pedido_id FROM novos) ORDER BY id FOR SHARE;
     END IF;

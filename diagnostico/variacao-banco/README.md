@@ -1,6 +1,6 @@
 # Recriar o banco muda o resultado?
 
-> **A etapa 1 é diagnóstico.** A etapa 2 usa o formato oficial (`scripts/medir.sh`, commit limpo, contrato verificado) e seus resultados estão em `resultados/`. Números em [`resumo.txt`](resumo.txt), gerado por [`analisar.py`](analisar.py).
+> **A etapa 1 é diagnóstico.** A etapa 2 usa o formato oficial (`scripts/medir.sh`, commit limpo, contrato verificado) e seus resultados estão em `resultados/`. Números em [`resumo.txt`](resumo.txt), gerado por `python3 diagnostico/analisar.py --serie variacao-banco` ([`analisar.py`](../analisar.py)).
 
 **Motivo:** o mesmo código, com `DB_POOL_MAX=2`, deu 17,09 req/s numa série (2026-11-08) e 23,01 em outra (2026-11-07).
 

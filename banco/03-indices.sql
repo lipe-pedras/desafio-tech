@@ -1,10 +1,8 @@
--- Mudança 01: índices para os filtros que hoje fazem Seq Scan (ver diagnostico/explain-linha-de-base.txt).
--- Hipótese: com índice nas chaves estrangeiras e nos filtros das rotas, o banco deixa de ler tabelas
--- inteiras a cada consulta, sai da saturação de CPU e o p95 geral e as requisições/s melhoram muito.
+-- Índices nas chaves estrangeiras e nos filtros das rotas. Detalhes: experimentos/01-indices.md.
 
 \echo 'Criando índices...'
 
--- /clientes/:id/pedidos: itens de cada pedido (hoje lê 1,5 milhão de linhas por pedido)
+-- /clientes/:id/pedidos: itens de cada pedido
 CREATE INDEX itens_pedido_pedido_id_idx ON itens_pedido (pedido_id);
 
 -- /clientes/:id/pedidos: pedidos do cliente, já na ordem da resposta

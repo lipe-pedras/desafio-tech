@@ -5,16 +5,15 @@
 Arquivos desta pasta:
 - [`ambiente.txt`](ambiente.txt): CPU, memória, perfil de energia e versões do desktop;
 - [`rodar.sh`](rodar.sh): remedição completa (blocos A e B), 2026-11-10;
-- [`rodar-031-pool-1.sh`](rodar-031-pool-1.sh): 03 com pool 1 contra pool 2, 2026-11-11;
-- [`rodar-03-fechamento.sh`](rodar-03-fechamento.sh): fechamento da 03 (02 com pool 2, 02 com pool 1 e 03 com pool 1), 2026-11-11;
+- [`rodar-bloco-b.sh`](rodar-bloco-b.sh): versões só de API em rodízio, no formato do bloco B; usado em 2026-11-11 para a 03 com pool 1 contra pool 2 e para o fechamento da 03 (02 com pool 2, 02 com pool 1 e 03 com pool 1). Os dois comandos estão no cabeçalho do script;
 - [`registro.txt`](registro.txt): log de cada passo, com perfil de energia, carga da máquina e a fixação dos núcleos;
-- [`analisar.py`](analisar.py) e [`resumo.txt`](resumo.txt): medianas por rótulo e a repetibilidade de cada série.
+- [`resumo.txt`](resumo.txt), gerado por `python3 diagnostico/analisar.py --serie remedicao-desktop` ([`analisar.py`](../analisar.py)): medianas por rótulo e a repetibilidade de cada série.
 
 ## Por que remedir
 
 As medições do notebook variaram demais, entre execuções e entre sessões, para sustentar algumas conclusões.
 
-**Entre execuções da mesma série**, a amplitude das req/s, (máx − mín) ÷ mediana, teve mediana de **12,6%** e chegou a **29,1%** (`031-pool-max-5`). Calculado por `analisar.py` a partir de `resultados/`. A linha `01-indices` (49,7%) junta duas sessões com o mesmo rótulo e não conta como série.
+**Entre execuções da mesma série**, a amplitude das req/s, (máx − mín) ÷ mediana, teve mediana de **12,6%** e chegou a **29,1%** (`031-pool-max-5`). Calculado por `diagnostico/analisar.py` a partir de `resultados/`. A linha `01-indices` (49,7%) junta duas sessões com o mesmo rótulo e não conta como série.
 
 **Entre sessões**, o mesmo código deu números bem diferentes:
 

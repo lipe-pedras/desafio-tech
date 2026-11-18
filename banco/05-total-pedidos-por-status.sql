@@ -1,10 +1,7 @@
--- Mudança 05.2 (versão agressiva da 05): o total de pedidos por status passa a ficar numa tabela pequena,
--- mantida por gatilhos (triggers) a cada INSERT, UPDATE, DELETE e TRUNCATE em pedidos.
--- A rota /pedidos?status=&pagina= lê o total dali (uma linha) em vez de contar os pedidos do status
--- (300 mil no status pago; cerca de 10 ms com o índice da 05.1, diagnostico/05-pedidos-por-status.txt).
--- Os gatilhos são por comando (FOR EACH STATEMENT), com tabelas de transição: cada comando soma a diferença
--- por status e atualiza cada status uma vez só, mesmo que o comando altere milhares de pedidos.
--- Custo: toda escrita em pedidos passa a atualizar também esta tabela (diagnostico/052-custo-escrita.txt).
+-- Total de pedidos por status, mantido por gatilhos em pedidos, para /pedidos?status= não contar os pedidos
+-- a cada chamada. Gatilhos por comando (FOR EACH STATEMENT) com tabelas de transição: cada comando atualiza
+-- cada status uma vez, mesmo que altere milhares de pedidos.
+-- Custo: toda escrita em pedidos atualiza também esta tabela. Detalhes: experimentos/05.2-total-por-status.md.
 
 \echo 'Criando o total de pedidos por status e os gatilhos que o mantêm...'
 CREATE TABLE pedidos_por_status (

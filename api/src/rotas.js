@@ -66,7 +66,6 @@ rotas.get('/clientes/:id/pedidos', assincrono(async (req, res) => {
   const clientes = await consultar('SELECT * FROM clientes WHERE id = $1', [id]);
   if (clientes.length === 0) return res.status(404).json({ erro: 'cliente nao encontrado' });
 
-  // Uma consulta só para pedidos, itens e produtos. O LEFT JOIN mantém pedidos sem itens.
   const linhas = await consultar(
     `SELECT p.id AS pedido_id, p.status, p.criado_em, i.produto_id, pr.nome AS produto_nome,
             i.quantidade, i.preco_unitario_centavos
@@ -78,6 +77,8 @@ rotas.get('/clientes/:id/pedidos', assincrono(async (req, res) => {
     [id],
   );
 
+  // As linhas vêm ordenadas por pedido, então as de um mesmo pedido são vizinhas.
+  // Pedido sem itens vem numa linha só, com produto_id nulo (LEFT JOIN).
   const resposta = [];
   let pedido = null;
   for (const linha of linhas) {
@@ -114,14 +115,12 @@ rotas.get('/pedidos', assincrono(async (req, res) => {
   const pagina = req.query.pagina === undefined ? 1 : inteiroPositivo(req.query.pagina);
   if (pagina === null) return res.status(400).json({ erro: 'pagina invalida' });
 
-  // O total vem da tabela mantida por gatilhos (banco/05-total-pedidos-por-status.sql), sem contar os pedidos.
-  // Status sem pedidos não têm linha (ou têm total 0): a resposta continua 0.
+  // Total mantido por gatilhos (banco/05-total-pedidos-por-status.sql); status sem linha conta 0.
   const [contagem] = await consultar(
     'SELECT coalesce((SELECT total FROM pedidos_por_status WHERE status = $1), 0) AS total',
     [status],
   );
-  // Só as colunas que a resposta usa (sem observacoes). Com o índice da 05.1, que inclui cliente_id,
-  // a página e as linhas puladas pelo OFFSET são lidas só do índice.
+  // Só as colunas da resposta: todas estão no índice de status (que inclui cliente_id), então a página sai dele.
   const linhas = await consultar(
     `SELECT id, cliente_id, status, criado_em
        FROM pedidos
@@ -171,8 +170,8 @@ rotas.get('/relatorios/vendas-por-dia', assincrono(async (req, res) => {
     return res.status(400).json({ erro: `o periodo deve ter entre 1 e ${MAX_DIAS_RELATORIO} dias` });
   }
 
-  // 09.2: pedidos, unidades e receita de cada dia vêm de vendas_por_dia, mantida por gatilhos
-  // (banco/09-total-vendas-por-dia.sql). Dias sem pedidos contados não aparecem, como no JOIN de antes.
+  // Totais mantidos por gatilhos (banco/09-total-vendas-por-dia.sql). O ORDER BY qualifica a coluna
+  // porque "dia" sozinho seria o texto do to_char.
   const linhas = await consultar(
     `SELECT to_char(dia, 'YYYY-MM-DD') AS dia, pedidos, unidades AS itens, receita_centavos
        FROM vendas_por_dia
@@ -195,8 +194,7 @@ rotas.get('/relatorios/top-produtos', assincrono(async (req, res) => {
   const limite = req.query.limite === undefined ? 10 : inteiroPositivo(req.query.limite);
   if (limite === null || limite > 50) return res.status(400).json({ erro: 'limite deve ser um inteiro entre 1 e 50' });
 
-  // O ranking vem da tabela mantida por gatilhos (banco/06-total-vendas-por-produto.sql), lido em ordem
-  // pelo índice parcial (itens > 0), sem agrupar os itens. Só os produtos do LIMIT são juntados a produtos.
+  // Ranking mantido por gatilhos (banco/06-total-vendas-por-produto.sql); só os N primeiros vão ao JOIN.
   const linhas = await consultar(
     `WITH ranking AS (
        SELECT produto_id, unidades, receita_centavos

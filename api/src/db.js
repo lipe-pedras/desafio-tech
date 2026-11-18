@@ -5,17 +5,13 @@ const config = {
   port: Number(process.env.DB_PORT || 5432),
   user: process.env.DB_USER || 'loja',
   database: process.env.DB_NAME || 'loja',
-  // Um pool único para a API: as conexões são abertas uma vez e reaproveitadas,
-  // em vez de uma conexão nova (e um processo novo no PostgreSQL) por consulta.
-  // Tamanho do pool: DB_POOL_MAX no docker-compose.yml; sem a variável, 10
-  // (o padrão do node-postgres).
   max: Number(process.env.DB_POOL_MAX || 10),
 };
 
 const pool = new Pool(config);
 
-// Erro numa conexão ociosa do pool (banco reiniciado, rede): registra e segue;
-// o pool descarta essa conexão e abre outra na próxima consulta.
+// Sem este handler, um erro numa conexão ociosa (banco reiniciado, rede) derruba o processo.
+// O pool já descarta a conexão; aqui só registramos.
 pool.on('error', (erro) => {
   console.error('erro em conexao ociosa do pool', erro);
 });

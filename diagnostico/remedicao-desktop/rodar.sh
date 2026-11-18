@@ -12,44 +12,25 @@
 # sem mudar os limites de CPU e memória do docker-compose.yml. O k6 roda sem fixação.
 # Medição sempre por scripts/medir.sh, com os parâmetros padrão, no commit limpo de cada versão.
 set -euo pipefail
+source "$(dirname "${BASH_SOURCE[0]}")/../lib.sh"
 trap 'log "FALHOU na linha $LINENO"' ERR
 
 TMP="$1"
 RAIZ="$(pwd)"
-D="${RAIZ}/diagnostico/remedicao-desktop"
-NUCLEOS_P="$(cat /sys/devices/cpu_core/cpus)"
+REG="${RAIZ}/diagnostico/remedicao-desktop/registro.txt"
+NUCLEOS_P="$(nucleos_p)"
 PROJ_BASE="remed-base"
 PROJ_01="remed-01"
 
-log() { echo "$(date '+%F %T') perfil=$(powerprofilesctl get 2>/dev/null) carga=$(cut -d' ' -f1-3 /proc/loadavg) $*" | tee -a "$D/registro.txt"; }
-wt() { echo "${TMP}/$1"; }
-dc() { # projeto commit comando...
-  local p="$1" c="$2"; shift 2
-  (cd "$(wt "$c")" && COMPOSE_PROJECT_NAME="$p" "$@")
-}
-fixar() { # projeto commit
-  local ids; ids="$(dc "$1" "$2" docker compose ps -q banco api)"
-  # shellcheck disable=SC2086
-  docker update --cpuset-cpus "$NUCLEOS_P" $ids >/dev/null
-  # shellcheck disable=SC2086
-  log "fixado: $(docker inspect --format '{{.Name}} cpuset={{.HostConfig.CpusetCpus}} nanocpus={{.HostConfig.NanoCpus}}' $ids | tr '\n' ' ')"
-}
-guardar() { # commit rotulo
-  local d
-  for d in "$(wt "$1")"/resultados/*-"$2"; do
-    [[ -e "$RAIZ/resultados/$(basename "$d")" ]] || cp -r "$d" "$RAIZ/resultados/"
-  done
-}
-aquecer() { dc "$1" "$2" docker compose run --rm -e VUS=5 -e DURACAO=60s -e SEMENTE=43 carga run --quiet --no-summary /carga/teste-carga.js >/dev/null; }
-medir() { # projeto commit rotulo
-  dc "$1" "$2" scripts/verificar-contrato.sh comparar 2>&1 | tail -1 | grep -q "Contrato mantido" || { log "contrato quebrado em $2"; exit 1; }
+medir() {  # projeto commit rotulo
+  conferir_contrato "$1" "$2"
   dc "$1" "$2" scripts/medir.sh "$3" 2>&1 | tail -1
   guardar "$2" "$3"
-  log "medido $3 ($2): $(grep -m1 'Requisições/s' "$(ls -d "$(wt "$2")"/resultados/*-"$3" | tail -1)/resumo.txt" | tr -s ' ')"
+  registrar_medicao "$2" "$3"
 }
 
 for c in d29146f 466d0f5 63b4693 d9ee2e5 1fd2ae4 4253e8a a8c5c79 acb84a7 92fb437 958aad1 9e2a2dd e9c1dc7; do
-  [[ -d "$(wt "$c")" ]] || git worktree add -q --detach "$(wt "$c")" "$c"
+  criar_worktree "$c"
 done
 
 # ---------- Bloco A ----------

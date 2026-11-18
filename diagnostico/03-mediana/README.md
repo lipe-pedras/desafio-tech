@@ -2,7 +2,7 @@
 
 > **Isto é diagnóstico, não resultado.** Estes testes não usam o `scripts/medir.sh` nem o formato oficial de medição: não geram pasta em `resultados/`, usam uma carga modificada (teste 1) ou uma API instrumentada (teste 2), e o código instrumentado não vai para a `main`. Servem para entender um mecanismo. Os resultados oficiais da 03 continuam sendo os de [`experimentos/03-n-mais-1.md`](../../experimentos/03-n-mais-1.md).
 
-**Condições:** 2026-11-09, na tomada, perfil `balanced`, `DB_POOL_MAX=2`, 60 s por rodada, semente 42, com aquecimento de 15 s. Cada valor é a mediana de 3 rodadas. Números em [`resumo.txt`](resumo.txt), gerado por [`analisar.py`](analisar.py) a partir de `saida/`. Tudo roda com [`rodar.sh`](rodar.sh).
+**Condições:** 2026-11-09, na tomada, perfil `balanced`, `DB_POOL_MAX=2`, 60 s por rodada, semente 42, com aquecimento de 15 s. Cada valor é a mediana de 3 rodadas. Números em [`resumo.txt`](resumo.txt), gerado por `python3 diagnostico/analisar.py --serie 03-mediana` ([`analisar.py`](../analisar.py)) a partir de `saida/`. Tudo roda com [`rodar.sh`](rodar.sh).
 
 **O que se quer explicar:** nos resultados oficiais, a mediana geral foi de 208,2 para 623,0 ms depois da 03, e `cliente` foi de 80,9 para 410,4 ms, embora o código dessa rota não tenha mudado.
 
