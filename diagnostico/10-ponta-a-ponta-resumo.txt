@@ -1,0 +1,26 @@
+== 10-original-desktop (3 execuções) commit ['d29146f'] sujo ['0', '0', '0'] erros [0, 0, 0] contrato ['mantido']
+   pastas 20261120-023051-10-original-desktop 20261120-023848-10-original-desktop 20261120-024134-10-original-desktop
+   req/s por execução [7.42, 7.35, 7.49]  p95 por execução [9501.3, 9290.1, 9529.6]
+   medianas: rps=7.42 avg=2640.18 med=699.14 p95=9501.34 p99=11206.74 cpu_b=100.00 mem_b=228.50 cpu_a=6.30 mem_a=38.00
+   rotas (mediana da rota, ms): cliente=194.5 cliente-por-email=699.5 pedidos-do-cliente=8353.5 pedidos-por-status=2982.8 busca-produtos=394.9 vendas-por-dia=3316.6 top-produtos=9902.7
+
+== 10-final-desktop (3 execuções) commit ['29ac1c1'] sujo ['0', '0', '0'] erros [0, 0, 0] contrato ['mantido']
+   pastas 20261120-023333-10-final-desktop 20261120-023609-10-final-desktop 20261120-024415-10-final-desktop
+   req/s por execução [2512.87, 2579.19, 2563.74]  p95 por execução [14.2, 13.7, 13.7]
+   medianas: rps=2563.74 avg=7.77 med=6.58 p95=13.74 p99=24.90 cpu_b=71.10 mem_b=150.70 cpu_a=49.60 mem_a=30.60
+   rotas (mediana da rota, ms): cliente=5.3 cliente-por-email=5.3 pedidos-do-cliente=10.5 pedidos-por-status=10.8 busca-produtos=6.1 vendas-por-dia=5.3 top-produtos=5.4
+
+contadores de cota de CPU durante o medir.sh (depois menos antes; inclui o aquecimento de 15 s do medir.sh)
+rotulo                   svc    periodos  pausados %pausados  pausado_s    cpu_s
+10-original-desktop      banco       834       824      98.8     931.96    82.59
+10-original-desktop      api         823         0       0.0       0.00     4.86
+10-final-desktop         banco       762         7       0.9       0.04    53.48
+10-final-desktop         api         764       482      63.1       5.40    36.89
+10-final-desktop         banco       759         3       0.4       0.01    53.84
+10-final-desktop         api         763       453      59.4       4.86    36.88
+10-original-desktop      banco       832       821      98.7     918.31    82.32
+10-original-desktop      api         817         1       0.1       0.04     4.66
+10-original-desktop      banco       829       820      98.9     934.01    82.20
+10-original-desktop      api         812         1       0.1       0.02     4.70
+10-final-desktop         banco       760         6       0.8       0.02    53.71
+10-final-desktop         api         763       472      61.9       5.08    36.93

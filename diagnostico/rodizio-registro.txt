@@ -355,3 +355,37 @@
 2026-11-13 12:48:44 perfil=performance carga=1.42 1.26 1.17 cota depois de medir 09-indices-vendas-por-dia-desktop: banco: usage_usec 122216038 nr_periods 1380 nr_throttled 32 throttled_usec 454783 api: usage_usec 30649203 nr_periods 1373 nr_throttled 5 throttled_usec 132793 
 2026-11-13 12:48:44 perfil=performance carga=1.42 1.26 1.17 medido 09-indices-vendas-por-dia-desktop (a4a7821): Requisições/s: 1096.13
 2026-11-13 12:48:55 perfil=performance carga=1.20 1.22 1.16 fim do rodízio
+2026-11-20 02:28:36 perfil=performance carga=0.41 0.25 0.21 rodízio: d29146f:10-original-desktop 29ac1c1:10-final-desktop
+2026-11-20 02:28:52 perfil=performance carga=0.57 0.30 0.23 banco de d29146f criado em 16 s
+2026-11-20 02:29:29 perfil=performance carga=0.98 0.43 0.27 banco de 29ac1c1 criado em 26 s
+2026-11-20 02:29:46 perfil=performance carga=0.84 0.42 0.27 fixado: /rod-d29146f-api-1 cpuset=0-15 nanocpus=500000000 /rod-d29146f-banco-1 cpuset=0-15 nanocpus=1000000000 
+2026-11-20 02:30:51 perfil=performance carga=2.95 0.98 0.47 antes de medir 10-original-desktop: clientes=1156/1156 vac=05:30:21 itens_pedido=9553/9555 vac=05:30:42 pedidos=20830/20834 vac=05:30:35 produtos=190/190 vac=05:30:42
+2026-11-20 02:30:51 perfil=performance carga=2.95 0.98 0.47 cota antes de medir 10-original-desktop: banco: usage_usec 64217982 nr_periods 664 nr_throttled 639 throttled_usec 484091365 api: usage_usec 4792763 nr_periods 638 nr_throttled 5 throttled_usec 228385 
+2026-11-20 02:32:15 perfil=performance carga=2.14 1.36 0.66 cota depois de medir 10-original-desktop: banco: usage_usec 146806557 nr_periods 1498 nr_throttled 1463 throttled_usec 1416052105 api: usage_usec 9648030 nr_periods 1461 nr_throttled 5 throttled_usec 228385 
+2026-11-20 02:32:15 perfil=performance carga=2.14 1.36 0.66 medido 10-original-desktop (d29146f): Requisições/s: 7.42
+2026-11-20 02:32:32 perfil=performance carga=1.59 1.29 0.65 fixado: /rod-29ac1c1-api-1 cpuset=0-15 nanocpus=500000000 /rod-29ac1c1-banco-1 cpuset=0-15 nanocpus=1000000000 
+2026-11-20 02:33:33 perfil=performance carga=1.38 1.28 0.69 antes de medir 10-final-desktop: clientes=1156/1156 vac=05:33:06 itens_pedido=9555/9555 vac=05:29:27 pedidos=20834/20834 vac=05:29:27 pedidos_por_status=1/1 vac=05:29:26 produtos=190/190 vac=05:29:27 vendas_por_dia=6/6 vac=05:29:28 vendas_por_produto=142/142 vac=05:33:06
+2026-11-20 02:33:33 perfil=performance carga=1.38 1.28 0.69 cota antes de medir 10-final-desktop: banco: usage_usec 44661991 nr_periods 616 nr_throttled 7 throttled_usec 54264 api: usage_usec 28674496 nr_periods 612 nr_throttled 205 throttled_usec 2532184 
+2026-11-20 02:34:51 perfil=performance carga=1.38 1.26 0.73 cota depois de medir 10-final-desktop: banco: usage_usec 98146549 nr_periods 1378 nr_throttled 14 throttled_usec 90852 api: usage_usec 65564582 nr_periods 1376 nr_throttled 687 throttled_usec 7931581 
+2026-11-20 02:34:51 perfil=performance carga=1.38 1.26 0.73 medido 10-final-desktop (29ac1c1): Requisições/s: 2512.87
+2026-11-20 02:35:07 perfil=performance carga=1.21 1.22 0.73 fixado: /rod-29ac1c1-api-1 cpuset=0-15 nanocpus=500000000 /rod-29ac1c1-banco-1 cpuset=0-15 nanocpus=1000000000 
+2026-11-20 02:36:08 perfil=performance carga=1.98 1.43 0.83 antes de medir 10-final-desktop: clientes=1156/1156 vac=05:33:06 itens_pedido=9555/9555 vac=05:29:27 pedidos=20834/20834 vac=05:29:27 pedidos_por_status=1/1 vac=05:29:26 produtos=190/190 vac=05:29:27 vendas_por_dia=6/6 vac=05:29:28 vendas_por_produto=142/142 vac=05:33:06
+2026-11-20 02:36:09 perfil=performance carga=1.98 1.43 0.83 cota antes de medir 10-final-desktop: banco: usage_usec 44904772 nr_periods 620 nr_throttled 10 throttled_usec 41899 api: usage_usec 28597136 nr_periods 610 nr_throttled 217 throttled_usec 3071938 
+2026-11-20 02:37:26 perfil=performance carga=1.40 1.38 0.87 cota depois de medir 10-final-desktop: banco: usage_usec 98745422 nr_periods 1379 nr_throttled 13 throttled_usec 54324 api: usage_usec 65479577 nr_periods 1373 nr_throttled 670 throttled_usec 7928347 
+2026-11-20 02:37:27 perfil=performance carga=1.40 1.38 0.87 medido 10-final-desktop (29ac1c1): Requisições/s: 2579.19
+2026-11-20 02:37:43 perfil=performance carga=1.09 1.31 0.85 fixado: /rod-d29146f-api-1 cpuset=0-15 nanocpus=500000000 /rod-d29146f-banco-1 cpuset=0-15 nanocpus=1000000000 
+2026-11-20 02:38:48 perfil=performance carga=4.01 1.99 1.11 antes de medir 10-original-desktop: clientes=1156/1156 vac=05:30:21 itens_pedido=9553/9555 vac=05:30:42 pedidos=20830/20834 vac=05:30:35 produtos=190/190 vac=05:30:42
+2026-11-20 02:38:48 perfil=performance carga=4.01 1.99 1.11 cota antes de medir 10-original-desktop: banco: usage_usec 63752907 nr_periods 656 nr_throttled 636 throttled_usec 471212808 api: usage_usec 4881491 nr_periods 630 nr_throttled 6 throttled_usec 413556 
+2026-11-20 02:40:12 perfil=performance carga=1.86 1.86 1.14 cota depois de medir 10-original-desktop: banco: usage_usec 146070311 nr_periods 1488 nr_throttled 1457 throttled_usec 1389517836 api: usage_usec 9537575 nr_periods 1447 nr_throttled 7 throttled_usec 450290 
+2026-11-20 02:40:12 perfil=performance carga=1.86 1.86 1.14 medido 10-original-desktop (d29146f): Requisições/s: 7.35
+2026-11-20 02:40:28 perfil=performance carga=1.45 1.77 1.12 fixado: /rod-d29146f-api-1 cpuset=0-15 nanocpus=500000000 /rod-d29146f-banco-1 cpuset=0-15 nanocpus=1000000000 
+2026-11-20 02:41:34 perfil=performance carga=0.49 1.42 1.05 antes de medir 10-original-desktop: clientes=1156/1156 vac=05:30:21 itens_pedido=9553/9555 vac=05:30:42 pedidos=20830/20834 vac=05:30:35 produtos=190/190 vac=05:30:42
+2026-11-20 02:41:34 perfil=performance carga=0.49 1.42 1.05 cota antes de medir 10-original-desktop: banco: usage_usec 64573850 nr_periods 660 nr_throttled 644 throttled_usec 471234423 api: usage_usec 4805042 nr_periods 639 nr_throttled 6 throttled_usec 232011 
+2026-11-20 02:42:57 perfil=performance carga=8.28 3.13 1.64 cota depois de medir 10-original-desktop: banco: usage_usec 146771427 nr_periods 1489 nr_throttled 1464 throttled_usec 1405245459 api: usage_usec 9504705 nr_periods 1451 nr_throttled 7 throttled_usec 253708 
+2026-11-20 02:42:57 perfil=performance carga=8.28 3.13 1.64 medido 10-original-desktop (d29146f): Requisições/s: 7.49
+2026-11-20 02:43:14 perfil=performance carga=6.45 2.98 1.62 fixado: /rod-29ac1c1-api-1 cpuset=0-15 nanocpus=500000000 /rod-29ac1c1-banco-1 cpuset=0-15 nanocpus=1000000000 
+2026-11-20 02:44:15 perfil=performance carga=3.26 2.68 1.60 antes de medir 10-final-desktop: clientes=1156/1156 vac=05:33:06 itens_pedido=9555/9555 vac=05:29:27 pedidos=20834/20834 vac=05:29:27 pedidos_por_status=1/1 vac=05:29:26 produtos=190/190 vac=05:29:27 vendas_por_dia=6/6 vac=05:29:28 vendas_por_produto=142/142 vac=05:33:06
+2026-11-20 02:44:15 perfil=performance carga=3.26 2.68 1.60 cota antes de medir 10-final-desktop: banco: usage_usec 44578687 nr_periods 618 nr_throttled 11 throttled_usec 59583 api: usage_usec 28717141 nr_periods 611 nr_throttled 225 throttled_usec 3149934 
+2026-11-20 02:45:33 perfil=performance carga=1.39 2.21 1.52 cota depois de medir 10-final-desktop: banco: usage_usec 98292711 nr_periods 1378 nr_throttled 17 throttled_usec 79960 api: usage_usec 65648318 nr_periods 1374 nr_throttled 697 throttled_usec 8229976 
+2026-11-20 02:45:33 perfil=performance carga=1.39 2.21 1.52 medido 10-final-desktop (29ac1c1): Requisições/s: 2563.74
+2026-11-20 02:45:44 perfil=performance carga=1.18 2.13 1.51 fim do rodízio
