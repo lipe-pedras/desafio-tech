@@ -1,0 +1,25 @@
+Fonte: https://node-postgres.com/features/queries
+Acessado em: 2026-11-20
+Trecho do texto da página (HTML convertido em texto, sem edição do conteúdo): seção Prepared statements.
+
+The query config object allows for a few more advanced scenarios:
+
+Prepared statements
+
+PostgreSQL has the concept of a prepared statement. node-postgres supports this by supplying a name parameter to the query config object. If you supply a name parameter the query execution plan will be cached on the PostgreSQL server on a per connection basis. This means if you use two different connections each will have to parse & plan the query once. node-postgres handles this transparently for you: a client only requests a query to be parsed the first time that particular client has seen that query name:
+
+const query = {
+ // give the query a unique name
+ name: 'fetch-user',
+ text: 'SELECT * FROM user WHERE id = $1',
+ values: [1],
+}
+
+const res = await client.query(query)
+console.log(res.rows[0])
+
+In the above example the first time the client sees a query with the name 'fetch-user' it will send a ‘parse’ request to the PostgreSQL server & execute the query as normal. The second time, it will skip the ‘parse’ request and send the name of the query to the PostgreSQL server.
+
+Be careful not to fall into the trap of premature optimization. Most of your queries will likely not benefit much, if at all, from using prepared statements. This is a somewhat “power user” feature of PostgreSQL that is best used when you know how to use it - namely with very complex queries with lots of joins and advanced operations like union and switch statements. I rarely use this feature in my own apps unless writing complex aggregate queries for reports and I know the reports are going to be executed very frequently.
+
+

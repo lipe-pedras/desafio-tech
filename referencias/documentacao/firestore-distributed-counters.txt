@@ -1,0 +1,22 @@
+Fonte: https://firebase.google.com/docs/firestore/solutions/counters
+Acessado em: 2026-11-20
+Trecho do texto da página (HTML convertido em texto, sem edição do conteúdo): introdução e solução (contadores distribuídos).
+
+
+Many realtime apps have documents that act as counters. For example, you might
+count 'likes' on a post, or 'favorites' of a specific item.
+
+In Cloud Firestore, you can't update a single document at an unlimited rate. If you have a counter based on single document and frequent enough increments to it you will eventually see contention on the updates to the document. See Updates to a single document.
+
+Solution: Distributed counters
+
+To support more frequent counter updates, create a distributed counter.
+Each counter is a document with a subcollection of "shards," and the value of
+the counter is the sum of the value of the shards.
+
+Write throughput increases linearly with the number of shards, so a distributed
+counter with 10 shards can handle 10x as many writes as a traditional counter.
+
+Web
+
+
