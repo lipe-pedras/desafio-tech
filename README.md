@@ -4,6 +4,35 @@ Aplicação do desafio técnico da vaga de estágio em Pesquisa e Inovação da 
 
 A aplicação é a API de uma loja fictícia, em Node.js (Express) com PostgreSQL 16, rodando em containers. Ela funciona, mas fica lenta sob carga e gasta mais recursos do que deveria. Todos os dados são sintéticos e gerados na primeira subida: 100 mil clientes, 20 mil produtos, 500 mil pedidos e 1,5 milhão de itens de pedido.
 
+## O problema e o resultado
+
+Na linha de base, a API atendia 7,42 requisições por segundo, com p95 de 9,5 s, e o banco ficava em 100% da sua CPU. Quase todo o tempo era o banco lendo tabelas inteiras: faltavam índices, cada consulta abria uma conexão nova, uma rota fazia uma consulta por item (N+1) e os relatórios agregavam centenas de milhares de linhas a cada chamada.
+
+As mudanças, uma por commit e cada uma medida contra a anterior:
+- índices, inclusive com `INCLUDE` e de trigramas;
+- pool de 1 conexão;
+- consultas que leem só o necessário;
+- consulta paralela desligada;
+- totais mantidos por gatilhos, para o total de `/pedidos` e os dois relatórios.
+
+Com os mesmos limites de CPU e memória, a versão final atendeu **2563,74 req/s, com p95 de 13,7 ms**. A original e a final foram medidas em rodízio na mesma sessão, com 3 execuções de cada ([`diagnostico/10-ponta-a-ponta-resumo.txt`](diagnostico/10-ponta-a-ponta-resumo.txt)). O custo foi para as escritas, que a carga não mede: com 8 clientes simultâneos, os gatilhos reduzem as transações/s de escrita em 59% a 74%.
+
+| Original → final (mediana de 3) | |
+|---|---|
+| Requisições/s | 7,42 → 2563,74 |
+| p95 | 9501,3 → 13,7 ms |
+| CPU / memória do banco | 100,0% → 71,1% / 228,5 → 150,7 MiB |
+| CPU / memória da API | 6,3% → 49,6% / 38,0 → 30,6 MiB |
+
+Onde está cada coisa:
+- [`artigo/artigo.md`](artigo/artigo.md): o artigo, com diagnóstico, alternativas, escolha e resultados;
+- [`experimentos.md`](experimentos.md): uma linha por mudança, com fonte, antes, depois, pastas de resultados e conclusão; os detalhes de cada uma estão em [`experimentos/`](experimentos/);
+- [`proximos-testes.md`](proximos-testes.md): ideias pesquisadas e não testadas;
+- [`diagnostico/`](diagnostico/): as saídas e os scripts que sustentam cada conclusão;
+- [`referencias/`](referencias/): as fontes citadas, salvas.
+
+Para repetir a comparação final: `diagnostico/rodizio.sh <pasta-temporaria> d29146f:10-original-desktop 29ac1c1:10-final-desktop`. O script fixa os containers nos núcleos P de um processador Intel híbrido; em outra máquina, ajuste `nucleos_p` em `diagnostico/lib.sh`.
+
 ## Prazo e entrega
 
 - **Prazo e entregas:** estão no enunciado enviado na largada
